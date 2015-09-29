@@ -13,10 +13,12 @@
 #
 # Configure Using Gemfile
 # gem 'pg'
-#
+
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: courseweb
+  password: ntut0926
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
