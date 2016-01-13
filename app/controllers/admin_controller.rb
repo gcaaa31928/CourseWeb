@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'mechanize'
 require 'open-uri'
 require 'chunky_png'
+require 'iconv'
 
 module PortalImage
 
@@ -62,17 +63,8 @@ module PortalImage
 end
 
 module Agent
-    class MyParser
-        def self.parse(thing, url = nil, encoding = nil, options = Nokogiri::XML::ParseOptions::DEFAULT_HTML, &block)
-            # insert your conversion code here. For example:
-            # thing = NKF.nkf("-wm0X", thing).sub(/Shift_JIS/,"utf-8") # you need to rewrite content charset if it exists.
-            Nokogiri::HTML::Document.parse(thing, url, encoding, options, &block)
-        end
-    end
-
     def self.login_to_nportal(username, password, course_code)
         agent = Mechanize.new
-        agent.html_parser = MyParser
         agent.user_agent_alias = 'Windows Mozilla'
         # agent.follow_meta_refresh = true
         page = agent.get('https://nportal.ntut.edu.tw/index.do')
@@ -101,7 +93,10 @@ module Agent
         form = page.form('ssoForm')
         page = agent.submit(form)
         page = agent.get('http://aps.ntut.edu.tw/course/tw/Select.jsp?format=-1&code='+course_code)
-        doc = Nokogiri::HTML(page.body)
+        ic = Iconv.new("utf-8//IGNORE","big5")
+        # p ic.iconv(page.body)
+
+        doc = Nokogiri::HTML(ic.iconv(page.body))
         table = doc.css('table')[2].css('tr').text
         p table
         # doc.xpath('//td').each do |node|
