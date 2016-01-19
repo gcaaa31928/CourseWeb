@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-material": "~1.0.2"
+    "angular-material": "~1.0.2",
+    "Materialize": "materialize#~0.97.5"
   }
 }
