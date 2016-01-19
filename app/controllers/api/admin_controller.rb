@@ -28,7 +28,9 @@ class Api::AdminController < ApplicationController
         end
         students_id_list, students_name_list = NTUTCourse.login_to_nportal('104598037', 'qwerasdf40144', '209065')
         students_id_list.zip(students_name_list).each do |id, name|
-            Student.create(name: name, id: id.to_i)
+            student = Student.new(name: name, id: id.to_i)
+            student.password = id
+            student.save!
         end
         render HttpStatusCode.ok
     end

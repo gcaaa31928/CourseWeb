@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     namespace :api do
         post 'login' => 'admin#login'
         post 'get_course_students' => 'admin#get_course_students'
+
+        post 'student_login' => 'student#login'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".
