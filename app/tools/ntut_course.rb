@@ -3,7 +3,6 @@ require 'nokogiri'
 require 'mechanize'
 require 'open-uri'
 require 'chunky_png'
-require 'iconv'
 class NTUTCourseCaptcha
 
     def self.count_white_pixel_from_image(image)
@@ -93,11 +92,14 @@ class NTUTCourse
         form = page.form('ssoForm')
         page = agent.submit(form)
         page = agent.get('http://aps.ntut.edu.tw/course/tw/Select.jsp?format=-1&code='+course_code)
-        ic = Iconv.new("utf-8//IGNORE", "big5")
+        # ic = Iconv.new("utf-8//IGNORE", "big5")
 
         students_name_list = []
         students_id_list = []
-        doc = Nokogiri::HTML(ic.iconv(page.body))
+
+        # ec = Encoding::Converter.new("big-5", "utf-8")
+        # p ec.convert(page.body)
+        doc = Nokogiri::HTML(page.body)
         doc.css('table')[2].css('tr').each do |row|
             cell = row.css('td')
             unless cell[1].nil?
@@ -107,6 +109,6 @@ class NTUTCourse
                 students_name_list << cell[2].text
             end
         end
-        [students_id_list, students_name_list]
+        p [students_id_list, students_name_list]
     end
 end

@@ -50,7 +50,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'chunky_png'
 gem 'mechanize', '2.7.3'
-gem 'curb'
 gem 'factory_girl'
 gem 'factory_girl_rails'
-gem 'iconv'
