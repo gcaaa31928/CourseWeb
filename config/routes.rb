@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-    namespace :admin do
-        post 'login'
-        post 'get_course_students'
+    root :to => 'view#index'
+    namespace :api do
+        post 'login' => 'admin#login'
+        post 'get_course_students' => 'admin#get_course_students'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

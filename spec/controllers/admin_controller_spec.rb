@@ -1,6 +1,6 @@
 require 'rails_helper'
 require 'factory_girl'
-RSpec.describe AdminController, type: :controller do
+RSpec.describe Api::AdminController, type: :controller do
     describe 'Login' do
         it 'success' do
             post :login, {:account => 'wkchen', :password => 'b29wY291cnNl'}

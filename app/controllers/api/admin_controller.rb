@@ -2,7 +2,7 @@
 require 'http_status_code'
 require 'ntut_course'
 
-class AdminController < ApplicationController
+class Api::AdminController < ApplicationController
     before_action :require_headers
     def login
         permitted = params.permit(:account, :password)
