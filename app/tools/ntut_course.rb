@@ -67,6 +67,7 @@ class NTUTCourse
         agent.user_agent_alias = 'Windows Mozilla'
         # agent.follow_meta_refresh = true
         page = agent.get('https://nportal.ntut.edu.tw/index.do')
+
         image = page.at '#authImage'
         now_time = Time.new + 3.seconds
         uri = agent.get('https://nportal.ntut.edu.tw/authImage.do?datetime='+now_time.strftime('%s%3N')).body_io
@@ -92,14 +93,14 @@ class NTUTCourse
         form = page.form('ssoForm')
         page = agent.submit(form)
         page = agent.get('http://aps.ntut.edu.tw/course/tw/Select.jsp?format=-1&code='+course_code)
+        page.encoding = 'utf-8'
         # ic = Iconv.new("utf-8//IGNORE", "big5")
+
 
         students_name_list = []
         students_id_list = []
-
-        # ec = Encoding::Converter.new("big-5", "utf-8")
-        # p ec.convert(page.body)
-        doc = Nokogiri::HTML(page.body)
+        body = page.body
+        doc = Nokogiri::HTML(body.force_encoding('big5').encode)
         doc.css('table')[2].css('tr').each do |row|
             cell = row.css('td')
             unless cell[1].nil?
