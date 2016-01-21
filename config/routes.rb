@@ -2,7 +2,7 @@ Rails.application.routes.draw do
     root :to => 'view#index'
     namespace :api do
         post 'login' => 'admin#login'
-        post 'get_course_students' => 'admin#get_course_students'
+        post 'create_course_students' => 'admin#create_course_students'
 
         post 'student_login' => 'student#login'
     end
