@@ -2,6 +2,7 @@ angular.module('courseWebApp').controller 'IndexCtrl', [
     '$scope'
     'Student'
     ($scope, Student) ->
+        $scope.layout.sidebar = false
         $scope.form =
             id: ''
             password: ''

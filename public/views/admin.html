@@ -1,6 +1,6 @@
-<div class="container" ng-controller="IndexCtrl">
-    <h5>管理員登入</h5>
+<div ng-controller="AdminCtrl">
     <form name="form" ng-if="showLoginForm">
+        <h5>管理員登入</h5>
         <div class="row">
             <div class="input-field col s8">
                 <input id="id" type="text" class="validate" ng-model="form.id" required>
@@ -18,13 +18,16 @@
             <i class="material-icons right">send</i>
         </button>
     </form>
-    <div class="content" ng-if="!showLoginForm">
+    <div class="content row" ng-if="!showLoginForm">
+        <div class="col s3 teal lighten-3 sidebar">
+            <ul>
+                <li>登入</li>
+            </ul>
+            <!-- Grey navigation panel -->
+        </div>
 
-
-        <ul class="side-nav" style="left: 0">
-            <li><a href="#!">First Sidebar Link</a></li>
-            <li><a href="#!">Second Sidebar Link</a></li>
-        </ul>
-
+        <div class="col s9">
+            <!-- Teal page content  -->
+        </div>
     </div>
 </div>

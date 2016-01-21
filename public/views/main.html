@@ -1,4 +1,4 @@
-<nav class="light-blue" role="navigation">
+<nav class="light-blue" ng-class="{'pad-left': layout.sidebar}" role="navigation">
     <div class="nav-wrapper">
         <div class="wrappering">
             <a href="#" class="brand-logo">Course Web</a>
@@ -8,5 +8,5 @@
         </div>
     </div>
 </nav>
-<div class="section  no-pad-bot" ui-view>
+<div class="section" ng-class="{'pad-left': layout.sidebar}" ui-view>
 </div>

@@ -2,6 +2,7 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
     '$scope',
     'Admin'
     ($scope, Admin) ->
+        $scope.layout.sidebar = true
         $scope.showLoginForm = Admin.isLogin()
         $scope.form =
             id: ''
