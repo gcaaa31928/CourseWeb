@@ -19,3 +19,4 @@
 /public/node_modules/*
 /.idea/*
 *.png
+/node_modules/*
