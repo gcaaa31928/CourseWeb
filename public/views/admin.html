@@ -1,33 +1,37 @@
 <div ng-controller="AdminCtrl">
-    <form name="form" ng-if="showLoginForm">
-        <h5>管理員登入</h5>
-        <div class="row">
-            <div class="input-field col s8">
-                <input id="id" type="text" class="validate" ng-model="form.id" required>
-                <label for="id">帳號</label>
+    <div class="container no-pad">
+
+        <form name="form" ng-if="showLoginForm">
+            <h5>管理員登入</h5>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="id" type="text" class="validate" ng-model="form.id" required>
+                    <label for="id">帳號</label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s8">
-                <input id="password" type="password" class="validate" ng-model="form.password" required>
-                <label for="password">密碼</label>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="password" type="password" class="validate" ng-model="form.password" required>
+                    <label for="password">密碼</label>
+                </div>
             </div>
-        </div>
-        <button ng-click="form.$invalid || login()" class="btn waves-effect waves-light" type="submit" name="action" ng-disabled="form.$invalid">
-            Submit
-            <i class="material-icons right">send</i>
-        </button>
-    </form>
-    <div class="content row" ng-if="!showLoginForm">
-        <div class="col s3 teal lighten-3 sidebar">
-            <ul>
-                <li>登入</li>
-            </ul>
-            <!-- Grey navigation panel -->
+            <button ng-click="form.$invalid || login()" class="btn waves-effect waves-light" type="submit" name="action"
+                    ng-disabled="form.$invalid">
+                Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+        <div ng-if="!showLoginForm">
+            <nav class="grey">
+                <div class="nav-wrapper">
+                    <ul id="nav-mobile" class="hide-on-med-and-down">
+                        <li><a>Sass</a></li>
+                        <li><a>Components</a></li>
+                        <li><a>JavaScript</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
 
-        <div class="col s9">
-            <!-- Teal page content  -->
-        </div>
     </div>
 </div>

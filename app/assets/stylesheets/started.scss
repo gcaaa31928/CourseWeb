@@ -1,0 +1,8 @@
+@import "mixin";
+.parallax-container {
+    max-height: 180px;
+}
+
+.parallax > img {
+    @include filter(blur(15px) brightness(1.2));
+}
