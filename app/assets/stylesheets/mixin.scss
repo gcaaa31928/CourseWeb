@@ -1,0 +1,6 @@
+@mixin filter($blur...){
+    -webkit-filter: $blur;
+    -moz-filter: $blur;
+    -o-filter: $blur;
+    -ms-filter: $blur;
+}

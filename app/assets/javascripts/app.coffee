@@ -6,7 +6,7 @@ courseWeb = angular.module 'courseWebApp', [
 ]
 
 courseWeb.config ($stateProvider, $urlRouterProvider) ->
-    $urlRouterProvider.otherwise '/index'
+    $urlRouterProvider.otherwise '/started'
     $stateProvider.state('main',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
@@ -18,4 +18,8 @@ courseWeb.config ($stateProvider, $urlRouterProvider) ->
         url: '/admin'
         templateUrl: 'views/admin.html'
         controller: 'AdminCtrl'
+    ).state('main.started',
+        url: '/started'
+        templateUrl: 'views/started.html'
+        controller: 'StartedCtrl'
     )

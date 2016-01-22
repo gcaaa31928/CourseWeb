@@ -20,3 +20,4 @@
 /.idea/*
 *.png
 /node_modules/*
+/doc/**
