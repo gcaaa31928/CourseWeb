@@ -10,10 +10,10 @@ courseWeb.config ($stateProvider, $urlRouterProvider) ->
     $stateProvider.state('main',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
-    ).state('main.index',
-        url: '/index'
-        templateUrl: 'views/index.html'
-        controller: 'IndexCtrl'
+    ).state('main.login',
+        url: '/login'
+        templateUrl: 'views/login.html'
+        controller: 'LoginCtrl'
     ).state('main.admin',
         url: '/admin'
         templateUrl: 'views/admin.html'
@@ -22,4 +22,8 @@ courseWeb.config ($stateProvider, $urlRouterProvider) ->
         url: '/started'
         templateUrl: 'views/started.html'
         controller: 'StartedCtrl'
+    ).state('main.student',
+        url: '/student'
+        templateUrl: 'views/student.html'
+        controller: 'StudentCtrl'
     )

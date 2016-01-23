@@ -1,4 +1,4 @@
-angular.module('courseWebApp').controller 'IndexCtrl', [
+angular.module('courseWebApp').controller 'LoginCtrl', [
     '$scope'
     'Student'
     ($scope, Student) ->

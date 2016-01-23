@@ -1,4 +1,9 @@
 @import "mixin";
+
+.parallax-container:nth-of-type(1) {
+    max-height: 300px;
+}
+
 .parallax-container {
     max-height: 180px;
 }
