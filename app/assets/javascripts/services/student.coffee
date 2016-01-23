@@ -4,6 +4,7 @@ angular.module('courseWebApp').factory 'Student', [
     ($http, $q) ->
         factory = {}
         factory.accessToken = ""
+        factory.group = null
         factory.httpConfig = (canceler) ->
             timeout = 15 * 1000
             if canceler

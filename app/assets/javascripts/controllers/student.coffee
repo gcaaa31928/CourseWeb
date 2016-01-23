@@ -1,18 +1,23 @@
 angular.module('courseWebApp').controller 'StudentCtrl', [
     '$scope',
-    ($scope) ->
+    'Student'
+    ($scope, Student) ->
         # hack it
         $scope.isLogin = true
         $scope.state = 'project'
-        $scope.project = null
-        $scope.group = null
+        $scope.project =
+            timelog:
+                null
+        $scope.group = Student.group
         $scope.groupCreateForm =
             studentId: ""
+
 
         $scope.changeState = (state) ->
             $scope.state = state
 
         $scope.createGroup = () ->
+            # TODO(Red): adapte api
 
 
 

@@ -9,8 +9,57 @@
     </nav>
     <div class="container" ng-switch="state">
         <div ng-switch-when="project">
-            <div ng-if="!project">
+            <div ng-if="!group && !project">
+                <h3>你必須先建立團隊才能建立專案</h3>
+            </div>
+            <div ng-if="group && !project">
                 <h3>你目前沒有任何專案</h3>
+                <form name="projectCreateForm">
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <input id="project-id" type="text" class="validate" ng-model="form.id" required>
+                            <label for="project-id">專題題目</label>
+                        </div>
+                        <div class="input-field col s8">
+                            <textarea id="textarea1" class="materialize-textarea"></textarea>
+                            <label for="textarea1">專題簡介</label>
+                        </div>
+                    </div>
+                    <a ng-click="groupCreateForm.$invalid || login()"
+                       class="waves-effect waves-light btn-large center-align">建立專案</a>
+                </form>
+            </div>
+            <div ng-if="project">
+                <table>
+                    <thead>
+                    <tr>
+                        <th data-field="weekNo">週次</th>
+                        <th data-field="date">日期</th>
+                        <th data-field="costTime">團隊花費時間</th>
+                        <th data-field="todoList">待辦事項</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2015/11/11</td>
+                        <td>12 小時</td>
+                        <td>要把這個網站的API接完</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2015/11/18</td>
+                        <td>18 小時</td>
+                        <td>要把這個網站的API接完</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>2015/11/25</td>
+                        <td>2 小時</td>
+                        <td>要把這個網站的API接完</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div ng-switch-when="group">
@@ -19,15 +68,37 @@
                 <form name="groupCreateForm">
                     <div class="row">
                         <div class="input-field col s8">
-                            <input id="id" type="text" class="validate" ng-model="form.id" required>
-                            <label for="id">對方組員學號</label>
+                            <input id="group-id" type="text" class="validate" ng-model="form.id" required>
+                            <label for="group-id">對方組員學號</label>
                         </div>
                     </div>
-                    <a ng-click="groupCreateForm.$invalid || login()" class="waves-effect waves-light btn-large center-align">建立團隊</a>
+                    <a ng-click="groupCreateForm.$invalid || login()"
+                       class="waves-effect waves-light btn-large center-align">建立團隊</a>
                 </form>
             </div>
             <div ng-if="group">
-
+                <table>
+                    <thead>
+                    <tr>
+                        <th data-field="id">組員學號</th>
+                        <th data-field="name">組員姓名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>104598037</td>
+                        <td>Red</td>
+                    </tr>
+                    <tr>
+                        <td>104598037</td>
+                        <td>Red</td>
+                    </tr>
+                    <tr>
+                        <td>104598037</td>
+                        <td>Red</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
