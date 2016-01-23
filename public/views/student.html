@@ -1,0 +1,31 @@
+<div ng-if="isLogin">
+    <nav class="teal lighten-2">
+        <div class="nav-wrapper">
+            <ul id="nav-mobile" class="hide-on-med-and-down">
+                <li class="clickable" ng-click="changeState('project')"><a>專案</a></li>
+                <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" ng-switch="state">
+        <div ng-switch-when="project">
+            <div ng-if="!project">
+                <h3>你目前沒有任何專案</h3>
+            </div>
+        </div>
+        <div ng-switch-when="group">
+            <div ng-if="!group">
+                <h3>你目前沒有任何團隊</h3>
+                <form name="groupCreateForm">
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <input id="id" type="text" class="validate" ng-model="form.id" required>
+                            <label for="id">對方組員學號</label>
+                        </div>
+                    </div>
+                    <a ng-click="groupCreateForm.$invalid || login()" class="waves-effect waves-light btn-large center-align">建立團隊</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
