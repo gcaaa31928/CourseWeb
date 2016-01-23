@@ -7,4 +7,6 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
         $timeout ->
             $('.parallax').parallax()
 
+
+
 ]
