@@ -2,12 +2,16 @@
     <nav class="teal lighten-2">
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="hide-on-med-and-down">
+                <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
                 <li class="clickable" ng-click="changeState('project')"><a>專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
             </ul>
         </div>
     </nav>
     <div class="container" ng-switch="state">
+        <div ng-switch-when="index">
+            <div id="chart" style="width:100%; height:400px;"></div>
+        </div>
         <div ng-switch-when="project">
             <div ng-if="!group && !project">
                 <h3>你必須先建立團隊才能建立專案</h3>
@@ -37,6 +41,7 @@
                         <th data-field="date">日期</th>
                         <th data-field="costTime">團隊花費時間</th>
                         <th data-field="todoList">待辦事項</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,21 +50,25 @@
                         <td>2015/11/11</td>
                         <td>12 小時</td>
                         <td>要把這個網站的API接完</td>
+                        <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     <tr>
                         <td>2</td>
                         <td>2015/11/18</td>
                         <td>18 小時</td>
                         <td>要把這個網站的API接完</td>
+                        <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     <tr>
                         <td>3</td>
                         <td>2015/11/25</td>
                         <td>2 小時</td>
                         <td>要把這個網站的API接完</td>
+                        <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     </tbody>
                 </table>
+                <a class="waves-effect waves-light btn">新增 Timelog</a>
             </div>
         </div>
         <div ng-switch-when="group">

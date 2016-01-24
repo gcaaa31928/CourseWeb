@@ -19,6 +19,7 @@
     "angular": "~1.4.8",
     "angular-route": "~1.4.8",
     "jquery": "~2.2.0",
-    "Headhesive.js": "headhesive#~1.2.4"
+    "Headhesive.js": "headhesive#~1.2.4",
+    "highcharts": "hightcharts#~4.2.1"
   }
 }
