@@ -23,7 +23,6 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.renderChart = () ->
             $timeout(() ->
-                console.log('dfd')
                 chart = Highcharts.chart('chart', series: [ { data: [
                     1
                     3

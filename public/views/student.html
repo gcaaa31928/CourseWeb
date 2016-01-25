@@ -3,8 +3,10 @@
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="hide-on-med-and-down">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
-                <li class="clickable" ng-click="changeState('project')"><a>專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
+                <li class="clickable" ng-click="changeState('project')"><a>專案</a></li>
+                <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
+                <li class="clickable" ng-click="changeState('editProject')"><a>編輯專案</a></li>
             </ul>
         </div>
     </nav>
@@ -13,27 +15,8 @@
             <div id="chart" style="width:100%; height:400px;"></div>
         </div>
         <div ng-switch-when="project">
-            <div ng-if="!group && !project">
-                <h3>你必須先建立團隊才能建立專案</h3>
-            </div>
-            <div ng-if="group && !project">
-                <h3>你目前沒有任何專案</h3>
-                <form name="projectCreateForm">
-                    <div class="row">
-                        <div class="input-field col s8">
-                            <input id="project-id" type="text" class="validate" ng-model="form.id" required>
-                            <label for="project-id">專題題目</label>
-                        </div>
-                        <div class="input-field col s8">
-                            <textarea id="textarea1" class="materialize-textarea"></textarea>
-                            <label for="textarea1">專題簡介</label>
-                        </div>
-                    </div>
-                    <a ng-click="groupCreateForm.$invalid || login()"
-                       class="waves-effect waves-light btn-large center-align">建立專案</a>
-                </form>
-            </div>
             <div ng-if="project">
+                <h3>Project Name</h3>
                 <table>
                     <thead>
                     <tr>
@@ -41,6 +24,7 @@
                         <th data-field="date">日期</th>
                         <th data-field="costTime">團隊花費時間</th>
                         <th data-field="todoList">待辦事項</th>
+                        <th data-field="lineOfCode">行數</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -50,6 +34,7 @@
                         <td>2015/11/11</td>
                         <td>12 小時</td>
                         <td>要把這個網站的API接完</td>
+                        <td>1002</td>
                         <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     <tr>
@@ -57,21 +42,48 @@
                         <td>2015/11/18</td>
                         <td>18 小時</td>
                         <td>要把這個網站的API接完</td>
+                        <td>103</td>
                         <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     <tr>
                         <td>3</td>
                         <td>2015/11/25</td>
                         <td>2 小時</td>
-                        <td>要把這個網站的API接完</td>
+                        <td>YA</td>
+                        <td>22</td>
                         <td><a class="waves-effect waves-light btn">編輯</a></td>
                     </tr>
                     </tbody>
                 </table>
-                <a class="waves-effect waves-light btn">新增 Timelog</a>
             </div>
         </div>
         <div ng-switch-when="group">
+            <table>
+                <thead>
+                <tr>
+                    <th data-field="id">組別</th>
+                    <th data-field="name">專案介紹</th>
+                    <th data-field="middleGrade">Demo1分數</th>
+                    <th data-field="finalGrade">Demo2分數</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Android Game</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Cybrain</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Cybrain Two</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-switch-when="editGroup">
             <div ng-if="!group">
                 <h3>你目前沒有任何團隊</h3>
                 <form name="groupCreateForm">
@@ -109,6 +121,27 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div ng-switch-when="editProject">
+            <h3>你目前沒有任何專案</h3>
+            <form name="projectCreateForm">
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input id="project-id" type="text" class="validate" ng-model="form.id" required>
+                        <label for="project-id">專題題目</label>
+                    </div>
+                    <div class="input-field col s8">
+                        <input id="project-ref" type="text" class="validate" ng-model="form.id" required>
+                        <label for="project-ref">參考連結</label>
+                    </div>
+                    <div class="input-field col s8">
+                        <textarea id="textarea1" class="materialize-textarea"></textarea>
+                        <label for="textarea1">專題簡介</label>
+                    </div>
+                </div>
+                <a ng-click="groupCreateForm.$invalid || login()"
+                   class="waves-effect waves-light btn-large center-align">建立專案</a>
+            </form>
         </div>
     </div>
 </div>
