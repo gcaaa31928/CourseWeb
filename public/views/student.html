@@ -12,7 +12,17 @@
     </nav>
     <div class="container" ng-switch="state">
         <div ng-switch-when="index">
-            <div id="chart" style="width:100%; height:400px;"></div>
+            <div class="row">
+                <div class="col s12">
+                    <div id="commitChart" class="wrap-margin" style="width:100%; height:400px;"></div>
+                </div>
+                <div class="col s6">
+                    <div id="locChart" class="wrap-margin" style="width:100%; height:400px;"></div>
+                </div>
+                <div class="col s6">
+                    <div id="timelogChart" class="wrap-margin" style="width:100%; height:400px;"></div>
+                </div>
+            </div>
         </div>
         <div ng-switch-when="project">
             <div ng-if="project">
@@ -134,6 +144,15 @@
                         <input id="project-ref" type="text" class="validate" ng-model="form.id" required>
                         <label for="project-ref">參考連結</label>
                     </div>
+                    <div class="input-field col s12">
+                        <select>
+                            <option value="" disabled selected>專案平台</option>
+                            <option value="1">Android</option>
+                            <option value="2">Windows</option>
+                            <option value="3">HTML5</option>
+                        </select>
+                    </div>
+
                     <div class="input-field col s8">
                         <textarea id="textarea1" class="materialize-textarea"></textarea>
                         <label for="textarea1">專題簡介</label>

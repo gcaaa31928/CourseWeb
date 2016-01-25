@@ -1,8 +1,9 @@
 angular.module('courseWebApp').controller 'StudentCtrl', [
     '$scope',
     'Student',
-    '$timeout'
-    ($scope, Student, $timeout) ->
+    '$timeout',
+    'Chart',
+    ($scope, Student, $timeout, Chart) ->
         # hack it
         $scope.isLogin = true
         $scope.state = 'index'
@@ -17,19 +18,17 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.changeState = (state) ->
             $scope.state = state
             if state == 'index'
-                $scope.renderChart()
+                Chart.renderCommitCharts()
+            else if state == 'editProject'
+                $scope.renderSelect()
         $scope.createGroup = () ->
             # TODO(Red): adapte api
 
-        $scope.renderChart = () ->
+        $scope.renderSelect = () ->
             $timeout(() ->
-                chart = Highcharts.chart('chart', series: [ { data: [
-                    1
-                    3
-                    2
-                    4
-                ] } ])
+                $('select').material_select()
             )
-        $scope.renderChart()
 
+        Chart.renderCommitCharts()
+        $scope.renderSelect()
 ]
