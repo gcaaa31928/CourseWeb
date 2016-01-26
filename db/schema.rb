@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126061014) do
+ActiveRecord::Schema.define(version: 20160126080709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,15 +71,15 @@ ActiveRecord::Schema.define(version: 20160126061014) do
 
   create_table "teaching_assistants", force: :cascade do |t|
     t.string   "name"
-    t.string   "class"
+    t.integer  "course_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "access_token"
   end
 
   create_table "teaching_assistants_privileges", id: false, force: :cascade do |t|
-    t.integer "privilege_id"
     t.integer "teaching_assistant_id"
+    t.integer "privilege_id"
   end
 
   create_table "time_costs", id: false, force: :cascade do |t|
@@ -94,11 +94,11 @@ ActiveRecord::Schema.define(version: 20160126061014) do
     t.integer  "week_no"
     t.date     "date"
     t.integer  "personal_time_cost"
-    t.integer  "group_time_cost"
     t.string   "todo"
     t.integer  "category"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.integer  "time_cost_id"
   end
 
 end

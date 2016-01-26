@@ -19,7 +19,7 @@ class HttpStatusCode
         json_data = {
             status: 200
         }
-        if data.nil?
+        unless data.nil?
             json_data[:data] = data
         end
         {

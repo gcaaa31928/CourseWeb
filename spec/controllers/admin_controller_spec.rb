@@ -21,7 +21,6 @@ RSpec.describe Api::AdminController, type: :controller do
             post :create_course_students, {:course_id => 209065}
             expect(response.status).to eq(200)
             course = Course.first
-            Log.debug(course.id.to_s)
             student = Student.find_by(id: 102590028)
             expect(course.name).to eq("物件導向程式設計實習\n")
             expect(student.course_id).to eq(course.id)

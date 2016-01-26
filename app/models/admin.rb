@@ -1,7 +1,7 @@
 require 'securerandom'
 
 class Admin < ActiveRecord::Base
-    def self.upsert
+    def self.update_access_token
         access_token = SecureRandom.uuid.to_s
         access_token.gsub!('-', '')
         if Admin.exists?(0)
