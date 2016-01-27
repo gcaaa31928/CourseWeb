@@ -4,8 +4,9 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
     '$http',
     '$state'
     'Admin',
-    'Student'
-    ($scope, $timeout, $http, $state, Admin, Student) ->
+    'Student',
+    '$localStorage'
+    ($scope, $timeout, $http, $state, Admin, Student, $localStorage) ->
         $timeout ->
             $('.parallax').parallax()
         $scope.from =
@@ -13,6 +14,7 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
             password: ''
 
         processLogin = (data) ->
+            $localStorage.accessToken = data.accessToken
             if data.type == 'admin'
                 Admin.accessToken = data.accessToken
                 $state.go 'main.admin'

@@ -1,10 +1,10 @@
 angular.module('courseWebApp').factory 'Student', [
     '$http',
     '$q',
-    'Group'
-    ($http, $q, Group) ->
+    'Group',
+    ($http, $q, Group, $localStorage) ->
         factory = {}
-        factory.accessToken = ""
+        factory.accessToken = ''
         factory.group = null
         factory.httpConfig = (canceler) ->
             timeout = 15 * 1000
@@ -24,6 +24,7 @@ angular.module('courseWebApp').factory 'Student', [
                 }, factory.httpConfig(canceler)).then ((response) ->
                     response = response.data
                     if response.data?
+                        $localStorage.accessToken = response.data.accessToken
                         resolve response.data
                     else
                         resolve response
