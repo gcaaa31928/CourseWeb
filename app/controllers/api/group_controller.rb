@@ -1,4 +1,4 @@
-class GroupController < ApplicationController
+class Api::GroupController < ApplicationController
 
     def create
         retrieve_student
@@ -29,7 +29,42 @@ class GroupController < ApplicationController
         )
     end
 
+    def destroy
+        retrieve_student
+        group = @student.group
+        if group.nil?
+            raise '目前沒有團隊'
+        end
+        students = Student.where(group_id: group.id)
+        ActiveRecord::Base.transaction do
+            students.each do |student|
+                student.update_attributes!(group_id: nil)
+            end
+        end
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
 
+    def show
+        retrieve_student
+        group = @student.group
+        if group.nil?
+            return render HttpStatusCode.ok([])
+        end
+        students = Student.where(group_id: group.id)
+        render HttpStatusCode.ok(students.as_json(only: [:id, :name]))
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
 
     private
 

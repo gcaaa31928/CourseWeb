@@ -6,7 +6,7 @@ class HttpStatusCode
             error: 'Forbidden',
             status: 400
         }
-        if data.nil?
+        unless data.nil?
             json_data[:data] = data
         end
         {

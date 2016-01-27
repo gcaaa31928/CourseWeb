@@ -1,18 +1,19 @@
 angular.module('courseWebApp').controller 'StudentCtrl', [
     '$scope',
     'Student',
+    'Group',
     '$timeout',
     'Chart',
-    ($scope, Student, $timeout, Chart) ->
+    ($scope, Student, Group, $timeout, Chart) ->
         # hack it
         $scope.isLogin = true
         $scope.state = 'index'
         $scope.project =
             timelog:
                 null
-        $scope.group = Student.group
         $scope.groupCreateForm =
             studentId: ""
+        $scope.hasGroup = Group.members.length > 0
 
 
         $scope.changeState = (state) ->
@@ -21,6 +22,9 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 Chart.renderCommitCharts()
             else if state == 'editProject'
                 $scope.renderSelect()
+            else if state == 'editGroup'
+                $scope.prepareEditGroup()
+
         $scope.createGroup = () ->
             # TODO(Red): adapte api
 
@@ -28,6 +32,10 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             $timeout(() ->
                 $('select').material_select()
             )
+
+        $scope.prepareEditGroup = () ->
+            Student.showGroup().then (data) ->
+                console.log(data)
 
         Chart.renderCommitCharts()
         $scope.renderSelect()

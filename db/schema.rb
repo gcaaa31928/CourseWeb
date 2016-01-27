@@ -71,15 +71,15 @@ ActiveRecord::Schema.define(version: 20160126080709) do
 
   create_table "teaching_assistants", force: :cascade do |t|
     t.string   "name"
-    t.integer  "course_id"
+    t.string   "class"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "access_token"
   end
 
   create_table "teaching_assistants_privileges", id: false, force: :cascade do |t|
-    t.integer "teaching_assistant_id"
     t.integer "privilege_id"
+    t.integer "teaching_assistant_id"
   end
 
   create_table "time_costs", id: false, force: :cascade do |t|

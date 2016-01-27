@@ -14,7 +14,7 @@ class Api::LoginController < ApplicationController
                 }
             )
         end
-        teaching_assistant = TeachingAssistant.find(permitted[:id])
+        teaching_assistant = TeachingAssistant.find_by(id: permitted[:account])
         unless teaching_assistant.nil?
             if teaching_assistant.password == permitted[:password]
                 token = teaching_assistant.generate_token_and_update
@@ -26,7 +26,7 @@ class Api::LoginController < ApplicationController
                 )
             end
         end
-        student = Student.find(permitted[:id])
+        student = Student.find_by(id: permitted[:account])
         unless student.nil?
             if student.password == permitted[:password]
                 token = student.generate_token_and_update

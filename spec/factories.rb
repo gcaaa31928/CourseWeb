@@ -12,7 +12,22 @@ FactoryGirl.define do
 
     factory :student do
         id 104598037
-        password_hash '$2a$10$Lx09Yyv/0yo4dfWi0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+        access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+    end
+
+    factory :student_second , class: Student do
+        id 104598038
+        access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+    end
+
+    factory :student_with_group , class: Student do
+        id 104598038
+        access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+        group_id 4
+    end
+
+    factory :group do
+        id 4
     end
 
 end

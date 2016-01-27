@@ -4,6 +4,10 @@ Rails.application.routes.draw do
         post 'login' => 'login#login'
         post 'create_group' => 'group#create'
         post 'create_course_students' => 'admin#create_course_students'
+
+        post 'group/create' => 'group#create'
+        post 'group/destroy' => 'group#destroy'
+        get 'group/show' => 'group#show'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".
