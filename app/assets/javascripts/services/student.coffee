@@ -95,7 +95,7 @@ angular.module('courseWebApp').factory 'Student', [
                     if response.data?
                         resolve response.data
                     else
-                        resolve response
+                        reject response
                 ), (response) ->
                     response = response.data
                     if response.data?

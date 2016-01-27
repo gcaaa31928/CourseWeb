@@ -18,7 +18,55 @@
             </ul>
         </div>
     </nav>
-    <div class="container" ng-switch="state">
+    <div ng-if="loading" class="loading-wrapper">
+        <div class="preloader-wrapper big active loading">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-if="!loading" class="container pad-top" ng-switch="state">
+        <div class="progress" ng-if="requestLoading">
+            <div class="indeterminate"></div>
+        </div>
         <div ng-switch-when="index">
             <div class="row">
                 <div class="col s12">
@@ -146,6 +194,7 @@
             </div>
         </div>
         <div ng-switch-when="editProject">
+
             <div ng-if="!project">
                 <h3>你目前沒有任何專案</h3>
             </div>
