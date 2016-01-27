@@ -94,20 +94,20 @@
             </table>
         </div>
         <div ng-switch-when="editGroup">
-            <div ng-if="!hasGroup">
+            <div ng-if="!hasGroup()">
                 <h3>你目前沒有任何團隊</h3>
                 <form name="groupCreateForm">
                     <div class="row">
                         <div class="input-field col s8">
-                            <input id="group-id" type="text" class="validate" ng-model="form.id" required>
+                            <input id="group-id" type="text" class="validate" ng-model="groupForm.studentId" required>
                             <label for="group-id">對方組員學號</label>
                         </div>
                     </div>
-                    <a ng-click="groupCreateForm.$invalid || login()"
+                    <a ng-click="groupCreateForm.$invalid || createGroup()"
                        class="waves-effect waves-light btn-large center-align">建立團隊</a>
                 </form>
             </div>
-            <div ng-if="group">
+            <div ng-if="hasGroup()">
                 <table class="striped">
                     <thead>
                     <tr>

@@ -5,12 +5,11 @@ class Api::GroupController < ApplicationController
         permitted = params.permit(:student_id)
         group = Group.create
         if permitted[:student_id].nil? or permitted[:student_id] == ''
-            member.update_attributes(group_id: group.id)
             @student.update_attributes(group_id: group.id)
             render HttpStatusCode.ok
         else
             # have group member
-            member = Student.find(permitted[:student_id].to_i)
+            member = Student.find_by(id: permitted[:student_id].to_i)
             if member.nil?
                 raise '找不到對方組員'
             end

@@ -11,10 +11,11 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.project =
             timelog:
                 null
-        $scope.groupCreateForm =
+        $scope.groupForm =
             studentId: ""
-        $scope.hasGroup = Group.members.length > 0
 
+        $scope.hasGroup = () ->
+            Group.members.length > 0
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -27,6 +28,10 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.createGroup = () ->
             # TODO(Red): adapte api
+            Student.createGroup($scope.groupForm.studentId).then ((data) ->
+                Materialize.toast("建立團隊成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
 
         $scope.renderSelect = () ->
             $timeout(() ->
@@ -35,7 +40,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.prepareEditGroup = () ->
             Student.showGroup().then (data) ->
-                console.log(data)
+
 
         Chart.renderCommitCharts()
         $scope.renderSelect()
