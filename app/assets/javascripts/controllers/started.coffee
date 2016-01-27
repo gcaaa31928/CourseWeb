@@ -23,16 +23,16 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
                 $state.go 'main.student'
 
         $scope.login = () ->
-                $http.post('/api/login', {
-                    account: $scope.form.id
-                    password: Base64.encode($scope.form.password)
-                }).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        data = response.data
-                        processLogin(data)
-                    else
-                ), (response) ->
-                    Materialize.toast("學號或是密碼不正確", 2000)
+            $http.post('/api/login', {
+                account: $scope.form.id
+                password: Base64.encode($scope.form.password)
+            }).then ((response) ->
+                response = response.data
+                if response.data?
+                    data = response.data
+                    processLogin(data)
+                else
+            ), (response) ->
+                Materialize.toast("學號或是密碼不正確", 2000)
 
 ]

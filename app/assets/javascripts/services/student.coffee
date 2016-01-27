@@ -71,5 +71,22 @@ angular.module('courseWebApp').factory 'Student', [
                     else
                         reject response
 
+
+        factory.destroyGroup = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/group/destroy', {
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data.errorMsg?
+                        reject response.data.errorMsg
+                    else
+                        reject response
+
         factory
 ]

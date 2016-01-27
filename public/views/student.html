@@ -116,20 +116,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>104598037</td>
-                        <td>Red</td>
-                    </tr>
-                    <tr>
-                        <td>104598037</td>
-                        <td>Red</td>
-                    </tr>
-                    <tr>
-                        <td>104598037</td>
-                        <td>Red</td>
+                    <tr ng-repeat="student in group.members">
+                        <td>{{student.id}}</td>
+                        <td>{{student.name}}</td>
                     </tr>
                     </tbody>
                 </table>
+                <div data-target="destroy-model"
+                   class="waves-effect waves-light btn modal-trigger">解散團隊</div>
+                <div id="destroy-model" class="modal">
+                    <div class="modal-content">
+                        <h4>確定要解散團隊嗎?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a ng-click="destroyGroup()" class=" modal-action modal-close waves-effect waves-green btn">是</a>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div ng-switch-when="editProject">

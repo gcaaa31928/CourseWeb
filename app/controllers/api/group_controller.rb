@@ -35,7 +35,7 @@ class Api::GroupController < ApplicationController
             raise '目前沒有團隊'
         end
         students = Student.where(group_id: group.id)
-        ActiveRecord::Base.transaction do
+        Student.transaction do
             students.each do |student|
                 student.update_attributes!(group_id: nil)
             end

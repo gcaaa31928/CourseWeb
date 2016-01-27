@@ -14,6 +14,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.groupForm =
             studentId: ""
 
+        $scope.group = Group
         $scope.hasGroup = () ->
             Group.members.length > 0
 
@@ -33,12 +34,21 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
 
+        $scope.destroyGroup = () ->
+            Student.destroyGroup().then ((data) ->
+                Materialize.toast("解散團隊成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+
         $scope.renderSelect = () ->
             $timeout(() ->
                 $('select').material_select()
             )
 
         $scope.prepareEditGroup = () ->
+            $timeout(() ->
+                $('.modal-trigger').leanModal();
+            )
             Student.showGroup().then (data) ->
 
 
