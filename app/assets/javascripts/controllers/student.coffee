@@ -40,11 +40,6 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
 
-        $scope.renderSelect = () ->
-            $timeout(() ->
-                $('select').material_select()
-            )
-
         $scope.prepareEditGroup = () ->
             $timeout(() ->
                 $('.modal-trigger').leanModal();
@@ -52,6 +47,17 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             Student.showGroup().then (data) ->
 
 
+        $scope.renderSelect = () ->
+            $timeout(() ->
+                $('select').material_select()
+            )
+
+        $scope.renderNavBar = () ->
+            $timeout(() ->
+                $(".button-collapse").sideNav();
+            )
+
         Chart.renderCommitCharts()
         $scope.renderSelect()
+        $scope.renderNavBar()
 ]

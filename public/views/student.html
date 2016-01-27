@@ -1,10 +1,18 @@
 <div ng-if="isLogin">
     <nav class="teal lighten-2">
         <div class="nav-wrapper">
-            <ul id="nav-mobile" class="hide-on-med-and-down">
+            <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="hide-on-med-and-down">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
-                <li class="clickable" ng-click="changeState('project')"><a>專案</a></li>
+                <li class="clickable" ng-click="changeState('project')"><a>專案進度</a></li>
+                <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
+                <li class="clickable" ng-click="changeState('editProject')"><a>編輯專案</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-nav">
+                <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
+                <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
+                <li class="clickable" ng-click="changeState('project')"><a>專案進度</a></li>
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-click="changeState('editProject')"><a>編輯專案</a></li>
             </ul>
@@ -33,7 +41,7 @@
                         <th data-field="weekNo">週次</th>
                         <th data-field="date">日期</th>
                         <th data-field="costTime">團隊花費時間</th>
-                        <th data-field="todoList">待辦事項</th>
+                        <th data-field="todoList">進度規劃</th>
                         <th data-field="lineOfCode">行數</th>
                         <th></th>
                     </tr>
@@ -147,7 +155,7 @@
                         <input id="project-ref" type="text" class="validate" ng-model="form.id" required>
                         <label for="project-ref">參考連結</label>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s8">
                         <select>
                             <option value="" disabled selected>專案平台</option>
                             <option value="1">Android</option>
