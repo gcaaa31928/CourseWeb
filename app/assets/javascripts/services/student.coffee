@@ -88,5 +88,60 @@ angular.module('courseWebApp').factory 'Student', [
                     else
                         reject response
 
+        factory.showProject = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/project/show', factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data?
+                        reject response.data
+                    else
+                        reject response
+
+        factory.createProject = (name, refUrl, type, description, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/project/create', {
+                    name: name,
+                    description: description,
+                    type: type,
+                    ref_url: refUrl
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data.errorMsg?
+                        reject response.data.errorMsg
+                    else
+                        reject response
+
+
+        factory.editProject = (name, refUrl, type, description, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/project/edit', {
+                    name: name,
+                    description: description,
+                    type: type,
+                    ref_url: refUrl
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data.errorMsg?
+                        reject response.data.errorMsg
+                    else
+                        reject response
         factory
 ]

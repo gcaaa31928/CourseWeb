@@ -26,8 +26,24 @@ FactoryGirl.define do
         group_id 4
     end
 
+    factory :student_with_group_second , class: Student do
+        id 104598039
+        access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+        group_id 5
+    end
+
     factory :group do
         id 4
+    end
+
+    factory :group_with_project, class: Group do
+        id 4
+    end
+
+    factory :project do
+        id 1
+        group_id 4
+        name '我是專案'
     end
 
 end

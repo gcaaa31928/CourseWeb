@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126080709) do
+ActiveRecord::Schema.define(version: 20160127174705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 20160126080709) do
   end
 
   create_table "groups", force: :cascade do |t|
-    t.integer  "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -44,9 +43,11 @@ ActiveRecord::Schema.define(version: 20160126080709) do
     t.string   "name"
     t.string   "description"
     t.integer  "score_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "timelog_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "project_type"
+    t.string   "ref_url"
+    t.integer  "group_id"
   end
 
   create_table "scores", force: :cascade do |t|
@@ -71,15 +72,15 @@ ActiveRecord::Schema.define(version: 20160126080709) do
 
   create_table "teaching_assistants", force: :cascade do |t|
     t.string   "name"
-    t.string   "class"
+    t.integer  "course_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "access_token"
   end
 
   create_table "teaching_assistants_privileges", id: false, force: :cascade do |t|
-    t.integer "privilege_id"
     t.integer "teaching_assistant_id"
+    t.integer "privilege_id"
   end
 
   create_table "time_costs", id: false, force: :cascade do |t|

@@ -8,6 +8,12 @@ Rails.application.routes.draw do
         post 'group/create' => 'group#create'
         post 'group/destroy' => 'group#destroy'
         get 'group/show' => 'group#show'
+
+        post 'project/create' => 'project#create'
+        post 'project/destroy' => 'project#destroy'
+        post 'project/edit' => 'project#edit'
+        get 'project/all' => 'project#all'
+        get 'project/show' => 'project#show'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

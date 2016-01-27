@@ -5,14 +5,17 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
     '$timeout',
     'Chart',
     ($scope, Student, Group, $timeout, Chart) ->
-        # hack it
+# hack it
         $scope.isLogin = true
         $scope.state = 'index'
-        $scope.project =
-            timelog:
-                null
+        $scope.project = null
         $scope.groupForm =
             studentId: ""
+        $scope.projectForm =
+            name: ''
+            refUrl: ''
+            type: 'Android'
+            description: ''
 
         $scope.group = Group
         $scope.hasGroup = () ->
@@ -20,15 +23,17 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.changeState = (state) ->
             $scope.state = state
-            if state == 'index'
+
+
+        $scope.$watch('state', (newValue, oldValue) ->
+            if newValue == 'index'
                 Chart.renderCommitCharts()
-            else if state == 'editProject'
-                $scope.renderSelect()
-            else if state == 'editGroup'
-                $scope.prepareEditGroup()
+            else if newValue == 'editProject'
+                $scope.prepareEditProject()
+            else if newValue == 'editGroup'
+                $scope.prepareEditGroup())
 
         $scope.createGroup = () ->
-            # TODO(Red): adapte api
             Student.createGroup($scope.groupForm.studentId).then ((data) ->
                 Materialize.toast("建立團隊成功", 2000)
             ), (msg) ->
@@ -40,17 +45,51 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
 
+
+        $scope.createProject = () ->
+            Student.createProject(
+                $scope.projectForm.name,
+                $scope.projectForm.refUrl,
+                $scope.projectForm.type,
+                $scope.projectForm.description
+            ).then ((data) ->
+                Materialize.toast("建立專案成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+
+        $scope.editProject = () ->
+            Student.editProject(
+                $scope.projectForm.name,
+                $scope.projectForm.refUrl,
+                $scope.projectForm.type,
+                $scope.projectForm.description
+            ).then ((data) ->
+                Materialize.toast("修改專案成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+
+
         $scope.prepareEditGroup = () ->
             $timeout(() ->
                 $('.modal-trigger').leanModal();
             )
             Student.showGroup().then (data) ->
 
+        $scope.prepareEditProject = () ->
+            $scope.renderSelect()
+            Student.showProject().then (data) ->
+                $scope.project = data
+                $scope.projectForm.name = $scope.project.name
+                $scope.projectForm.refUrl = $scope.project.ref_url
+                $scope.projectForm.type = $scope.project.project_type
+                $scope.projectForm.description = $scope.project.description
+
+
 
         $scope.renderSelect = () ->
             $timeout(() ->
                 $('select').material_select()
-            )
+            ,300)
 
         $scope.renderNavBar = () ->
             $timeout(() ->
@@ -60,4 +99,5 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         Chart.renderCommitCharts()
         $scope.renderSelect()
         $scope.renderNavBar()
+
 ]

@@ -111,7 +111,7 @@
                             <label for="group-id">對方組員學號</label>
                         </div>
                     </div>
-                    <a ng-click="groupCreateForm.$invalid || createGroup()"
+                    <a ng-click="createGroup()"
                        class="waves-effect waves-light btn-large center-align">建立團隊</a>
                 </form>
             </div>
@@ -131,47 +131,74 @@
                     </tbody>
                 </table>
                 <div data-target="destroy-model"
-                   class="waves-effect waves-light btn modal-trigger">解散團隊</div>
+                     class="waves-effect waves-light btn modal-trigger">解散團隊
+                </div>
                 <div id="destroy-model" class="modal">
                     <div class="modal-content">
                         <h4>確定要解散團隊嗎?</h4>
                     </div>
                     <div class="modal-footer">
-                        <a ng-click="destroyGroup()" class=" modal-action modal-close waves-effect waves-green btn">是</a>
+                        <a ng-click="destroyGroup()"
+                           class=" modal-action modal-close waves-effect waves-green btn">是</a>
                     </div>
                 </div>
 
             </div>
         </div>
         <div ng-switch-when="editProject">
-            <h3>你目前沒有任何專案</h3>
+            <div ng-if="!project">
+                <h3>你目前沒有任何專案</h3>
+            </div>
             <form name="projectCreateForm">
                 <div class="row">
                     <div class="input-field col s8">
-                        <input id="project-id" type="text" class="validate" ng-model="form.id" required>
+                        <input id="project-id" type="text" class="validate" ng-model="projectForm.name" required>
                         <label for="project-id">專題題目</label>
                     </div>
                     <div class="input-field col s8">
-                        <input id="project-ref" type="text" class="validate" ng-model="form.id" required>
+                        <input id="project-ref" type="text" class="validate" ng-model="projectForm.refUrl" required>
                         <label for="project-ref">參考連結</label>
                     </div>
                     <div class="input-field col s8">
-                        <select>
-                            <option value="" disabled selected>專案平台</option>
-                            <option value="1">Android</option>
-                            <option value="2">Windows</option>
-                            <option value="3">HTML5</option>
+                        <select ng-model="projectForm.type">
+                            <option value="default" disabled selected>專案平台</option>
+                            <option value="Android">Android</option>
+                            <option value="Windows">Windows</option>
+                            <option value="HTML5">HTML5</option>
                         </select>
                     </div>
 
                     <div class="input-field col s8">
-                        <textarea id="textarea1" class="materialize-textarea"></textarea>
+                            <textarea id="textarea1" class="materialize-textarea"
+                                      ng-model="projectForm.description"></textarea>
                         <label for="textarea1">專題簡介</label>
                     </div>
                 </div>
-                <a ng-click="groupCreateForm.$invalid || login()"
+                <a ng-if="!project" ng-click="groupCreateForm.$invalid || createProject()"
                    class="waves-effect waves-light btn-large center-align">建立專案</a>
+                <a ng-if="project" ng-click="groupCreateForm.$invalid || editProject()"
+                   class="waves-effect waves-light btn-large center-align">修改專案</a>
             </form>
+
+            <!--<div ng-if="project">-->
+            <!--<div class="row">-->
+            <!--<h4>專題題目: {{project.name}}</h4>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--參考連結: {{project.ref_url}}-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--專案平台: {{project.project_type}}-->
+            <!--</div>-->
+            <!--<div class="row">-->
+
+            <!--專案簡介:-->
+            <!--<br>-->
+            <!--<p>{{project.description}}</p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<a ng-click="groupCreateForm.$invalid || createProject()"-->
+            <!--class="waves-effect waves-light btn-large center-align">建立專案</a>-->
         </div>
     </div>
 </div>
