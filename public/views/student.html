@@ -5,16 +5,16 @@
             <ul class="hide-on-med-and-down">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
-                <li class="clickable" ng-click="changeState('project')"><a>專案進度</a></li>
+                <li class="clickable" ng-if="project && group" ng-click="changeState('project')"><a>專案進度</a></li>
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
-                <li class="clickable" ng-click="changeState('editProject')"><a>編輯專案</a></li>
+                <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
             </ul>
             <ul class="side-nav" id="mobile-nav">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
-                <li class="clickable" ng-click="changeState('project')"><a>專案進度</a></li>
+                <li class="clickable" ng-if="project && group" ng-click="changeState('project')"><a>專案進度</a></li>
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
-                <li class="clickable" ng-click="changeState('editProject')"><a>編輯專案</a></li>
+                <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
             </ul>
         </div>
     </nav>
@@ -80,7 +80,7 @@
         </div>
         <div ng-switch-when="project">
             <div ng-if="project">
-                <h3>Project Name</h3>
+                <h3>{{project.name}}</h3>
                 <table class="striped">
                     <thead>
                     <tr>

@@ -4,7 +4,8 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
     'Group',
     '$timeout',
     'Chart',
-    ($scope, Student, Group, $timeout, Chart) ->
+    '$q',
+    ($scope, Student, Group, $timeout, Chart, $q) ->
 # hack it
         $scope.loading = false
         $scope.requestLoading = false
@@ -30,8 +31,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.$watch('state', (newValue, oldValue) ->
             $scope.loading = true
             if newValue == 'index'
-                Chart.renderCommitCharts()
-                $scope.loading = false
+                $scope.prepareIndex()
             else if newValue == 'editProject'
                 $scope.prepareEditProject()
             else if newValue == 'editGroup'
@@ -55,7 +55,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             $scope.requestLoading = true
             Student.destroyGroup().then ((data) ->
                 Materialize.toast("解散團隊成功", 2000)
-                $scope.prepareEditGroup()
+                $scope.prepareAll()
                 $scope.requestLoading = false
             ), (msg) ->
                 Materialize.toast(msg, 2000)
@@ -87,39 +87,64 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             ).then ((data) ->
                 Materialize.toast("修改專案成功", 2000)
                 $scope.requestLoading = false
+                $scope.prepareEditProject()
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.prepareIndex = () ->
+            $q (resolve, reject) ->
+                Chart.renderCommitCharts()
+                resolve()
+                $scope.loading = false
+
+        $scope.prepareProject = () ->
+            $q (resolve, reject) ->
+                resolve()
+                $scope.loading = false
 
         $scope.prepareEditGroup = () ->
-            $timeout(() ->
-                $('.modal-trigger').leanModal();
-            , 200)
-            Student.showGroup().then ((data) ->
-                $scope.loading = false
-            ), (msg) ->
-                $scope.loading = false
+            $q (resolve, reject) ->
+                $timeout(() ->
+                    $('.modal-trigger').leanModal();
+                , 200)
+                Student.showGroup().then ((data) ->
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
 
         $scope.prepareEditProject = () ->
-            $scope.renderSelect()
-            Student.showProject().then ((data) ->
-                if data?
-                    $scope.project = data
-                    $scope.projectForm.name = $scope.project.name
-                    $scope.projectForm.refUrl = $scope.project.ref_url
-                    $scope.projectForm.type = $scope.project.project_type
-                    $scope.projectForm.description = $scope.project.description
-                    $timeout(() ->
-                        $('#project-textarea').trigger('autoresize');
-                    )
-                $scope.loading = false
-            ), (msg) ->
-                $scope.projectForm.name = null
-                $scope.projectForm.refUrl = null
-                $scope.projectForm.type = 'Android'
-                $scope.projectForm.description = null
-                $scope.loading = false
+            $q (resolve, reject) ->
+                $scope.renderSelect()
+                Student.showProject().then ((data) ->
+                    if data?
+                        $scope.project = data
+                        $scope.projectForm.name = $scope.project.name
+                        $scope.projectForm.refUrl = $scope.project.ref_url
+                        $scope.projectForm.type = $scope.project.project_type
+                        $scope.projectForm.description = $scope.project.description
+                        $timeout(() ->
+                            $('#project-textarea').trigger('autoresize');
+                        )
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.projectForm.name = null
+                    $scope.projectForm.refUrl = null
+                    $scope.projectForm.type = 'Android'
+                    $scope.projectForm.description = null
+                    $scope.loading = false
+                    resolve()
+
+        $scope.prepareAll = () ->
+            preparedList = [$scope.prepareIndex(), $scope.prepareEditGroup(), $scope.prepareEditProject()]
+            $scope.layout.loading = true
+            $scope.renderNavBar()
+            $q.all(preparedList).then((values) ->
+                $scope.layout.loading = false
+            )
 
 
         $scope.renderSelect = () ->
@@ -132,8 +157,6 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 $(".button-collapse").sideNav();
             )
 
-        Chart.renderCommitCharts()
-        $scope.renderSelect()
-        $scope.renderNavBar()
+        $scope.prepareAll()
 
 ]
