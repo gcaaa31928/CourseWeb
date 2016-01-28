@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20160127174705) do
     t.integer  "category"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.integer  "project_id"
     t.integer  "time_cost_id"
   end
 

@@ -110,6 +110,9 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     $scope.projectForm.refUrl = $scope.project.ref_url
                     $scope.projectForm.type = $scope.project.project_type
                     $scope.projectForm.description = $scope.project.description
+                    $timeout(() ->
+                        $('#project-textarea').trigger('autoresize');
+                    )
                 $scope.loading = false
             ), (msg) ->
                 $scope.projectForm.name = null

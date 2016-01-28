@@ -64,9 +64,7 @@
 
 
     <div ng-if="!loading" class="container pad-top" ng-switch="state">
-        <div class="progress" ng-if="requestLoading">
-            <div class="indeterminate"></div>
-        </div>
+
         <div ng-switch-when="index">
             <div class="row">
                 <div class="col s12">
@@ -202,11 +200,11 @@
                 <div class="row">
                     <div class="input-field col s8">
                         <input id="project-id" type="text" class="validate" ng-model="projectForm.name" required>
-                        <label for="project-id">專題題目</label>
+                        <label class='active' for="project-id">專題題目</label>
                     </div>
                     <div class="input-field col s8">
                         <input id="project-ref" type="text" class="validate" ng-model="projectForm.refUrl" required>
-                        <label for="project-ref">參考連結</label>
+                        <label class='active' for="project-ref">參考連結</label>
                     </div>
                     <div class="input-field col s8">
                         <select ng-model="projectForm.type">
@@ -218,9 +216,9 @@
                     </div>
 
                     <div class="input-field col s8">
-                            <textarea id="textarea1" class="materialize-textarea"
+                            <textarea id="project-textarea" class="materialize-textarea"
                                       ng-model="projectForm.description"></textarea>
-                        <label for="textarea1">專題簡介</label>
+                        <label class='active' for="project-textarea">專題簡介</label>
                     </div>
                 </div>
                 <a ng-if="!project" ng-click="groupCreateForm.$invalid || createProject()"
@@ -248,6 +246,9 @@
             <!--</div>-->
             <!--<a ng-click="groupCreateForm.$invalid || createProject()"-->
             <!--class="waves-effect waves-light btn-large center-align">建立專案</a>-->
+        </div>
+        <div class="progress" ng-if="requestLoading">
+            <div class="indeterminate"></div>
         </div>
     </div>
 </div>
