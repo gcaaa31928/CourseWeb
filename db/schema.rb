@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127174706) do
+ActiveRecord::Schema.define(version: 20160128052122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20160127174706) do
     t.integer  "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "timelog_id"
   end
 
   create_table "timelogs", force: :cascade do |t|
@@ -99,7 +100,6 @@ ActiveRecord::Schema.define(version: 20160127174706) do
     t.integer  "category"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.integer  "time_cost_id"
     t.integer  "project_id"
   end
 

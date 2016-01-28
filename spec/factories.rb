@@ -1,9 +1,6 @@
 require 'factory_girl'
 
 FactoryGirl.define do
-    factory :time_cost do
-
-    end
 
     factory :admin do
         access_token '0f2071f7d24348f29a4d8a0cf8cf6791'
@@ -22,6 +19,7 @@ FactoryGirl.define do
 
     factory :student_with_group , class: Student do
         id 104598038
+        name '黃泓鳴'
         access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
         group_id 4
     end
@@ -44,6 +42,20 @@ FactoryGirl.define do
         id 1
         group_id 4
         name '我是專案'
+    end
+
+    factory :timelog do
+        id 1
+        week_no 1
+        project_id 1
+        todo 'todo 1'
+    end
+
+    factory :time_cost do
+        id 1
+        student_id 104598038
+        cost 2
+        timelog_id 1
     end
 
 end

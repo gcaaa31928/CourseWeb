@@ -1,3 +1,4 @@
 class Timelog < ActiveRecord::Base
-    self.primary_key = :id, :student_id
+    belongs_to :project
+    has_one :time_cost
 end
