@@ -12,7 +12,6 @@ RSpec.describe Api::TimelogController, type: :controller do
             get :all, {project_id: 1}
             Log.debug(response.body)
             expect(response.status).to eq(200)
-            # expect(data).to eq({'status' => 200, 'data' => [{'id' => 1, 'name' => "我是專案", 'group' => {'id' => 4}}]})
         end
     end
 

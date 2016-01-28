@@ -22,6 +22,7 @@
     "Headhesive.js": "headhesive#~1.2.4",
     "highcharts": "hightcharts#~4.2.1",
     "js-base64": "~2.1.9",
-    "ngstorage": "~0.3.10"
+    "ngstorage": "~0.3.10",
+    "async": "~1.5.2"
   }
 }

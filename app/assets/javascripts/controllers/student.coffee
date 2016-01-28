@@ -7,11 +7,18 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
     '$q',
     ($scope, Student, Group, $timeout, Chart, $q) ->
 # hack it
+        q = async.queue(((task, callback) ->
+            task().then () ->
+                callback()
+        ), 1)
+
+
         $scope.loading = false
         $scope.requestLoading = false
         $scope.isLogin = true
         $scope.state = 'index'
         $scope.project = null
+        $scope.timelogs = null
         $scope.groupForm =
             studentId: ""
         $scope.projectForm =
@@ -94,17 +101,24 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.prepareIndex = () ->
             $q (resolve, reject) ->
+                console.log 'prepare index'
                 Chart.renderCommitCharts()
                 resolve()
                 $scope.loading = false
 
         $scope.prepareProject = () ->
             $q (resolve, reject) ->
-                resolve()
-                $scope.loading = false
+                Student.showTimelog($scope.project.id).then ((data) ->
+                    $scope.timelogs = data
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
 
         $scope.prepareEditGroup = () ->
             $q (resolve, reject) ->
+                console.log 'prepare edit group'
                 $timeout(() ->
                     $('.modal-trigger').leanModal();
                 , 200)
@@ -139,19 +153,29 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+
+        q.drain = () ->
+            $scope.layout.loading = false
+
+
         $scope.prepareAll = () ->
-            preparedList = [$scope.prepareIndex(), $scope.prepareEditGroup(), $scope.prepareEditProject()]
             $scope.layout.loading = true
-            $scope.renderNavBar()
-            $q.all(preparedList).then((values) ->
-                $scope.layout.loading = false
-            )
+            q.push($scope.prepareIndex)
+            q.push($scope.prepareEditGroup)
+            q.push($scope.prepareEditProject)
+            q.push($scope.prepareProject)
+        #            preparedList = [$scope.prepareIndex(), $scope.prepareEditGroup(), $scope.prepareEditProject(), $scope.prepareProject()]
+        #            $scope.layout.loading = true
+        #            $scope.renderNavBar()
+        #            $q.all(preparedList).then((values) ->
+        #                $scope.layout.loading = false
+        #            )
 
 
         $scope.renderSelect = () ->
             $timeout(() ->
                 $('select').material_select()
-            ,300)
+            , 300)
 
         $scope.renderNavBar = () ->
             $timeout(() ->

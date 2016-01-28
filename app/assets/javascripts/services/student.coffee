@@ -143,5 +143,21 @@ angular.module('courseWebApp').factory 'Student', [
                         reject response.data.errorMsg
                     else
                         reject response
+
+        factory.showTimelog = (projectId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/project/' + projectId + '/timelog/all', factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        reject response
+                ), (response) ->
+                    response = response.data
+                    if response.data?
+                        reject response.data
+                    else
+                        reject response
+
         factory
 ]

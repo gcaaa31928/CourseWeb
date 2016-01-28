@@ -4,17 +4,17 @@
             <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="hide-on-med-and-down">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
-                <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
                 <li class="clickable" ng-if="project && group" ng-click="changeState('project')"><a>專案進度</a></li>
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
+                <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
             </ul>
             <ul class="side-nav" id="mobile-nav">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
-                <li class="clickable" ng-click="changeState('group')"><a>團隊</a></li>
                 <li class="clickable" ng-if="project && group" ng-click="changeState('project')"><a>專案進度</a></li>
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
+                <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
             </ul>
         </div>
     </nav>
@@ -23,41 +23,49 @@
             <div class="spinner-layer spinner-blue">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
 
             <div class="spinner-layer spinner-red">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
 
             <div class="spinner-layer spinner-yellow">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
 
             <div class="spinner-layer spinner-green">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -93,30 +101,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2015/11/11</td>
-                        <td>12 小時</td>
-                        <td>要把這個網站的API接完</td>
-                        <td>1002</td>
-                        <td><a class="waves-effect waves-light btn">編輯</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2015/11/18</td>
-                        <td>18 小時</td>
-                        <td>要把這個網站的API接完</td>
-                        <td>103</td>
-                        <td><a class="waves-effect waves-light btn">編輯</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>2015/11/25</td>
-                        <td>2 小時</td>
-                        <td>YA</td>
-                        <td>22</td>
-                        <td><a class="waves-effect waves-light btn">編輯</a></td>
-                    </tr>
+                        <tr ng-repeat-start="timelog in timelogs">
+                            <td rowspan="2">{{timelog.week_no}}</td>
+                            <td rowspan="2">{{timelog.date}}</td>
+                            <td ng-if="timelog.time_costs[0]">{{timelog.time_costs[0].student.name}}: {{timelog.time_costs[0].cost}}小時</td>
+                            <td ng-if="!timelog.time_costs[0]" class="red-text text-darken-1">未填寫</td>
+                            <td rowspan="2">{{timelog.todo}}</td>
+                            <td rowspan="2">1002</td>
+                            <td rowspan="2"><a class="waves-effect waves-light btn">編輯</a></td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td ng-if="timelog.time_costs[1]">{{timelog.time_costs[1].student.name}}: {{timelog.time_costs[1].cost}}小時</td>
+                            <td ng-if="!timelog.time_costs[1]" class="red-text text-darken-1">未填寫</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -126,9 +123,9 @@
                 <thead>
                 <tr>
                     <th data-field="id">組別</th>
-                    <th data-field="name">專案介紹</th>
-                    <th data-field="middleGrade">Demo1分數</th>
-                    <th data-field="finalGrade">Demo2分數</th>
+                    <th data-field="name">專案名稱</th>
+                    <th data-field="middleGrade">Demo1成績</th>
+                    <th data-field="finalGrade">Demo2成績</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -149,7 +146,7 @@
         </div>
         <div ng-switch-when="editGroup">
             <div ng-if="!hasGroup()">
-                <h3>你目前沒有任何團隊</h3>
+                <h3>你目前不屬於任何團隊</h3>
                 <form name="groupCreateForm">
                     <div class="row">
                         <div class="input-field col s8">
@@ -194,13 +191,13 @@
         <div ng-switch-when="editProject">
 
             <div ng-if="!project">
-                <h3>你目前沒有任何專案</h3>
+                <h3>你尚未建立專案</h3>
             </div>
             <form name="projectCreateForm">
                 <div class="row">
                     <div class="input-field col s8">
                         <input id="project-id" type="text" class="validate" ng-model="projectForm.name" required>
-                        <label class='active' for="project-id">專題題目</label>
+                        <label class='active' for="project-id">專案題目</label>
                     </div>
                     <div class="input-field col s8">
                         <input id="project-ref" type="text" class="validate" ng-model="projectForm.refUrl" required>
@@ -218,7 +215,7 @@
                     <div class="input-field col s8">
                             <textarea id="project-textarea" class="materialize-textarea"
                                       ng-model="projectForm.description"></textarea>
-                        <label class='active' for="project-textarea">專題簡介</label>
+                        <label class='active' for="project-textarea">專案簡介</label>
                     </div>
                 </div>
                 <a ng-if="!project" ng-click="groupCreateForm.$invalid || createProject()"
@@ -227,25 +224,6 @@
                    class="waves-effect waves-light btn-large center-align">修改專案</a>
             </form>
 
-            <!--<div ng-if="project">-->
-            <!--<div class="row">-->
-            <!--<h4>專題題目: {{project.name}}</h4>-->
-            <!--</div>-->
-            <!--<div class="row">-->
-            <!--參考連結: {{project.ref_url}}-->
-            <!--</div>-->
-            <!--<div class="row">-->
-            <!--專案平台: {{project.project_type}}-->
-            <!--</div>-->
-            <!--<div class="row">-->
-
-            <!--專案簡介:-->
-            <!--<br>-->
-            <!--<p>{{project.description}}</p>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<a ng-click="groupCreateForm.$invalid || createProject()"-->
-            <!--class="waves-effect waves-light btn-large center-align">建立專案</a>-->
         </div>
         <div class="progress" ng-if="requestLoading">
             <div class="indeterminate"></div>
