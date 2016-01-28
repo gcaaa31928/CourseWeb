@@ -131,6 +131,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     $scope.loading = false
                     resolve()
                 ), (msg) ->
+                    $scope.project = null
                     $scope.projectForm.name = null
                     $scope.projectForm.refUrl = null
                     $scope.projectForm.type = 'Android'

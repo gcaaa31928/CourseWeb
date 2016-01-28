@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128052122) do
+ActiveRecord::Schema.define(version: 20160128095529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,8 @@ ActiveRecord::Schema.define(version: 20160128052122) do
     t.datetime "updated_at", null: false
     t.integer  "timelog_id"
   end
+
+  add_index "time_costs", ["id", "student_id"], name: "index_time_costs_on_id_and_student_id", unique: true, using: :btree
 
   create_table "timelogs", force: :cascade do |t|
     t.integer  "week_no"
