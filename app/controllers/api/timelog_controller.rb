@@ -8,7 +8,7 @@ class Api::TimelogController < ApplicationController
         timelogs = project.timelogs
         render HttpStatusCode.ok(timelogs.as_json(
             include: {
-                time_cost: {
+                time_costs: {
                     include: {
                         student: {
                             only: :name
@@ -34,16 +34,16 @@ class Api::TimelogController < ApplicationController
         if timelog.nil?
             raise '沒有這個Timelog'
         end
-        time_cost = TimeCost.find_by(timelog_id: timelog.id, student_id: @student.id)
-        time_cost.save!
-        Timelog.transaction do
-            Log.info(time_cost.cost.to_s)
-            timelog.update_attributes(todo: permitted[:todo])
+        time_cost = TimeCost.find_by(student_id: @student.id, timelog_id: timelog.id)
+        Log.info(time_cost.to_json)
+        ActiveRecord::Base.transaction do
+            timelog.update_attributes!(todo: permitted[:todo])
             if time_cost.nil?
                 TimeCost.create!(student_id: @student.id,
                                  timelog_id: timelog.id,
-                                 cost: permitted[:cost])
+                                 cost: permitted[:cost].to_i)
             else
+                time_cost.update_attributes!(cost: permitted[:cost].to_i)
             end
         end
         render HttpStatusCode.ok

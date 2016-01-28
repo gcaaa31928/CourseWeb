@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128095529) do
+ActiveRecord::Schema.define(version: 20160128151554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,27 +72,26 @@ ActiveRecord::Schema.define(version: 20160128095529) do
 
   create_table "teaching_assistants", force: :cascade do |t|
     t.string   "name"
-    t.string   "class"
+    t.integer  "course_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "access_token"
   end
 
   create_table "teaching_assistants_privileges", id: false, force: :cascade do |t|
-    t.integer "privilege_id"
     t.integer "teaching_assistant_id"
+    t.integer "privilege_id"
   end
 
   create_table "time_costs", id: false, force: :cascade do |t|
-    t.integer  "id"
-    t.integer  "student_id"
+    t.integer  "student_id", null: false
     t.integer  "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "timelog_id"
+    t.integer  "timelog_id", null: false
   end
 
-  add_index "time_costs", ["id", "student_id"], name: "index_time_costs_on_id_and_student_id", unique: true, using: :btree
+  add_index "time_costs", ["student_id", "timelog_id"], name: "index_time_costs_on_student_id_and_timelog_id", unique: true, using: :btree
 
   create_table "timelogs", force: :cascade do |t|
     t.integer  "week_no"

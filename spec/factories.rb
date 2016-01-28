@@ -52,10 +52,8 @@ FactoryGirl.define do
     end
 
     factory :time_cost do
-        id 1
-        student_id 104598038
+        id [104598038,1]
         cost 2
-        timelog_id 1
     end
 
 end
