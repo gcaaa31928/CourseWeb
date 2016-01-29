@@ -11,7 +11,7 @@ class Api::TimelogController < ApplicationController
                 time_costs: {
                     include: {
                         student: {
-                            only: :name
+                            only: [:name, :id]
                         }
                     },
                     only: [:id, :cost]

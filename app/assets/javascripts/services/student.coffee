@@ -6,6 +6,7 @@ angular.module('courseWebApp').factory 'Student', [
     ($http, $q, Group, $localStorage) ->
         factory = {}
         factory.accessToken = $localStorage.accessToken
+        factory.account = $localStorage.account
         factory.group = null
         factory.httpConfig = (canceler) ->
             timeout = 15 * 1000
@@ -158,6 +159,25 @@ angular.module('courseWebApp').factory 'Student', [
                         reject response.data
                     else
                         reject response
+
+        factory.editTimelog = (timelogId, cost, todo, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/timelog/' + timelogId + '/edit', {
+                    cost: cost,
+                    todo: todo
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        reject response
+                ), (response) ->
+                    response = response.data
+                    if response.data?
+                        reject response.data
+                    else
+                        reject response
+
 
         factory
 ]

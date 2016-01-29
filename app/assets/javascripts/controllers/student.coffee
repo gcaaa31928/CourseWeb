@@ -19,6 +19,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.state = 'index'
         $scope.project = null
         $scope.timelogs = null
+        $scope.timelog = null
         $scope.groupForm =
             studentId: ""
         $scope.projectForm =
@@ -47,6 +48,33 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 $scope.loading = false
         )
 
+
+        $scope.editTimelog = (timelog) ->
+            $scope.timelog = angular.copy(timelog)
+            console.log($scope.timelog)
+            timelog.editting = true
+            findOwnCostData = false
+            angular.forEach(timelog.time_costs, (timeCost) ->
+                if timeCost.student.id.toString() == Student.account
+                    timeCost.editting = true
+                    findOwnCostData = true
+            )
+            if not findOwnCostData
+                timelog.time_costs[0].editting = true
+
+        $scope.edittingTimelog = (timelog) ->
+
+
+        $scope.cancelEditTimelog = (selectedTimelog) ->
+            for value, index in $scope.timelogs
+#                console.log(value, index)
+#                index = $scope.timelog
+                if $scope.timelogs[index].id == selectedTimelog.id
+                    console.log('for sure')
+                    $scope.timelogs[index] = $scope.timelog
+#            timelog = $scope.timelog for timelog in $scope.timelogs when timelog.id = selectedTimelog.id
+            $scope.timelog = null
+            console.log($scope.timelogs)
 
         $scope.createGroup = () ->
             $scope.requestLoading = true
