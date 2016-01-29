@@ -44,6 +44,8 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 $scope.prepareEditProject()
             else if newValue == 'editGroup'
                 $scope.prepareEditGroup()
+            else if newValue == 'project'
+                $scope.prepareProject()
             else
                 $scope.loading = false
         )
@@ -51,7 +53,6 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.editTimelog = (timelog) ->
             $scope.timelog = angular.copy(timelog)
-            console.log($scope.timelog)
             timelog.editting = true
             findOwnCostData = false
             angular.forEach(timelog.time_costs, (timeCost) ->
@@ -60,21 +61,31 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     findOwnCostData = true
             )
             if not findOwnCostData
-                timelog.time_costs[0].editting = true
+                timelog.time_costs[timelog.time_costs.length] =
+                    editting: true
+
 
         $scope.edittingTimelog = (timelog) ->
+            $scope.requestLoading = true
+            edittingTimeCost = null
+            angular.forEach(timelog.time_costs, (timeCost) ->
+                if timeCost.editting
+                    edittingTimeCost = timeCost
+            )
 
+            Student.editTimelog(timelog.id, edittingTimeCost.cost, timelog.todo).then ((data) ->
+                Materialize.toast("建立團隊成功", 2000)
+                $scope.prepareProject()
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
 
         $scope.cancelEditTimelog = (selectedTimelog) ->
             for value, index in $scope.timelogs
-#                console.log(value, index)
-#                index = $scope.timelog
                 if $scope.timelogs[index].id == selectedTimelog.id
-                    console.log('for sure')
                     $scope.timelogs[index] = $scope.timelog
-#            timelog = $scope.timelog for timelog in $scope.timelogs when timelog.id = selectedTimelog.id
             $scope.timelog = null
-            console.log($scope.timelogs)
 
         $scope.createGroup = () ->
             $scope.requestLoading = true
@@ -129,13 +140,15 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.prepareIndex = () ->
             $q (resolve, reject) ->
-                console.log 'prepare index'
                 Chart.renderCommitCharts()
                 resolve()
                 $scope.loading = false
 
         $scope.prepareProject = () ->
             $q (resolve, reject) ->
+                if not $scope.project?
+                    resolve()
+                    return
                 Student.showTimelog($scope.project.id).then ((data) ->
                     $scope.timelogs = data
                     $scope.loading = false
@@ -146,7 +159,6 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         $scope.prepareEditGroup = () ->
             $q (resolve, reject) ->
-                console.log 'prepare edit group'
                 $timeout(() ->
                     $('.modal-trigger').leanModal();
                 , 200)

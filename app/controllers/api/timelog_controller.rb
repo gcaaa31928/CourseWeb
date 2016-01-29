@@ -5,7 +5,7 @@ class Api::TimelogController < ApplicationController
         if project.nil?
             raise '你沒有任何專案'
         end
-        timelogs = project.timelogs
+        timelogs = project.timelogs.order(:id)
         render HttpStatusCode.ok(timelogs.as_json(
             include: {
                 time_costs: {

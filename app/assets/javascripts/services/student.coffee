@@ -170,11 +170,11 @@ angular.module('courseWebApp').factory 'Student', [
                     if response.data?
                         resolve response.data
                     else
-                        reject response
+                        resolve response
                 ), (response) ->
                     response = response.data
-                    if response.data?
-                        reject response.data
+                    if response.data.errorMsg?
+                        reject response.data.errorMsg
                     else
                         reject response
 
