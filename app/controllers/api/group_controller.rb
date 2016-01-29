@@ -1,6 +1,30 @@
 class Api::GroupController < ApplicationController
 
     def all
+        retrieve
+        permitted = params.permit(:course_id)
+        if @student
+            unless same_course?(permitted[:course_id].to_i)
+                raise '你沒有權限執行這個操作'
+            end
+        end
+        groups = Group.where(course_id: permitted[:course_id].to_i)
+        groups.order!(:id)
+        render HttpStatusCode.ok(groups.as_json(
+            include: {
+                students: {
+                    only: [:id, :name]
+                },
+                project: {
+                    include: {
+                        scores:{
+                            only: [:no, :point]
+                        }
+                    },
+                    only: [:name]
+                }
+            }, only: [:id]
+        ))
 
     rescue => e
         render HttpStatusCode.forbidden(
@@ -11,7 +35,7 @@ class Api::GroupController < ApplicationController
     end
 
     def create
-        retrieve_student
+        retrieve
         permitted = params.permit(:student_id)
         group = Group.create(course_id: @student.course.id)
         if permitted[:student_id].nil? or permitted[:student_id] == ''
@@ -41,7 +65,7 @@ class Api::GroupController < ApplicationController
     end
 
     def destroy
-        retrieve_student
+        retrieve
         group = @student.group
         if group.nil?
             raise '目前沒有團隊'
@@ -62,7 +86,7 @@ class Api::GroupController < ApplicationController
     end
 
     def show
-        retrieve_student
+        retrieve
         group = @student.group
         if group.nil?
             return render HttpStatusCode.ok([])
@@ -79,11 +103,28 @@ class Api::GroupController < ApplicationController
 
     private
 
-    def retrieve_student
+    def same_course?(course_id)
+        @student.course_id == course_id
+    end
+
+    def retrieve
         require_headers
-        @student = Student.find_by(access_token: @access_token)
-        if @student.nil?
+        retrieve_student
+        retrieve_admin
+        if @student.nil? and @teaching_assistant.nil?
             raise '憑證失效'
+        end
+    end
+
+    def retrieve_student
+        if @access_token.present?
+            @student = Student.find_by(access_token: @access_token)
+        end
+    end
+
+    def retrieve_admin
+        if @access_token.present?
+            @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
         end
     end
 

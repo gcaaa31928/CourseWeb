@@ -10,6 +10,11 @@ FactoryGirl.define do
     factory :student do
         id 104598037
         access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
+        course_id 209065
+    end
+
+    factory :course do
+        id 209065
     end
 
     factory :student_second , class: Student do
@@ -22,6 +27,7 @@ FactoryGirl.define do
         name '黃泓鳴'
         access_token 'i0J7DbObY2HSFpb5vZwG6PUw8w6RXpTqRgSacG'
         group_id 4
+        course_id 209065
     end
 
     factory :student_with_group_second , class: Student do
@@ -32,6 +38,7 @@ FactoryGirl.define do
 
     factory :group do
         id 4
+        course_id 209065
     end
 
     factory :group_with_project, class: Group do

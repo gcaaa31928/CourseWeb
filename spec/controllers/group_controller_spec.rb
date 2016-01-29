@@ -66,4 +66,18 @@ RSpec.describe Api::GroupController, type: :controller do
             expect(response.status).to eq(200)
         end
     end
+
+    describe 'All' do
+        it 'success' do
+            create(:course)
+            group = create(:group)
+            attrs = create(:student_with_group)
+            request.headers['AUTHORIZATION'] = attrs.access_token
+            get :all, {course_id: 209065}
+            response_json = JSON.parse(response.body)
+            Log.info(response_json['data'].to_s)
+            expect(response.status).to eq(200)
+        end
+
+    end
 end

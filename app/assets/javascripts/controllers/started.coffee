@@ -14,8 +14,7 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
             password: ''
 
         processLogin = (data, form) ->
-            $localStorage.accessToken = data.accessToken
-            $localStorage.account = form.id
+            $localStorage.me = data.info
             if data.type == 'admin'
                 Admin.accessToken = data.accessToken
                 $state.go 'main.admin'

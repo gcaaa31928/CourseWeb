@@ -106,11 +106,13 @@
                         <td rowspan="2">{{timelog.date}}</td>
                         <td ng-if="timelog.editting">
                             <div ng-if="timelog.time_costs[0].editting" class="input-field">
-                                <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost" required>
+                                <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
+                                       required>
                                 <label class='active' for="cost0">耗費小時</label>
                             </div>
                             <div ng-if="timelog.time_costs[1].editting" class="input-field">
-                                <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost" required>
+                                <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
+                                       required>
                                 <label class='active' for="cost1">耗費小時</label>
                             </div>
                         </td>
@@ -161,24 +163,18 @@
                 <thead>
                 <tr>
                     <th data-field="id">組別</th>
+                    <th data-field="name">學生</th>
                     <th data-field="name">專案名稱</th>
                     <th data-field="middleGrade">Demo1成績</th>
                     <th data-field="finalGrade">Demo2成績</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Android Game</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Cybrain</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Cybrain Two</td>
-                </tr>
+                    <tr ng-repeat="group in groups" ng-if="group.projectName">
+                        <td>{{group.id}}</td>
+                        <td>{{group.projectName}}</td>
+                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -188,7 +184,8 @@
                 <form name="groupCreateForm">
                     <div class="row">
                         <div class="col s8">
-                            <input name="onlyMe" ng-model="groupForm.onlyMe" type="checkbox" class="filled-in" id="filled-in-box" checked="checked">
+                            <input name="onlyMe" ng-model="groupForm.onlyMe" type="checkbox" class="filled-in"
+                                   id="filled-in-box" checked="checked">
                             <label for="filled-in-box">自己一個人一組</label>
                         </div>
                         <div class="input-field col s8">
@@ -203,8 +200,10 @@
                             <label for="group-id">對方組員學號</label>
                         </div>
                     </div>
-                    <button ng-click="(groupCreateForm.$invalid && !groupForm.onlyMe) || createGroup()" ng-disabled="groupCreateForm.$invalid && !groupForm.onlyMe"
-                       class="waves-effect waves-light btn-large center-align">建立團隊</button>
+                    <button ng-click="(groupCreateForm.$invalid && !groupForm.onlyMe) || createGroup()"
+                            ng-disabled="groupCreateForm.$invalid && !groupForm.onlyMe"
+                            class="waves-effect waves-light btn-large center-align">建立團隊
+                    </button>
                 </form>
             </div>
             <div ng-if="hasGroup()">

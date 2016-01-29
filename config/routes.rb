@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         post 'group/create' => 'group#create'
         post 'group/destroy' => 'group#destroy'
         get 'group/show' => 'group#show'
+        get 'course/:course_id/group/all' => 'group#all'
 
         post 'project/create' => 'project#create'
         post 'project/destroy' => 'project#destroy'

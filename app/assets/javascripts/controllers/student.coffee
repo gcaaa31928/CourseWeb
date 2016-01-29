@@ -35,6 +35,9 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.hasGroup = () ->
             Group.members.length > 0
 
+        # for groups
+        $scope.groups = null
+
         $scope.changeState = (state) ->
             $scope.state = state
 
@@ -48,6 +51,8 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 $scope.prepareEditGroup()
             else if newValue == 'project'
                 $scope.prepareProject()
+            else if newValue == 'group'
+                $scope.prepareAllGroup()
             else
                 $scope.loading = false
         )
@@ -200,6 +205,16 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+        $scope.prepareAllGroup = () ->
+            $q (resolve, reject) ->
+                Student.AllGroup().then ((data) ->
+                    handleAllGroup(data)
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
+
 
         q.drain = () ->
             $scope.layout.loading = false
@@ -211,6 +226,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             q.push($scope.prepareEditGroup)
             q.push($scope.prepareEditProject)
             q.push($scope.prepareProject)
+            q.push($scope.prepareAllGroup)
         #            preparedList = [$scope.prepareIndex(), $scope.prepareEditGroup(), $scope.prepareEditProject(), $scope.prepareProject()]
         #            $scope.layout.loading = true
         #            $scope.renderNavBar()
@@ -228,6 +244,16 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             $timeout(() ->
                 $(".button-collapse").sideNav();
             )
+
+
+        # local processing
+        handleAllGroup = (data) ->
+            angular.forEach(data, (group) ->
+                if group.project?
+                    group.projectName = group.project.name
+                # TODO(Red): group demo score
+            )
+            $scope.groups = data
 
         $scope.prepareAll()
 

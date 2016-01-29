@@ -9,7 +9,7 @@ class Api::LoginController < ApplicationController
             admin = Admin.update_access_token
             return render HttpStatusCode.ok(
                 {
-                    accessToken: admin.access_token,
+                    info: admin.as_json(only: [:access_token]),
                     type: 'admin'
                 }
             )
@@ -20,7 +20,7 @@ class Api::LoginController < ApplicationController
                 token = teaching_assistant.generate_token_and_update
                 return render HttpStatusCode.ok(
                     {
-                        accessToken: token,
+                        info: teaching_assistant.as_json(only: [:id , :access_token, :course_id]),
                         type: 'ta'
                     }
                 )
@@ -32,7 +32,7 @@ class Api::LoginController < ApplicationController
                 token = student.generate_token_and_update
                 return render HttpStatusCode.ok(
                     {
-                        accessToken: token,
+                        info: student.as_json(only: [:id , :access_token, :course_id]),
                         type: 'student'
                     }
                 )

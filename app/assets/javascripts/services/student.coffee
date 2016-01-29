@@ -5,8 +5,9 @@ angular.module('courseWebApp').factory 'Student', [
     '$localStorage'
     ($http, $q, Group, $localStorage) ->
         factory = {}
-        factory.accessToken = $localStorage.accessToken
-        factory.account = $localStorage.account
+        factory.accessToken = $localStorage.me.access_token if $localStorage.me?
+        factory.account = $localStorage.me.id if $localStorage.me?
+        factory.courseId = $localStorage.me.course_id if $localStorage.me?
         factory.group = null
         factory.httpConfig = (canceler) ->
             timeout = 15 * 1000
@@ -72,6 +73,20 @@ angular.module('courseWebApp').factory 'Student', [
                     else
                         reject response
 
+        factory.AllGroup = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/course/' + factory.courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data?
+                        reject response.data
+                    else
+                        reject response
 
         factory.destroyGroup = (canceler = null) ->
             $q (resolve, reject) ->
