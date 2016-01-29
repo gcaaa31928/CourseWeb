@@ -17,24 +17,26 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
         $scope.requestLoading = false
         $scope.isLogin = true
         $scope.state = 'index'
+        # for project
         $scope.project = null
         $scope.timelogs = null
         $scope.timelog = null
-        $scope.groupForm =
-            studentId: ""
         $scope.projectForm =
             name: ''
             refUrl: ''
             type: 'Android'
             description: ''
 
+        # for group
+        $scope.groupForm =
+            studentId: ""
+            onlyMe: false
         $scope.group = Group
         $scope.hasGroup = () ->
             Group.members.length > 0
 
         $scope.changeState = (state) ->
             $scope.state = state
-
 
         $scope.$watch('state', (newValue, oldValue) ->
             $scope.loading = true
@@ -106,6 +108,11 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
+
+        $scope.$watch('groupForm.onlyMe', (newValue, oldValue) ->
+            if newValue
+                $scope.groupForm.studentId = ""
+        )
 
 
         $scope.createProject = () ->

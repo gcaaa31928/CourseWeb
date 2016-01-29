@@ -187,13 +187,24 @@
                 <h3>你目前不屬於任何團隊</h3>
                 <form name="groupCreateForm">
                     <div class="row">
+                        <div class="col s8">
+                            <input name="onlyMe" ng-model="groupForm.onlyMe" type="checkbox" class="filled-in" id="filled-in-box" checked="checked">
+                            <label for="filled-in-box">自己一個人一組</label>
+                        </div>
                         <div class="input-field col s8">
-                            <input id="group-id" type="text" class="validate" ng-model="groupForm.studentId" required>
+                            <input ng-disabled="groupForm.onlyMe"
+                                   id="group-id"
+                                   name="studentId"
+                                   type="text"
+                                   class="validate"
+                                   ng-model="groupForm.studentId"
+                                   ng-pattern="'\\d+'"
+                                   required>
                             <label for="group-id">對方組員學號</label>
                         </div>
                     </div>
-                    <a ng-click="createGroup()"
-                       class="waves-effect waves-light btn-large center-align">建立團隊</a>
+                    <button ng-click="(groupCreateForm.$invalid && !groupForm.onlyMe) || createGroup()" ng-disabled="groupCreateForm.$invalid && !groupForm.onlyMe"
+                       class="waves-effect waves-light btn-large center-align">建立團隊</button>
                 </form>
             </div>
             <div ng-if="hasGroup()">
