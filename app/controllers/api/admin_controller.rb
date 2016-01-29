@@ -28,14 +28,16 @@ class Api::AdminController < ApplicationController
             return render HttpStatusCode.forbidden
         end
         course_name, class_name, students_id_list, students_name_list = NTUTCourse.login_to_nportal('104598037', 'qwerasdf40144', permitted[:course_id])
-        course = Course.create(id: permitted[:course_id], name: course_name)
-        students_id_list.zip(students_name_list).each do |id, name|
-            student = Student.new(name: name,
-                                  id: id.to_i,
-                                  class_name: class_name,
-                                  course_id: course.id)
-            student.password = id
-            student.save!
+        Student.transaction do
+            course = Course.create(id: permitted[:course_id], name: course_name)
+            students_id_list.zip(students_name_list).each do |id, name|
+                student = Student.find_or_initialize_by(id: id.to_i)
+                student.name = name
+                student.class_name = class_name
+                student.course_id = course.id
+                student.password = id
+                student.save!
+            end
         end
         render HttpStatusCode.ok
     end

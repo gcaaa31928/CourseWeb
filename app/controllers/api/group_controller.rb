@@ -1,9 +1,19 @@
 class Api::GroupController < ApplicationController
 
+    def all
+
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
     def create
         retrieve_student
         permitted = params.permit(:student_id)
-        group = Group.create
+        group = Group.create(course_id: @student.course.id)
         if permitted[:student_id].nil? or permitted[:student_id] == ''
             @student.update_attributes(group_id: group.id)
             render HttpStatusCode.ok
@@ -16,8 +26,10 @@ class Api::GroupController < ApplicationController
             unless member.group.nil?
                 raise '對方組員已經加入團隊'
             end
-            member.update_attributes(group_id: group.id)
-            @student.update_attributes(group_id: group.id)
+            Student.transaction do
+                member.update_attributes(group_id: group.id)
+                @student.update_attributes(group_id: group.id)
+            end
             render HttpStatusCode.ok
         end
     rescue => e

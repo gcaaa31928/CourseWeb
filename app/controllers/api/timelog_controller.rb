@@ -35,7 +35,6 @@ class Api::TimelogController < ApplicationController
             raise '沒有這個Timelog'
         end
         time_cost = TimeCost.find_by(student_id: @student.id, timelog_id: timelog.id)
-        Log.info(time_cost.to_json)
         ActiveRecord::Base.transaction do
             timelog.update_attributes!(todo: permitted[:todo])
             if time_cost.nil?
