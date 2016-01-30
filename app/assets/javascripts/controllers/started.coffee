@@ -19,7 +19,7 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
                 Admin.accessToken = data.accessToken
                 $state.go 'main.admin'
             else if data.type == 'student'
-                Student.accessToken = data.accessToken
+                Student.setInfo(data.info)
                 $state.go 'main.student'
 
         $scope.login = () ->

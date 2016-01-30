@@ -20,57 +20,69 @@ angular.module('courseWebApp').factory 'Student', [
                 }
             }
 
+        factory.setInfo = (info) ->
+            factory.accessToken = info.access_token if info?
+            factory.account = info.id if info?
+            factory.courseId = info.course_id if info?
 
-        factory.login = (id, password, canceler = null) ->
+        handleSuccessPromise = (resolve, reject, response) ->
+            response = response.data
+            if response.data?
+                resolve response.data
+            else
+                resolve null
+
+        handleFailedPromise = (resolve, reject, response) ->
+            response = response.data
+            if response.data? and response.data.errorMsg?
+                reject response.data.errorMsg
+            else if response.data?
+                reject response.data
+            else
+                reject null
+
+        factory.verifyAccessToken = (canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/student_login', {
-                    id: id
-                    password: password
-                }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        $localStorage.accessToken = response.data.accessToken
-                        resolve response.data
-                    else
-                        resolve response
+                $http.post('/api/verify_access_token', {}, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
+#        factory.login = (id, password, canceler = null) ->
+#            $q (resolve, reject) ->
+#                $http.post('/api/student_login', {
+#                    id: id
+#                    password: password
+#                }, factory.httpConfig(canceler)).then ((response) ->
+#                    response = response.data
+#                    if response.data?
+#                        $localStorage.accessToken = response.data.accessToken
+#                        resolve response.data
+#                    else
+#                        resolve response
+#                ), (response) ->
+#                    response = response.data
+#                    if response.data?
+#                        reject response.data
+#                    else
+#                        reject response
 
         factory.ListSudentWithoutGroup = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + factory.courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
 
         factory.createGroup = (studentId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/group/create', {
                     student_id: studentId
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data.errorMsg?
-                        reject response.data.errorMsg
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.showGroup = (canceler = null) ->
             $q (resolve, reject) ->
@@ -78,63 +90,34 @@ angular.module('courseWebApp').factory 'Student', [
                     response = response.data
                     if response.data?
                         Group.processData(response.data)
-                        resolve response.data
-                    else
-                        resolve response
+
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.AllGroup = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + factory.courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
-
-
+                    handleFailedPromise(resolve, reject, response)
 
         factory.destroyGroup = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/group/destroy', {
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data.errorMsg?
-                        reject response.data.errorMsg
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
 
         factory.showProject = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/project/show', factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        reject response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.createProject = (name, refUrl, type, description, canceler = null) ->
             $q (resolve, reject) ->
@@ -144,18 +127,9 @@ angular.module('courseWebApp').factory 'Student', [
                     type: type,
                     ref_url: refUrl
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data.errorMsg?
-                        reject response.data.errorMsg
-                    else
-                        reject response
-
+                    handleFailedPromise(resolve, reject, response)
 
         factory.editProject = (name, refUrl, type, description, canceler = null) ->
             $q (resolve, reject) ->
@@ -165,32 +139,17 @@ angular.module('courseWebApp').factory 'Student', [
                     type: type,
                     ref_url: refUrl
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data.errorMsg?
-                        reject response.data.errorMsg
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
 
         factory.showTimelog = (projectId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/project/' + projectId + '/timelog/all', factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        reject response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.editTimelog = (timelogId, cost, todo, canceler = null) ->
             $q (resolve, reject) ->
@@ -198,18 +157,9 @@ angular.module('courseWebApp').factory 'Student', [
                     cost: cost,
                     todo: todo
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data.errorMsg?
-                        reject response.data.errorMsg
-                    else
-                        reject response
-
+                    handleFailedPromise(resolve, reject, response)
 
         factory
 ]

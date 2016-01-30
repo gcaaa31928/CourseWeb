@@ -48,7 +48,39 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     end
 
+    def verify_access_token
+        retrieve
+        if @admin or @student or @teaching_assistant
+            return render HttpStatusCode.ok
+        end
+        render HttpStatusCode.forbidden
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden
+    end
+
     private
+
+    def retrieve
+        require_headers
+        retrieve_student
+        retrieve_admin
+
+    end
+
+    def retrieve_student
+        if @access_token.present?
+            @student = Student.find_by(access_token: @access_token)
+        end
+    end
+
+    def retrieve_admin
+        if @access_token.present?
+            @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
+            @admin = Admin.find_by(access_token: @access_token)
+        end
+    end
+
 
     def require_headers
         @access_token = request.headers["AUTHORIZATION"]
