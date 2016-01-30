@@ -16,7 +16,7 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
         processLogin = (data, form) ->
             $localStorage.me = data.info
             if data.type == 'admin'
-                Admin.accessToken = data.accessToken
+                Admin.setInfo(data.info)
                 $state.go 'main.admin'
             else if data.type == 'student'
                 Student.setInfo(data.info)

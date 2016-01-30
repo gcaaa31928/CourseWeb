@@ -3,7 +3,8 @@ angular.module('courseWebApp').factory 'Admin', [
     '$q'
     ($http, $q) ->
         factory = {}
-        factory.accessToken = null
+        factory.accessToken = $localStorage.me.access_token if $localStorage.me?
+
         factory.httpConfig = (canceler) ->
             timeout = 15 * 1000
             if canceler
@@ -14,23 +15,47 @@ angular.module('courseWebApp').factory 'Admin', [
                     'AUTHORIZATION': factory.accessToken
                 }
             }
-        factory.login = (account, password, canceler = null) ->
+
+        factory.setInfo = (info) ->
+            factory.accessToken = info.access_token if info?
+
+        handleSuccessPromise = (resolve, reject, response) ->
+            response = response.data
+            if response.data?
+                resolve response.data
+            else
+                resolve null
+
+        handleFailedPromise = (resolve, reject, response) ->
+            response = response.data
+            if response.data? and response.data.errorMsg?
+                reject response.data.errorMsg
+            else if response.data?
+                reject response.data
+            else
+                reject null
+
+        factory.ListSudentWithoutGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/login', {
-                    account: account
-                    password: password
-                }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                $http.get('/api/course/' + courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
+
+        factory.AllGroup = (courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/course/' + courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.showTimelog = (projectId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/project/' + projectId + '/timelog/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
 
         factory.createCourseStudent = (classId, canceler = null) ->
             $q (resolve, reject) ->
