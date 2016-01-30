@@ -40,6 +40,21 @@ angular.module('courseWebApp').factory 'Student', [
                     else
                         reject response
 
+        factory.ListSudentWithoutGroup = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/course/' + factory.courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->
+                    response = response.data
+                    if response.data?
+                        resolve response.data
+                    else
+                        resolve response
+                ), (response) ->
+                    response = response.data
+                    if response.data?
+                        reject response.data
+                    else
+                        reject response
+
         factory.createGroup = (studentId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/group/create', {
@@ -87,6 +102,8 @@ angular.module('courseWebApp').factory 'Student', [
                         reject response.data
                     else
                         reject response
+
+
 
         factory.destroyGroup = (canceler = null) ->
             $q (resolve, reject) ->

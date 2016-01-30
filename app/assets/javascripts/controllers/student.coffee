@@ -1,4 +1,4 @@
-angular.module('courseWebApp').controller 'StudentCtrl', [
+angular.module('courseWebApp').controller('StudentCtrl', [
     '$scope',
     'Student',
     'Group',
@@ -37,6 +37,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
 
         # for groups
         $scope.groups = null
+        $scope.studentsWithoutGroup = null
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -53,6 +54,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                 $scope.prepareProject()
             else if newValue == 'group'
                 $scope.prepareAllGroup()
+                $scope.prepareListStudentWithoutGroup()
             else
                 $scope.loading = false
         )
@@ -215,6 +217,16 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+        $scope.prepareListStudentWithoutGroup = () ->
+            $q (resolve, reject) ->
+                Student.ListSudentWithoutGroup().then ((data) ->
+                    $scope.studentsWithoutGroup = data
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
+
 
         q.drain = () ->
             $scope.layout.loading = false
@@ -227,6 +239,7 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             q.push($scope.prepareEditProject)
             q.push($scope.prepareProject)
             q.push($scope.prepareAllGroup)
+            q.push($scope.prepareListStudentWithoutGroup)
         #            preparedList = [$scope.prepareIndex(), $scope.prepareEditGroup(), $scope.prepareEditProject(), $scope.prepareProject()]
         #            $scope.layout.loading = true
         #            $scope.renderNavBar()
@@ -251,10 +264,36 @@ angular.module('courseWebApp').controller 'StudentCtrl', [
             angular.forEach(data, (group) ->
                 if group.project?
                     group.projectName = group.project.name
-                # TODO(Red): group demo score
+# TODO(Red): group demo score
             )
+            data.sort (a,b) ->
+                if a.projectName? and b.projectName?
+                    return a.id - b.id
+                else if not a.projectName and not b.projectName?
+                    return a.id - b.id
+                else if a.projectName?
+                    return -1
+                else if b.projectName?
+                    return 1
+
             $scope.groups = data
 
         $scope.prepareAll()
 
-]
+])
+.filter('studentsName', () ->
+    (students) ->
+        if not students?
+            return ''
+        students.map((student) ->
+            student.name
+        ).join(",")
+)
+.filter('studentsId', () ->
+    (students) ->
+        if not students?
+            return ''
+        students.map((student) ->
+            student.id
+        ).join(',')
+)

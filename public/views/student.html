@@ -163,6 +163,7 @@
                 <thead>
                 <tr>
                     <th data-field="id">組別</th>
+                    <th data-field="name">學號</th>
                     <th data-field="name">學生</th>
                     <th data-field="name">專案名稱</th>
                     <th data-field="middleGrade">Demo1成績</th>
@@ -170,13 +171,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="group in groups" ng-if="group.projectName">
+                    <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-3': !group.projectName}">
                         <td>{{group.id}}</td>
+                        <td>{{group.students | studentsId}}</td>
+                        <td>{{group.students | studentsName}}</td>
                         <td>{{group.projectName}}</td>
                     </tr>
-                    
                 </tbody>
             </table>
+            <div class="section">
+                <h5>尚未分組的學生</h5>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th data-field="name">學號</th>
+                        <th data-field="name">學生</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="student in studentsWithoutGroup">
+                        <td>{{student.id}}</td>
+                        <td>{{student.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div ng-switch-when="editGroup">
             <div ng-if="!hasGroup()">

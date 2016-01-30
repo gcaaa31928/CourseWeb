@@ -5,6 +5,8 @@ Rails.application.routes.draw do
         post 'create_group' => 'group#create'
         post 'create_course_students' => 'admin#create_course_students'
 
+        get 'course/:course_id/students/list_without_group' => 'student#list_without_group'
+
         post 'group/create' => 'group#create'
         post 'group/destroy' => 'group#destroy'
         get 'group/show' => 'group#show'

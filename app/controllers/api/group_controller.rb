@@ -8,7 +8,9 @@ class Api::GroupController < ApplicationController
                 raise '你沒有權限執行這個操作'
             end
         end
-        groups = Group.where(course_id: permitted[:course_id].to_i)
+        # where(course_id: permitted[:course_id].to_i)
+        # Log.info(Group.joins(:students).where(course_id: permitted[:course_id].to_i).uniq.to_sql)
+        groups = Group.joins(:students).where(course_id: permitted[:course_id].to_i).uniq
         groups.order!(:id)
         render HttpStatusCode.ok(groups.as_json(
             include: {
