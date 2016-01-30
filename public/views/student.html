@@ -271,7 +271,7 @@
                         <label class='active' for="project-ref">參考連結</label>
                     </div>
                     <div class="input-field col s8">
-                        <select ng-model="projectForm.type">
+                        <select ng-model="projectForm.type" require>
                             <option value="default" disabled selected>專案平台</option>
                             <option value="Android">Android</option>
                             <option value="Windows">Windows</option>
@@ -285,10 +285,10 @@
                         <label class='active' for="project-textarea">專案簡介</label>
                     </div>
                 </div>
-                <a ng-if="!project" ng-click="groupCreateForm.$invalid || createProject()"
-                   class="waves-effect waves-light btn-large center-align">建立專案</a>
-                <a ng-if="project" ng-click="groupCreateForm.$invalid || editProject()"
-                   class="waves-effect waves-light btn-large center-align">修改專案</a>
+                <button ng-if="!project" ng-click="groupCreateForm.$invalid || createProject()"
+                   class="waves-effect waves-light btn-large center-align" ng-disabled="projectCreateForm.$invalid">建立專案</button>
+                <button ng-if="project" ng-click="groupCreateForm.$invalid || editProject()"
+                   class="waves-effect waves-light btn-large center-align" ng-disabled="projectCreateForm.$invalid">修改專案</button>
             </form>
 
         </div>
