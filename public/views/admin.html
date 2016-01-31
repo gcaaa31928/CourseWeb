@@ -1,4 +1,55 @@
-<div ng-if="isLogin">
+<div ng-if="loading" class="loading-wrapper">
+    <div class="preloader-wrapper big active loading">
+        <div class="spinner-layer spinner-blue">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-red">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-yellow">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-green">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="!loading">
     <nav class="teal lighten-2">
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="hide-on-med-and-down">
@@ -12,32 +63,22 @@
                 <span class="white-text">創造新課程</span>
             </div>
         </div>
-        <div class="col s12 m3">
-            <div class="card-panel teal hoverable clickable" ng-click="submitCreateCourse()">
-                <span class="white-text">物件導向實習 OOP 104年</span>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card-panel teal hoverable clickable" ng-click="submitCreateCourse()">
-                <span class="white-text">物件導向實習 OOP 103年</span>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card-panel teal hoverable clickable" ng-click="submitCreateCourse()">
-                <span class="white-text">物件導向實習 OOP 102年</span>
+        <div class="col s12 m3" ng-repeat="course in courses">
+            <div class="card-panel teal hoverable clickable">
+                <span class="white-text">{{course.name}} {{course.academic_year}}年</span>
             </div>
         </div>
     </div>
     <div ng-if="inCreatingCourse" class="container">
-        <form name="form">
+        <form name="course-form">
             <div class="row">
                 <div class="input-field col s8">
                     <input id="id" type="text" class="validate" ng-model="form.courseId" required>
                     <label for="id">課號</label>
                 </div>
             </div>
-            <button ng-click="form.$invalid || login()" class="btn waves-effect waves-light" type="submit" name="action"
-                    ng-disabled="form.$invalid">
+            <button ng-click="form.$invalid || submitCreateCourse()" class="btn waves-effect waves-light" type="submit" name="action"
+                    ng-disabled="course-form.$invalid">
                 Submit
                 <i class="material-icons right">send</i>
             </button>
@@ -68,5 +109,8 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="progress" ng-if="requestLoading">
+        <div class="indeterminate"></div>
     </div>
 </div>

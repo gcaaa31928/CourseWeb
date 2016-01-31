@@ -111,7 +111,8 @@ class NTUTCourse
             end
         end
         course_name = doc.css('table')[0].css('tr')[3].css('td').text
+        academic_year = doc.css('table')[0].css('tr')[1].css('td').text
         class_name = doc.css('table')[0].css('tr')[9].css('td').text
-        [course_name, class_name, students_id_list, students_name_list]
+        [course_name, class_name, academic_year, students_id_list, students_name_list]
     end
 end

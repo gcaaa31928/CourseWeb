@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
         get 'project/:project_id/timelog/all' => 'timelog#all'
         post 'timelog/:timelog_id/edit' => 'timelog#edit'
+
+        get 'course/all' => 'course#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

@@ -1,7 +1,8 @@
 angular.module('courseWebApp').factory 'Admin', [
     '$http',
-    '$q'
-    ($http, $q) ->
+    '$q',
+    '$localStorage'
+    ($http, $q, $localStorage) ->
         factory = {}
         factory.accessToken = $localStorage.me.access_token if $localStorage.me?
 
@@ -43,6 +44,14 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
+        factory.allCourse = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/course/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+
         factory.AllGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
@@ -57,21 +66,15 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
-        factory.createCourseStudent = (classId, canceler = null) ->
+        factory.createCourseStudent = (courseId, canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/get_course_students', {
+                $http.post('/api/create_course_students', {
+                    course_id: courseId
                 }, factory.httpConfig(canceler)).then ((response) ->
-                    response = response.data
-                    if response.data?
-                        resolve response.data
-                    else
-                        resolve response
+                    handleSuccessPromise(resolve, reject, response)
                 ),(response) ->
-                    response = response.data
-                    if response.data?
-                        reject response.data
-                    else
-                        reject response
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.isLogin = () ->
             factory.accessToken?

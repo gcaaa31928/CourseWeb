@@ -27,9 +27,10 @@ class Api::AdminController < ApplicationController
         unless verify_access_token
             return render HttpStatusCode.forbidden
         end
-        course_name, class_name, students_id_list, students_name_list = NTUTCourse.login_to_nportal('104598037', 'qwerasdf40144', permitted[:course_id])
+        course_name, class_name, academic_year, students_id_list, students_name_list = NTUTCourse.login_to_nportal('104598037', 'qwerasdf40144', permitted[:course_id])
         Student.transaction do
-            course = Course.create(id: permitted[:course_id], name: course_name)
+            course = Course.find_or_initialize_by(id: permitted[:course_id])
+            course.update!(name: course_name, academic_year: academic_year)
             students_id_list.zip(students_name_list).each do |id, name|
                 student = Student.find_or_initialize_by(id: id.to_i)
                 student.name = name
