@@ -138,8 +138,11 @@
     </div>
     <div ng-if="inCourse && !courseLoading" class="container">
         <form name="timelog-form" class="row">
-            <input type="text" ng-model="timelogDate" id="datepicker" class="col s3" required>
-            <button ng-click="timelog-form.$invalid || createTimelog()" class="btn waves-effect waves-light s6" type="submit" name="action"
+            <div class="input-field col s3">
+                <input type="text" ng-model="timelogDate" id="datepicker" required>
+                <label for="datepicker">日期</label>
+            </div>
+            <button ng-click="timelog-form.$invalid || createTimelog()" class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
                     ng-disabled="timelog-form.$invalid">
                 新增Timelog
             </button>
@@ -156,7 +159,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-3': !group.projectName}">
+            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}">
                 <td>{{group.id}}</td>
                 <td>{{group.students | studentsId}}</td>
                 <td>{{group.students | studentsName}}</td>
