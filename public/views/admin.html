@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col s12 m3" ng-repeat="course in courses">
-            <div class="card-panel teal hoverable clickable">
+            <div class="card-panel teal hoverable clickable" ng-click="selectCourse(course)">
                 <span class="white-text">{{course.name}} {{course.academic_year}}年</span>
             </div>
         </div>
@@ -85,30 +85,95 @@
 
         </form>
     </div>
-    <div ng-if="inCourse" class="container">
-        <table>
+    <div ng-if="courseLoading" class="loading-wrapper">
+        <div class="preloader-wrapper big active loading">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="inCourse && !courseLoading" class="container">
+        <table class="striped">
             <thead>
             <tr>
-                <th data-field="id">Student ID</th>
-                <th data-field="name">Name</th>
+                <th data-field="id">組別</th>
+                <th data-field="name">學號</th>
+                <th data-field="name">學生</th>
+                <th data-field="name">專案名稱</th>
+                <th data-field="middleGrade">Demo1成績</th>
+                <th data-field="finalGrade">Demo2成績</th>
             </tr>
             </thead>
-
             <tbody>
-            <tr>
-                <td>104598037</td>
-                <td>Red</td>
-            </tr>
-            <tr>
-                <td>104598037</td>
-                <td>Red</td>
-            </tr>
-            <tr>
-                <td>104598037</td>
-                <td>Red</td>
+            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-3': !group.projectName}">
+                <td>{{group.id}}</td>
+                <td>{{group.students | studentsId}}</td>
+                <td>{{group.students | studentsName}}</td>
+                <td>{{group.projectName}}</td>
             </tr>
             </tbody>
         </table>
+        <div class="section">
+            <h5>尚未分組的學生</h5>
+            <table class="striped">
+                <thead>
+                <tr>
+                    <th data-field="name">學號</th>
+                    <th data-field="name">學生</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="student in studentsWithoutGroup">
+                    <td>{{student.id}}</td>
+                    <td>{{student.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="progress" ng-if="requestLoading">
         <div class="indeterminate"></div>

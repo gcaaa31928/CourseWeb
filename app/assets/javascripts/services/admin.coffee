@@ -36,7 +36,7 @@ angular.module('courseWebApp').factory 'Admin', [
             else
                 reject null
 
-        factory.ListSudentWithoutGroup = (courseId, canceler = null) ->
+        factory.listStudentWithoutGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
@@ -52,7 +52,7 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
-        factory.AllGroup = (courseId, canceler = null) ->
+        factory.allGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)

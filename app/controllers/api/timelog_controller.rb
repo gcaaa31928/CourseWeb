@@ -27,7 +27,7 @@ class Api::TimelogController < ApplicationController
     end
 
     def edit
-        retrieve_student!
+        retrieve_student
         permitted = params.permit(:timelog_id, :cost, :todo)
         verify_student_timelog_owner!(permitted[:timelog_id].to_i)
         timelog = Timelog.find_by(id: permitted[:timelog_id].to_i)
@@ -55,6 +55,35 @@ class Api::TimelogController < ApplicationController
         )
     end
 
+    def create
+        retrieve_admin
+        permitted = params.permit(:date)
+        # transfer date to real date object
+        date = Date.new
+        timelogs = Timelog.where(date: date.1.week.ago..date)
+        if timelogs.count != 0
+            return render HttpStatusCode.forbidden(
+                {
+                    errorMsg: '每一周只能一次有一個Timelog'
+                }
+            )
+        end
+        Timelog.transaction do
+            week_no = timelogs.first.week_no + 1
+            projects = Project.all
+            projects.each do |project|
+                Timelog.create!(week_no: week_no, date: date)
+            end
+        end
+        render HttpStatusCode.ok
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
 
     private
 
@@ -69,10 +98,20 @@ class Api::TimelogController < ApplicationController
         raise '你沒有權限操作這個Timelog'
     end
 
-    def retrieve_student!
+    def retrieve_student
         require_headers
         @student = Student.find_by(access_token: @access_token)
         if @student.nil?
+            raise '憑證失效'
+        end
+    end
+
+    def retrieve_admin
+        if @access_token.present?
+            @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
+            @admin = Admin.find_by(access_token: @access_token)
+        end
+        if @teaching_assistant.nil? and @admin.nil?
             raise '憑證失效'
         end
     end

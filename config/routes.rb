@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
         get 'project/:project_id/timelog/all' => 'timelog#all'
         post 'timelog/:timelog_id/edit' => 'timelog#edit'
+        post 'timelog/create' => 'timelog#create'
 
         get 'course/all' => 'course#all'
     end

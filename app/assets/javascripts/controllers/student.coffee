@@ -210,7 +210,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.prepareAllGroup = () ->
             $q (resolve, reject) ->
                 Student.AllGroup().then ((data) ->
-                    handleAllGroup(data)
+                    $scope.groups = Group.handleAllGroup(data)
                     $scope.loading = false
                     resolve()
                 ), (msg) ->

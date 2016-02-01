@@ -54,7 +54,7 @@ class Api::StudentController < ApplicationController
         require_headers
         retrieve_student
         retrieve_admin
-        if @student.nil? and @teaching_assistant.nil?
+        if @student.nil? and @teaching_assistant.nil? and @admin.nil?
             raise '憑證失效'
         end
     end
@@ -68,6 +68,7 @@ class Api::StudentController < ApplicationController
     def retrieve_admin
         if @access_token.present?
             @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
+            @admin = Admin.find_by(access_token: @access_token)
         end
     end
 
