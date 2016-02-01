@@ -2,8 +2,9 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
     '$scope',
     'Admin',
     'Group',
-    '$q'
-    ($scope, Admin, Group, $q) ->
+    '$q',
+    '$timeout'
+    ($scope, Admin, Group, $q, $timeout) ->
         q = async.queue(((task, callback) ->
             task().then () ->
                 callback()
@@ -32,6 +33,8 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
         $scope.form =
             courseId: ""
 
+        $scope.timelogDate = ''
+
 
         $scope.submitCreateCourse = () ->
             $scope.requestLoading = true
@@ -49,13 +52,24 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $scope.selectedCourse = course
             $scope.prepareSelectedCourse(course)
 
+
+
         q.drain = () ->
             $scope.layout.loading = false
+
+        $scope.createTimelog = () ->
+            $scope.requestLoading = true
+            transferDate = $scope.picker.getDate().toUTCString()
+            Admin.createTimelog(transferDate).then ((date) ->
+                $scope.requestLoading = false
+                Materialize.toast("新增Timelog成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
 
         $scope.prepareCourse = (course) ->
             $q (resolve, reject) ->
                 $scope.loading = true
-
                 Admin.allCourse().then ((data) ->
                     $scope.courses = data
                     $scope.loading = false
@@ -83,6 +97,9 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
 
         courseQuery.drain = () ->
             $scope.courseLoading = false
+            $timeout(() ->
+                $scope.picker = new Pikaday({ field: $('#datepicker')[0] })
+            )
 
         $scope.prepareSelectedCourse = (course) ->
             $scope.courseLoading = true

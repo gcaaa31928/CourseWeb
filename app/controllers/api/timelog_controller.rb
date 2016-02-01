@@ -1,3 +1,4 @@
+require 'date'
 class Api::TimelogController < ApplicationController
     def all
         permitted = params.permit(:project_id)
@@ -58,9 +59,8 @@ class Api::TimelogController < ApplicationController
     def create
         retrieve_admin
         permitted = params.permit(:date)
-        # transfer date to real date object
-        date = Date.new
-        timelogs = Timelog.where(date: date.1.week.ago..date)
+        date = DateTime.rfc2822(permitted[:date])
+        timelogs = Timelog.where(date: (date - 7)..date)
         if timelogs.count != 0
             return render HttpStatusCode.forbidden(
                 {
@@ -69,10 +69,14 @@ class Api::TimelogController < ApplicationController
             )
         end
         Timelog.transaction do
-            week_no = timelogs.first.week_no + 1
+            timelog = Timelog.order(:week_no).last
+            week_no = 0
+            unless timelog.nil?
+                week_no = timelog.week_no + 1
+            end
             projects = Project.all
             projects.each do |project|
-                Timelog.create!(week_no: week_no, date: date)
+                Timelog.create!(week_no: week_no, date: date, project_id: project.id)
             end
         end
         render HttpStatusCode.ok
@@ -107,6 +111,7 @@ class Api::TimelogController < ApplicationController
     end
 
     def retrieve_admin
+        require_headers
         if @access_token.present?
             @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
             @admin = Admin.find_by(access_token: @access_token)
