@@ -77,7 +77,8 @@
                     <label for="id">課號</label>
                 </div>
             </div>
-            <button ng-click="course-form.$invalid || submitCreateCourse()" class="btn waves-effect waves-light" type="submit" name="action"
+            <button ng-click="course-form.$invalid || submitCreateCourse()" class="btn waves-effect waves-light"
+                    type="submit" name="action"
                     ng-disabled="course-form.$invalid">
                 Submit
                 <i class="material-icons right">send</i>
@@ -142,14 +143,15 @@
                 <input type="text" ng-model="timelogDate" id="datepicker" required>
                 <label for="datepicker">日期</label>
             </div>
-            <button ng-click="timelog-form.$invalid || createTimelog()" class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
+            <button ng-click="timelog-form.$invalid || createTimelog()"
+                    class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
                     ng-disabled="timelog-form.$invalid">
                 新增Timelog
             </button>
         </form>
         <table class="striped">
             <thead>
-            <tr>
+            <tr data-target="timelog-modal">
                 <th data-field="id">組別</th>
                 <th data-field="name">學號</th>
                 <th data-field="name">學生</th>
@@ -159,14 +161,77 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}">
+            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                class="clickable" ng-click="openTimelogModal(group)">
                 <td>{{group.id}}</td>
                 <td>{{group.students | studentsId}}</td>
                 <td>{{group.students | studentsName}}</td>
                 <td>{{group.projectName}}</td>
             </tr>
+
             </tbody>
         </table>
+        <div id="timelog-modal" class="modal">
+            <div class="modal-content">
+                <h5>組別: {{selectedGroup.project.name}}</h5>
+                <h5>學號: {{selectedGroup.students | studentsId}}</h5>
+                <h5>學生: {{selectedGroup.students | studentsName}}</h5>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th data-field="weekNo">週次</th>
+                        <th data-field="date">日期</th>
+                        <th data-field="costTime">團隊花費時間</th>
+                        <th data-field="todoList">進度規劃</th>
+                        <th data-field="lineOfCode">行數</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat-start="timelog in timelogs">
+                        <td rowspan="2">{{timelog.week_no}}</td>
+                        <td rowspan="2">{{timelog.date}}</td>
+                        <td ng-if="timelog.editting">
+                            <div ng-if="timelog.time_costs[0].editting" class="input-field">
+                                <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
+                                       required>
+                                <label class='active' for="cost0">耗費小時</label>
+                            </div>
+                            <div ng-if="timelog.time_costs[1].editting" class="input-field">
+                                <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
+                                       required>
+                                <label class='active' for="cost1">耗費小時</label>
+                            </div>
+                        </td>
+                        <td ng-if="timelog.time_costs[0] && !timelog.editting">
+                            {{timelog.time_costs[0].student.name}}:{{timelog.time_costs[0].cost}}小時
+                        </td>
+                        <td ng-if="!timelog.time_costs[0] && !timelog.editting" class="red-text text-darken-1">
+                            未填寫
+                        </td>
+
+                        <td ng-if="!timelog.editting" rowspan="2">{{timelog.todo}}</td>
+                        <td ng-if="timelog.editting" rowspan="2">
+                            <div class="input-field">
+                                <input id="todo" type="text" class="validate" ng-model="timelog.todo" required>
+                                <label class='active' for="todo">工作規劃</label>
+                            </div>
+                        </td>
+                        <td rowspan="2">1002</td>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td ng-if="timelog.time_costs[1] && !timelog.editting">
+                            {{timelog.time_costs[1].student.name}}:{{timelog.time_costs[1].cost}}小時
+                        </td>
+                        <td ng-if="!timelog.time_costs[1] && !timelog.editting" class="red-text text-darken-1">
+                            未填寫
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
         <div class="section">
             <h5>尚未分組的學生</h5>
             <table class="striped">

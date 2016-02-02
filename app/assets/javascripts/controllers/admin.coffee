@@ -22,7 +22,9 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
         $scope.courses = null
         $scope.requestLoading = false
         $scope.selectedCourse = null
+        $scope.selectedGroup = null
         $scope.groups = null
+        $scope.timelogs = null
         $scope.studentsWithoutGroup = null
 
         $scope.createCourse = () ->
@@ -53,9 +55,16 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $scope.prepareSelectedCourse(course)
 
 
+        $scope.openTimelogModal = (group) ->
+            $scope.selectedGroup = group
+            Admin.showTimelog(group.project.id).then ((data) ->
+                $scope.timelogs = data
+                $timeout(() ->
+                    $('#timelog-modal').openModal();
+                )
 
-        q.drain = () ->
-            $scope.layout.loading = false
+            ), (msg) ->
+
 
         $scope.createTimelog = () ->
             $scope.requestLoading = true
@@ -66,6 +75,10 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
+
+
+        q.drain = () ->
+            $scope.layout.loading = false
 
         $scope.prepareCourse = (course) ->
             $q (resolve, reject) ->
@@ -99,6 +112,7 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $scope.courseLoading = false
             $timeout(() ->
                 $scope.picker = new Pikaday({ field: $('#datepicker')[0] })
+                $('.modal-trigger').leanModal();
             )
 
         $scope.prepareSelectedCourse = (course) ->

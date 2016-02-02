@@ -23,7 +23,7 @@ class Api::GroupController < ApplicationController
                             only: [:no, :point]
                         }
                     },
-                    only: [:name]
+                    only: [:name, :id]
                 }
             }, only: [:id]
         ))
