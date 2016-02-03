@@ -146,17 +146,67 @@
             </div>
         </div>
         <div ng-if="inCourse && !courseLoading" class="container">
-            <form name="timelog-form" class="row">
-                <div class="input-field col s3">
-                    <input type="text" ng-model="timelogDate" id="datepicker" required>
-                    <label for="datepicker">日期</label>
-                </div>
-                <button ng-click="timelog-form.$invalid || createTimelog()"
-                        class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
-                        ng-disabled="timelog-form.$invalid">
-                    新增Timelog
-                </button>
-            </form>
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">toc</i>新增Timelog</div>
+                    <div class="collapsible-body container">
+                        <form name="timelogForm" class="row">
+                            <div class="input-field col s3">
+                                <input type="text" ng-model="timelogDate" id="datepicker" required>
+                                <label for="datepicker">日期</label>
+                            </div>
+                            <button ng-click="timelogForm.$invalid || createTimelog()"
+                                    class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
+                                    ng-disabled="timelogForm.$invalid">
+                                新增Timelog
+                            </button>
+                        </form>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">toc</i>新增學生</div>
+                    <div class="collapsible-body container">
+                        <form name="studentFormName">
+                            <div class="row">
+                                <div class="input-field col s8 offset-s2">
+                                    <input id="student-id" type="text" class="validate"
+                                           ng-model="addStudentForm.id" required>
+                                    <label for="student-id">學號</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s8 offset-s2">
+                                    <input id="student-name" type="text" class="validate"
+                                           ng-model="addStudentForm.name" required>
+                                    <label for="student-name">姓名</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s8 offset-s2">
+                                    <input id="student-class-name" type="text" class="validate"
+                                           ng-model="addStudentForm.className" required>
+                                    <label for="student-class-name">班級</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s8 offset-s2">
+                                    <button ng-click="studentFormName.$invalid || submitAddStudent()"
+                                            class="btn waves-effect waves-light"
+                                            type="submit"
+                                            name="action"
+                                            ng-disabled="studentFormName.$invalid">
+                                        新增學生
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+            </ul>
+
+
             <table class="striped">
                 <thead>
                 <tr data-target="timelog-modal">

@@ -107,7 +107,17 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
-
+        factory.addStudent = (id, name, className, courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/teaching_assistant/add_student', {
+                    id: id,
+                    name: name,
+                    class_name: className,
+                    course_id: courseId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ),(response) ->
+                    handleFailedPromise(resolve, reject, response)
 
         factory.isLogin = () ->
             factory.accessToken?

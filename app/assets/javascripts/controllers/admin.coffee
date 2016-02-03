@@ -31,7 +31,10 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             name: ''
             className: ''
             courseId: ''
-
+        $scope.addStudentForm =
+            id: ''
+            name: ''
+            className: ''
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -66,6 +69,24 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+
+
+        $scope.submitAddStudent = () ->
+            $scope.requestLoading = true
+            Admin.addStudent(
+                $scope.addStudentForm.id,
+                $scope.addStudentForm.name,
+                $scope.addStudentForm.className,
+                $scope.selectedCourse.id
+            ).then ((data) ->
+                Materialize.toast("增加學生成功", 2000)
+                $scope.prepareListStudentWithoutGroup()
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
+
         $scope.submitAddTeachingAssistant = () ->
             $scope.requestLoading = true
             Admin.addTeachingAssistant(
@@ -91,13 +112,16 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
 
         $scope.openTimelogModal = (group) ->
             $scope.selectedGroup = group
-            Admin.showTimelog(group.project.id).then ((data) ->
-                $scope.timelogs = data
-                $timeout(() ->
-                    $('#timelog-modal').openModal();
-                )
+            if group.project?
+                Admin.showTimelog(group.project.id).then ((data) ->
+                    $scope.timelogs = data
+                    $timeout(() ->
+                        $('#timelog-modal').openModal();
+                    )
 
-            ), (msg) ->
+                ), (msg) ->
+            else
+                Materialize.toast("沒有專案可以顯示", 2000)
 
 
         $scope.createTimelog = () ->
@@ -158,6 +182,9 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $timeout(() ->
                 $scope.picker = new Pikaday({ field: $('#datepicker')[0] })
                 $('.modal-trigger').leanModal();
+                $('.collapsible').collapsible({
+                    accordion : false
+                })
             )
 
         $scope.prepareSelectedCourse = (course) ->
