@@ -13,6 +13,18 @@ class Api::TeachingAssistantController < ApplicationController
         ))
     end
 
+    def add_student
+        retrieve
+        permitted = params.permit(:name, :class_name ,:course_id)
+        Student.create!(name: permitted[:name], class_name: permitted[:class_name], course_id: permitted[:course_id])
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
 
     private
 
