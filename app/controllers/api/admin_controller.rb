@@ -18,15 +18,14 @@ class Api::AdminController < ApplicationController
                 error: 'Forbidden',
                 status: 400
             }, status: 400
+
         end
     end
 
     def create_course_students
-        @access_token = request.headers['AUTHORIZATION']
+        retrieve
+
         permitted = params.permit(:course_id)
-        unless verify_access_token
-            return render HttpStatusCode.forbidden
-        end
         course_name, class_name, academic_year, students_id_list, students_name_list = NTUTCourse.login_to_nportal('104598037', 'qwerasdf40144', permitted[:course_id])
         Student.transaction do
             course = Course.find_or_initialize_by(id: permitted[:course_id])
@@ -41,18 +40,55 @@ class Api::AdminController < ApplicationController
             end
         end
         render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def add_teaching_assistant
+        retrieve
+        permitted = params.permit(:id, :name, :class_name, :course_id)
+        TeachingAssistant.create!(id: permitted[:id],
+                                  name: permitted[:name],
+                                  class_name: permitted[:class_name],
+                                  course_id: permitted[:course_id])
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+
+
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
 
     private
 
-    def verify_access_token
-        admin = Admin.find(0)
-        if @access_token == admin.access_token
-            return true
+
+    def retrieve
+        require_headers
+        retrieve_admin
+        if @admin.nil?
+            raise '憑證失效'
         end
-        false
     end
 
+
+    def retrieve_admin
+        if @access_token.present?
+            @admin = Admin.find_by(access_token: @access_token)
+        end
+    end
 
     def require_headers
         @access_token = request.headers["AUTHORIZATION"]

@@ -1,3 +1,16 @@
+<nav class="teal lighten-2">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="hide-on-med-and-down">
+            <li class="clickable" ng-click="changeState('course')"><a>課程</a></li>
+            <li class="clickable" ng-click="changeState('manage')"><a>管理</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-nav">
+            <li class="clickable" ng-click="changeState('course')"><a>課程</a></li>
+            <li class="clickable" ng-click="changeState('manage')"><a>管理</a></li>
+        </ul>
+    </div>
+</nav>
 <div ng-if="loading" class="loading-wrapper">
     <div class="preloader-wrapper big active loading">
         <div class="spinner-layer spinner-blue">
@@ -49,205 +62,276 @@
         </div>
     </div>
 </div>
-<div ng-if="!loading">
-    <nav class="teal lighten-2">
-        <div class="nav-wrapper">
-            <ul id="nav-mobile" class="hide-on-med-and-down">
-                <li><a>課程</a></li>
-            </ul>
-        </div>
-    </nav>
-    <div class="row">
-        <div class="col s12 m3">
-            <div class="card-panel teal hoverable clickable" ng-click="createCourse()">
-                <span class="white-text">創造新課程</span>
-            </div>
-        </div>
-        <div class="col s12 m3" ng-repeat="course in courses">
-            <div class="card-panel teal hoverable clickable" ng-click="selectCourse(course)">
-                <span class="white-text">{{course.name}} {{course.academic_year}}年</span>
-            </div>
-        </div>
-    </div>
-    <div ng-if="inCreatingCourse" class="container">
-        <form name="course-form">
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="id" type="text" class="validate" ng-model="form.courseId" required>
-                    <label for="id">課號</label>
-                </div>
-            </div>
-            <button ng-click="course-form.$invalid || submitCreateCourse()" class="btn waves-effect waves-light"
-                    type="submit" name="action"
-                    ng-disabled="course-form.$invalid">
-                Submit
-                <i class="material-icons right">send</i>
-            </button>
+<div ng-if="!loading" ng-switch="state">
 
-        </form>
-    </div>
-    <div ng-if="courseLoading" class="loading-wrapper">
-        <div class="preloader-wrapper big active loading">
-            <div class="spinner-layer spinner-blue">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
+    <div ng-switch-when="course">
+        <div class="row">
+            <div class="col s12 m3">
+                <div class="card-panel teal hoverable clickable" ng-click="createCourse()">
+                    <span class="white-text">創造新課程</span>
                 </div>
             </div>
-
-            <div class="spinner-layer spinner-red">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
-
-            <div class="spinner-layer spinner-yellow">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
-
-            <div class="spinner-layer spinner-green">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                    <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
+            <div class="col s12 m3" ng-repeat="course in courses">
+                <div class="card-panel teal hoverable clickable" ng-click="selectCourse(course)">
+                    <span class="white-text">{{course.name}} {{course.academic_year}}年</span>
                 </div>
             </div>
         </div>
-    </div>
-    <div ng-if="inCourse && !courseLoading" class="container">
-        <form name="timelog-form" class="row">
-            <div class="input-field col s3">
-                <input type="text" ng-model="timelogDate" id="datepicker" required>
-                <label for="datepicker">日期</label>
-            </div>
-            <button ng-click="timelog-form.$invalid || createTimelog()"
-                    class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
-                    ng-disabled="timelog-form.$invalid">
-                新增Timelog
-            </button>
-        </form>
-        <table class="striped">
-            <thead>
-            <tr data-target="timelog-modal">
-                <th data-field="id">組別</th>
-                <th data-field="name">學號</th>
-                <th data-field="name">學生</th>
-                <th data-field="name">專案名稱</th>
-                <th data-field="middleGrade">Demo1成績</th>
-                <th data-field="finalGrade">Demo2成績</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
-                class="clickable" ng-click="openTimelogModal(group)">
-                <td>{{group.id}}</td>
-                <td>{{group.students | studentsId}}</td>
-                <td>{{group.students | studentsName}}</td>
-                <td>{{group.projectName}}</td>
-            </tr>
+        <div ng-if="inCreatingCourse" class="container">
+            <form name="course-form">
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input id="id" type="text" class="validate" ng-model="form.courseId" required>
+                        <label for="id">課號</label>
+                    </div>
+                </div>
+                <button ng-click="course-form.$invalid || submitCreateCourse()" class="btn waves-effect waves-light"
+                        type="submit" name="action"
+                        ng-disabled="course-form.$invalid">
+                    Submit
+                    <i class="material-icons right">send</i>
+                </button>
 
-            </tbody>
-        </table>
-        <div id="timelog-modal" class="modal">
-            <div class="modal-content">
-                <h5>組別: {{selectedGroup.project.name}}</h5>
-                <h5>學號: {{selectedGroup.students | studentsId}}</h5>
-                <h5>學生: {{selectedGroup.students | studentsName}}</h5>
+            </form>
+        </div>
+        <div ng-if="courseLoading" class="loading-wrapper">
+            <div class="preloader-wrapper big active loading">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="inCourse && !courseLoading" class="container">
+            <form name="timelog-form" class="row">
+                <div class="input-field col s3">
+                    <input type="text" ng-model="timelogDate" id="datepicker" required>
+                    <label for="datepicker">日期</label>
+                </div>
+                <button ng-click="timelog-form.$invalid || createTimelog()"
+                        class="margin-top-2x btn waves-effect waves-light s6" type="submit" name="action"
+                        ng-disabled="timelog-form.$invalid">
+                    新增Timelog
+                </button>
+            </form>
+            <table class="striped">
+                <thead>
+                <tr data-target="timelog-modal">
+                    <th data-field="id">組別</th>
+                    <th data-field="name">學號</th>
+                    <th data-field="name">學生</th>
+                    <th data-field="name">專案名稱</th>
+                    <th data-field="middleGrade">Demo1成績</th>
+                    <th data-field="finalGrade">Demo2成績</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                    class="clickable" ng-click="openTimelogModal(group)">
+                    <td>{{group.id}}</td>
+                    <td>{{group.students | studentsId}}</td>
+                    <td>{{group.students | studentsName}}</td>
+                    <td>{{group.projectName}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <div id="timelog-modal" class="modal">
+                <div class="modal-content">
+                    <h5>組別: {{selectedGroup.project.name}}</h5>
+                    <h5>學號: {{selectedGroup.students | studentsId}}</h5>
+                    <h5>學生: {{selectedGroup.students | studentsName}}</h5>
+                    <table class="striped">
+                        <thead>
+                        <tr>
+                            <th data-field="weekNo">週次</th>
+                            <th data-field="date">日期</th>
+                            <th data-field="costTime">團隊花費時間</th>
+                            <th data-field="todoList">進度規劃</th>
+                            <th data-field="lineOfCode">行數</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat-start="timelog in timelogs">
+                            <td rowspan="2">{{timelog.week_no}}</td>
+                            <td rowspan="2">{{timelog.date}}</td>
+                            <td ng-if="timelog.editting">
+                                <div ng-if="timelog.time_costs[0].editting" class="input-field">
+                                    <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
+                                           required>
+                                    <label class='active' for="cost0">耗費小時</label>
+                                </div>
+                                <div ng-if="timelog.time_costs[1].editting" class="input-field">
+                                    <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
+                                           required>
+                                    <label class='active' for="cost1">耗費小時</label>
+                                </div>
+                            </td>
+                            <td ng-if="timelog.time_costs[0] && !timelog.editting">
+                                {{timelog.time_costs[0].student.name}}:{{timelog.time_costs[0].cost}}小時
+                            </td>
+                            <td ng-if="!timelog.time_costs[0] && !timelog.editting" class="red-text text-darken-1">
+                                未填寫
+                            </td>
+
+                            <td ng-if="!timelog.editting" rowspan="2">{{timelog.todo}}</td>
+                            <td ng-if="timelog.editting" rowspan="2">
+                                <div class="input-field">
+                                    <input id="todo" type="text" class="validate" ng-model="timelog.todo" required>
+                                    <label class='active' for="todo">工作規劃</label>
+                                </div>
+                            </td>
+                            <td rowspan="2">1002</td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td ng-if="timelog.time_costs[1] && !timelog.editting">
+                                {{timelog.time_costs[1].student.name}}:{{timelog.time_costs[1].cost}}小時
+                            </td>
+                            <td ng-if="!timelog.time_costs[1] && !timelog.editting" class="red-text text-darken-1">
+                                未填寫
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="section">
+                <h5>尚未分組的學生</h5>
                 <table class="striped">
                     <thead>
                     <tr>
-                        <th data-field="weekNo">週次</th>
-                        <th data-field="date">日期</th>
-                        <th data-field="costTime">團隊花費時間</th>
-                        <th data-field="todoList">進度規劃</th>
-                        <th data-field="lineOfCode">行數</th>
+                        <th data-field="name">學號</th>
+                        <th data-field="name">學生</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat-start="timelog in timelogs">
-                        <td rowspan="2">{{timelog.week_no}}</td>
-                        <td rowspan="2">{{timelog.date}}</td>
-                        <td ng-if="timelog.editting">
-                            <div ng-if="timelog.time_costs[0].editting" class="input-field">
-                                <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
-                                       required>
-                                <label class='active' for="cost0">耗費小時</label>
-                            </div>
-                            <div ng-if="timelog.time_costs[1].editting" class="input-field">
-                                <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
-                                       required>
-                                <label class='active' for="cost1">耗費小時</label>
-                            </div>
-                        </td>
-                        <td ng-if="timelog.time_costs[0] && !timelog.editting">
-                            {{timelog.time_costs[0].student.name}}:{{timelog.time_costs[0].cost}}小時
-                        </td>
-                        <td ng-if="!timelog.time_costs[0] && !timelog.editting" class="red-text text-darken-1">
-                            未填寫
-                        </td>
-
-                        <td ng-if="!timelog.editting" rowspan="2">{{timelog.todo}}</td>
-                        <td ng-if="timelog.editting" rowspan="2">
-                            <div class="input-field">
-                                <input id="todo" type="text" class="validate" ng-model="timelog.todo" required>
-                                <label class='active' for="todo">工作規劃</label>
-                            </div>
-                        </td>
-                        <td rowspan="2">1002</td>
-                    </tr>
-                    <tr ng-repeat-end>
-                        <td ng-if="timelog.time_costs[1] && !timelog.editting">
-                            {{timelog.time_costs[1].student.name}}:{{timelog.time_costs[1].cost}}小時
-                        </td>
-                        <td ng-if="!timelog.time_costs[1] && !timelog.editting" class="red-text text-darken-1">
-                            未填寫
-                        </td>
+                    <tr ng-repeat="student in studentsWithoutGroup">
+                        <td>{{student.id}}</td>
+                        <td>{{student.name}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
-
+    </div>
+    <div ng-switch-when="manage">
         <div class="section">
-            <h5>尚未分組的學生</h5>
-            <table class="striped">
-                <thead>
-                <tr>
-                    <th data-field="name">學號</th>
-                    <th data-field="name">學生</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="student in studentsWithoutGroup">
-                    <td>{{student.id}}</td>
-                    <td>{{student.name}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="container center-align">
+                <h4>新增助教</h4>
+                <form name="teachingAssistantForm">
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            <input id="add-teaching-assistant-id" type="text" class="validate"
+                                   ng-model="addTeachingForm.id" required>
+                            <label for="add-teaching-assistant-id">學號</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            <input id="add-teaching-assistant-name" type="text" class="validate"
+                                   ng-model="addTeachingForm.name" required>
+                            <label for="add-teaching-assistant-name">姓名</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            <input id="add-teaching-assistant-class-name" type="text" class="validate"
+                                   ng-model="addTeachingForm.className" required>
+                            <label for="add-teaching-assistant-class-name">班級</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s8 offset-s2">
+                            <input id="add-teaching-assistant-course-id" type="text" class="validate"
+                                   ng-model="addTeachingForm.courseId" required>
+                            <label for="add-teaching-assistant-course-id">課號</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button ng-click="teachingAssistantForm.$invalid || submitAddTeachingAssistant()"
+                                class="btn waves-effect waves-light"
+                                type="submit"
+                                name="action"
+                                ng-disabled="teachingAssistantForm.$invalid">
+                            新增
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="section">
+            <div class="container">
+                <table class="striped">
+                    <thead>
+                    <tr data-target="timelog-modal">
+                        <th>學號</th>
+                        <th>姓名</th>
+                        <th>班級</th>
+                        <th>課程號碼</th>
+                        <th>課程年度</th>
+                        <th>課程名稱</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="teachingAssistant in teachingAssistants"
+                        class="clickable" ng-click="openTimelogModal(group)">
+                        <td>{{teachingAssistant.id}}</td>
+                        <td>{{teachingAssistant.name}}</td>
+                        <td>{{teachingAssistant.class_name}}</td>
+                        <td>{{teachingAssistant.course.id}}</td>
+                        <td>{{teachingAssistant.course.academic_year}}</td>
+                        <td>{{teachingAssistant.course.name}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="progress" ng-if="requestLoading">

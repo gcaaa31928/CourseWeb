@@ -86,6 +86,27 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
+        factory.addTeachingAssistant = (id, name, className, courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/add_teaching_assistant', {
+                    id: id,
+                    name: name,
+                    class_name: className,
+                    course_id: courseId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ),(response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+
+        factory.listTeachingAssistants = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/teaching_assistant/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ),(response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+
 
 
         factory.isLogin = () ->

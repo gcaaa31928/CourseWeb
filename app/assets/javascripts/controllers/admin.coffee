@@ -14,7 +14,7 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             task().then () ->
                 callback()
         ), 1)
-
+        $scope.state = 'course'
         $scope.inCourse = false;
         $scope.inCreatingCourse = false;
         $scope.loading = false
@@ -26,6 +26,24 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
         $scope.groups = null
         $scope.timelogs = null
         $scope.studentsWithoutGroup = null
+        $scope.addTeachingForm =
+            id: ''
+            name: ''
+            className: ''
+            courseId: ''
+
+
+        $scope.changeState = (state) ->
+            $scope.state = state
+
+
+        $scope.$watch('state', (newValue, oldValue) ->
+            #TODO(Red): nothing to do
+            if newValue == 'manage'
+                $scope.prepareManage()
+        )
+
+
 
         $scope.createCourse = () ->
 
@@ -47,6 +65,22 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
+
+        $scope.submitAddTeachingAssistant = () ->
+            $scope.requestLoading = true
+            Admin.addTeachingAssistant(
+                $scope.addTeachingForm.id,
+                $scope.addTeachingForm.name,
+                $scope.addTeachingForm.className,
+                $scope.addTeachingForm.courseId
+            ).then ((data) ->
+                Materialize.toast("增加助教成功", 2000)
+                $scope.prepareManage()
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
 
         $scope.selectCourse = (course) ->
             $scope.inCreatingCourse = false
@@ -79,6 +113,17 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
 
         q.drain = () ->
             $scope.layout.loading = false
+
+        $scope.prepareManage = () ->
+            $q (resolve, reject) ->
+                $scope.loading = true
+                Admin.listTeachingAssistants().then ((data) ->
+                    $scope.teachingAssistants = data
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
 
         $scope.prepareCourse = (course) ->
             $q (resolve, reject) ->

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
         post 'create_group' => 'group#create'
         post 'create_course_students' => 'admin#create_course_students'
+        post 'add_teaching_assistant' => 'admin#add_teaching_assistant'
 
         get 'course/:course_id/students/list_without_group' => 'student#list_without_group'
 
@@ -25,6 +26,8 @@ Rails.application.routes.draw do
         post 'timelog/create' => 'timelog#create'
 
         get 'course/all' => 'course#all'
+
+        get 'teaching_assistant/all' => 'teaching_assistant#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".
