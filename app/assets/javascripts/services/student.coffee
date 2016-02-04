@@ -43,7 +43,7 @@ angular.module('courseWebApp').factory 'Student', [
 
         factory.verifyAccessToken = (canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/verify_access_token', {}, factory.httpConfig(canceler)).then ((response) ->
+                $http.post('/api/verify_student_access_token', {}, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)

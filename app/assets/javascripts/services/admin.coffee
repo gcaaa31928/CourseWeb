@@ -36,6 +36,13 @@ angular.module('courseWebApp').factory 'Admin', [
             else
                 reject null
 
+        factory.verifyAccessToken = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/verify_admin_access_token', {}, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.listStudentWithoutGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->

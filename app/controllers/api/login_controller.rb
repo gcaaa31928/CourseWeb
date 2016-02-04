@@ -48,9 +48,20 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     end
 
-    def verify_access_token
+    def verify_student_access_token
         retrieve
-        if @admin or @student or @teaching_assistant
+        if @student
+            return render HttpStatusCode.ok
+        end
+        render HttpStatusCode.forbidden
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden
+    end
+
+    def verify_admin_access_token
+        retrieve
+        if @admin or @teaching_assistant
             return render HttpStatusCode.ok
         end
         render HttpStatusCode.forbidden

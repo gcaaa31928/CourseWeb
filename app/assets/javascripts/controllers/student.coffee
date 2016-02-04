@@ -5,7 +5,8 @@ angular.module('courseWebApp').controller('StudentCtrl', [
     '$timeout',
     'Chart',
     '$q',
-    ($scope, Student, Group, $timeout, Chart, $q) ->
+    '$state',
+    ($scope, Student, Group, $timeout, Chart, $q, $state) ->
 # hack it
         q = async.queue(((task, callback) ->
             task().then () ->
@@ -278,7 +279,14 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
             $scope.groups = data
 
-        $scope.prepareAll()
+
+        $scope.layout.loading = true
+        Student.verifyAccessToken().then ((data) ->
+            $scope.layout.loading = false
+            $scope.prepareAll()
+        ), (msg) ->
+            $scope.layout.loading = false
+            $state.go('main.started')
 
 ])
 .filter('studentsName', () ->

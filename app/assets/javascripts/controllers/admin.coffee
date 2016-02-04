@@ -3,8 +3,9 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
     'Admin',
     'Group',
     '$q',
-    '$timeout'
-    ($scope, Admin, Group, $q, $timeout) ->
+    '$timeout',
+    '$state'
+    ($scope, Admin, Group, $q, $timeout, $state) ->
         q = async.queue(((task, callback) ->
             task().then () ->
                 callback()
@@ -197,7 +198,14 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $scope.layout.loading = true
             q.push($scope.prepareCourse)
 
-        $scope.prepareAll()
+        $scope.layout.loading = true
+        Admin.verifyAccessToken().then ((data) ->
+            $scope.layout.loading = false
+            $scope.prepareAll()
+        ), (msg) ->
+            $scope.layout.loading = false
+            $state.go('main.started')
+
 
 
 ]

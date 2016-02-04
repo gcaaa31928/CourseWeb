@@ -2,7 +2,8 @@ Rails.application.routes.draw do
     root :to => 'view#index'
     namespace :api do
         post 'login' => 'login#login'
-        post 'verify_access_token' => 'login#verify_access_token'
+        post 'verify_student_access_token' => 'login#verify_student_access_token'
+        post 'verify_admin_access_token' => 'login#verify_admin_access_token'
 
         post 'create_group' => 'group#create'
         post 'create_course_students' => 'admin#create_course_students'
