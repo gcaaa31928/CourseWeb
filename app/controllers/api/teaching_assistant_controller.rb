@@ -29,6 +29,20 @@ class Api::TeachingAssistantController < ApplicationController
         )
     end
 
+
+    def remove_student
+        retrieve
+        permitted = params.permit(:student_id)
+        Student.find(permitted[:student_id]).destroy
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
     private
 
 

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
         get 'teaching_assistant/all' => 'teaching_assistant#all'
         post 'teaching_assistant/add_student' => 'teaching_assistant#add_student'
+        post 'teaching_assistant/students/:student_id/remove' => 'teaching_assistant#remove_student'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

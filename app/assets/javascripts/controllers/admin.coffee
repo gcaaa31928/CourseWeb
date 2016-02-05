@@ -24,6 +24,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.requestLoading = false
         $scope.selectedCourse = null
         $scope.selectedGroup = null
+        $scope.selectedStudent = null
         $scope.groups = null
         $scope.timelogs = null
         $scope.studentsWithoutGroup = null
@@ -88,6 +89,17 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.submitDeleteStudent = () ->
+            $scope.requestLoading = true
+            Admin.removeStudent(
+                $scope.selectedStudent.id,
+            ).then ((data) ->
+                Materialize.toast("刪除學生成功", 2000)
+                $scope.prepareListStudentWithoutGroup()
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
 
         $scope.submitAddTeachingAssistant = () ->
             $scope.requestLoading = true
@@ -135,6 +147,11 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             else
                 Materialize.toast("沒有專案可以顯示", 2000)
 
+        $scope.openDeleteModal = (student) ->
+            $scope.selectedStudent = student
+            $timeout(() ->
+                $('#delete-student-modal').openModal();
+            )
 
         $scope.createTimelog = () ->
             $scope.requestLoading = true

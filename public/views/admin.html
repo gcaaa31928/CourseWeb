@@ -304,9 +304,24 @@
                     <tr ng-repeat="student in studentsWithoutGroup">
                         <td>{{student.id}}</td>
                         <td>{{student.name}}</td>
+                        <td>
+                            <a class="waves-effect waves-light btn"
+                               ng-click="openDeleteModal(student)">刪除
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+                <div id="delete-student-modal" class="modal">
+                    <div class="modal-content">
+                        <h4>確定要刪除此學生嗎?</h4>
+                        {{selectedStudent.id}}  {{selectedStudent.name}}
+                    </div>
+                    <div class="modal-footer">
+                        <a ng-click="submitDeleteStudent()"
+                           class=" modal-action modal-close waves-effect waves-green btn">是</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

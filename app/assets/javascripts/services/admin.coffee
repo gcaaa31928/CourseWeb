@@ -79,7 +79,7 @@ angular.module('courseWebApp').factory 'Admin', [
                     course_id: courseId
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
 
@@ -89,7 +89,7 @@ angular.module('courseWebApp').factory 'Admin', [
                     date: date
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
 
@@ -102,7 +102,7 @@ angular.module('courseWebApp').factory 'Admin', [
                     course_id: courseId
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
 
@@ -110,7 +110,7 @@ angular.module('courseWebApp').factory 'Admin', [
             $q (resolve, reject) ->
                 $http.get('/api/teaching_assistant/all', factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
         factory.addStudent = (id, name, className, courseId, canceler = null) ->
@@ -122,7 +122,14 @@ angular.module('courseWebApp').factory 'Admin', [
                     course_id: courseId
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.removeStudent = (id, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/teaching_assistant/students/' + id + '/remove', {}, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
         factory.resetPassword = (password, canceler = null) ->
@@ -131,7 +138,7 @@ angular.module('courseWebApp').factory 'Admin', [
                     password: Base64.encode(password)
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
-                ),(response) ->
+                ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
 
