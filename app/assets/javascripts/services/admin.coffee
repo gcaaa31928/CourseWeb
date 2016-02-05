@@ -113,7 +113,6 @@ angular.module('courseWebApp').factory 'Admin', [
                 ),(response) ->
                     handleFailedPromise(resolve, reject, response)
 
-
         factory.addStudent = (id, name, className, courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/teaching_assistant/add_student', {
@@ -125,6 +124,16 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleSuccessPromise(resolve, reject, response)
                 ),(response) ->
                     handleFailedPromise(resolve, reject, response)
+
+        factory.resetPassword = (password, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/reset_password', {
+                    password: Base64.encode(password)
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ),(response) ->
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.isLogin = () ->
             factory.accessToken?

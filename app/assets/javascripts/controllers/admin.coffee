@@ -1,4 +1,4 @@
-angular.module('courseWebApp').controller 'AdminCtrl', [
+angular.module('courseWebApp').controller('AdminCtrl', [
     '$scope',
     'Admin',
     'Group',
@@ -36,21 +36,23 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             id: ''
             name: ''
             className: ''
+        $scope.passwordForm =
+            password: ''
+            confirmPassword: ''
 
         $scope.changeState = (state) ->
             $scope.state = state
 
 
         $scope.$watch('state', (newValue, oldValue) ->
-            #TODO(Red): nothing to do
             if newValue == 'manage'
                 $scope.prepareManage()
+            else if newValue == 'setting'
+                $scope.prepareSetting()
         )
 
 
-
         $scope.createCourse = () ->
-
             $scope.inCreatingCourse = true
             $scope.inCourse = false
 
@@ -69,7 +71,6 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
-
 
 
         $scope.submitAddStudent = () ->
@@ -103,6 +104,16 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.resetPassword = () ->
+            $scope.requestLoading = true
+            Admin.resetPassword(
+                $scope.passwordForm.password
+            ).then ((data) ->
+                Materialize.toast("修改密碼成功", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
 
         $scope.selectCourse = (course) ->
             $scope.inCreatingCourse = false
@@ -178,13 +189,20 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
                 ), (msg) ->
                     resolve()
 
+        $scope.prepareSetting = () ->
+            $timeout(() ->
+                $('.collapsible').collapsible({
+                    accordion: false
+                })
+            )
+
         courseQuery.drain = () ->
             $scope.courseLoading = false
             $timeout(() ->
-                $scope.picker = new Pikaday({ field: $('#datepicker')[0] })
+                $scope.picker = new Pikaday({field: $('#datepicker')[0]})
                 $('.modal-trigger').leanModal();
                 $('.collapsible').collapsible({
-                    accordion : false
+                    accordion: false
                 })
             )
 
@@ -207,5 +225,18 @@ angular.module('courseWebApp').controller 'AdminCtrl', [
             $state.go('main.started')
 
 
-
-]
+])
+.directive('comparePassword', () ->
+    {
+        require: "ngModel",
+        scope: {
+            otherModelValue: "=comparePassword"
+        },
+        link: (scope, element, attributes, ngModel) ->
+            ngModel.$validators.compareTo = (modelValue) ->
+                modelValue == scope.otherModelValue;
+            scope.$watch("otherModelValue", () ->
+                ngModel.$validate()
+            )
+    }
+)

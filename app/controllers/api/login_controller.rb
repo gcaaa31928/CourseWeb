@@ -48,6 +48,28 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     end
 
+    def reset_password
+        retrieve
+        permitted = params.permit(:password)
+        permitted[:password] = Base64.decode64(permitted[:password])
+        if @student
+            @student.password = permitted[:password]
+            @student.save!
+        elsif @teaching_assistant
+            @teaching_assistant.password = permitted[:password]
+            @teaching_assistant.save!
+        elsif @admin
+            raise '請勿更動admin的密碼'
+        end
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
     def verify_student_access_token
         retrieve
         if @student

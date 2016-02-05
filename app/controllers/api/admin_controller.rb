@@ -51,10 +51,12 @@ class Api::AdminController < ApplicationController
     def add_teaching_assistant
         retrieve
         permitted = params.permit(:id, :name, :class_name, :course_id)
-        TeachingAssistant.create!(id: permitted[:id],
-                                  name: permitted[:name],
-                                  class_name: permitted[:class_name],
-                                  course_id: permitted[:course_id])
+        teaching_assistant = TeachingAssistant.new(id: permitted[:id],
+                                                   name: permitted[:name],
+                                                   class_name: permitted[:class_name],
+                                                   course_id: permitted[:course_id])
+        teaching_assistant.password = permitted[:id]
+        teaching_assistant.save!
         render HttpStatusCode.ok
     rescue => e
         render HttpStatusCode.forbidden(

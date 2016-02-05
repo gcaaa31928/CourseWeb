@@ -8,6 +8,8 @@
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
+                <li class="clickable" ng-click="changeState('setting')"><a>設定</a></li>
+
             </ul>
             <ul class="side-nav" id="mobile-nav">
                 <li class="clickable" ng-click="changeState('index')"><a>首頁</a></li>
@@ -15,6 +17,7 @@
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
+                <li class="clickable" ng-click="changeState('setting')"><a>設定</a></li>
             </ul>
         </div>
     </nav>
@@ -299,6 +302,44 @@
                 </div>
             </form>
 
+        </div>
+        <div ng-switch-when="setting">
+            <div class="section container">
+                <ul class="collapsible popout" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">toc</i>更改密碼</div>
+                        <div class="collapsible-body container">
+                            <form name="passwordFormName">
+                                <div class="row">
+                                    <div class="input-field col s8 offset-s2">
+                                        <input id="passwordForm-password" type="password" class="validate"
+                                               ng-model="passwordForm.password" required>
+                                        <label for="passwordForm-password">密碼</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s8 offset-s2">
+                                        <input id="passwordForm-confirmPassword" type="password" class="validate"
+                                               ng-model="passwordForm.confirmPassword" required
+                                               compare-password="passwordForm.password">
+                                        <label for="passwordForm-confirmPassword">再次輸入密碼</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button ng-click="passwordFormName.$invalid || resetPassword()"
+                                            class="btn waves-effect waves-light"
+                                            type="submit"
+                                            name="action"
+                                            ng-disabled="passwordFormName.$invalid">
+                                        確認更改
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="progress" ng-if="requestLoading">
             <div class="indeterminate"></div>

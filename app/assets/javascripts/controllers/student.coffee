@@ -40,6 +40,11 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.groups = null
         $scope.studentsWithoutGroup = null
 
+        # for setting
+        $scope.passwordForm =
+            password: ''
+            confirmPassword: ''
+
         $scope.changeState = (state) ->
             $scope.state = state
 
@@ -56,6 +61,8 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             else if newValue == 'group'
                 $scope.prepareAllGroup()
                 $scope.prepareListStudentWithoutGroup()
+            else if newValue == 'setting'
+                $scope.prepareSetting()
             else
                 $scope.loading = false
         )
@@ -153,6 +160,17 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.resetPassword = () ->
+            $scope.requestLoading = true
+            Student.resetPassword(
+                $scope.passwordForm.password
+            ).then ((data) ->
+                Materialize.toast("修改密碼成功", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
         $scope.prepareIndex = () ->
             $q (resolve, reject) ->
                 Chart.renderCommitCharts()
@@ -228,6 +246,13 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+        $scope.prepareSetting = () ->
+            $scope.loading = false
+            $timeout(() ->
+                    $('.collapsible').collapsible({
+                        accordion : false
+                    })
+                )
 
         q.drain = () ->
             $scope.layout.loading = false
