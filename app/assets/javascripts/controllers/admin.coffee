@@ -15,6 +15,16 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             task().then () ->
                 callback()
         ), 1)
+
+        scoresQuery = async.queue(((task, callback) ->
+            task.do.then ((data) ->
+                task.callback(data)
+                callback()
+            ), () ->
+                callback()
+        ), 1)
+
+
         $scope.state = 'course'
         $scope.inCourse = false;
         $scope.inCreatingCourse = false;
@@ -27,6 +37,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.selectedStudent = null
         $scope.groups = null
         $scope.timelogs = null
+        $scope.scoreForm = []
+        $scope.scores = []
         $scope.studentsWithoutGroup = null
         $scope.addTeachingForm =
             id: ''
@@ -40,6 +52,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.passwordForm =
             password: ''
             confirmPassword: ''
+        $scope.scoreForm =
+            point: ''
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -101,6 +115,19 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.submitScore = (number) ->
+            Admin.createScore(
+                $scope.selectedGroup.project.id,
+                $scope.scoreForm[number].point
+                number,
+            ).then ((data) ->
+                Materialize.toast("分數送出成功", 2000)
+                Admin.allScores($scope.selectedGroup.project.id, number).then ((data) ->
+                    $scope.scores[number] = data
+                )
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+
         $scope.submitAddTeachingAssistant = () ->
             $scope.requestLoading = true
             Admin.addTeachingAssistant(
@@ -133,16 +160,26 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $scope.selectedCourse = course
             $scope.prepareSelectedCourse(course)
 
+        scoresQuery.drain = () ->
+            $timeout(() ->
+                $('#timelog-modal').openModal();
+            )
 
         $scope.openTimelogModal = (group) ->
             $scope.selectedGroup = group
             if group.project?
                 Admin.showTimelog(group.project.id).then ((data) ->
                     $scope.timelogs = data
-                    $timeout(() ->
-                        $('#timelog-modal').openModal();
-                    )
-
+                    scoresQuery.push({
+                        do: Admin.allScores(group.project.id, 0)
+                        callback: (data) ->
+                            $scope.scores[0] = data
+                    })
+                    scoresQuery.push({
+                        do: Admin.allScores(group.project.id, 1)
+                        callback: (data) ->
+                            $scope.scores[1] = data
+                    })
                 ), (msg) ->
             else
                 Materialize.toast("沒有專案可以顯示", 2000)

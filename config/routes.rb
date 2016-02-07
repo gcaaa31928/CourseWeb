@@ -28,10 +28,14 @@ Rails.application.routes.draw do
         post 'timelog/create' => 'timelog#create'
 
         get 'course/all' => 'course#all'
+        get 'course/:course_id/teaching_assistants/all' => 'course#list_teaching_assistants'
 
         get 'teaching_assistant/all' => 'teaching_assistant#all'
         post 'teaching_assistant/add_student' => 'teaching_assistant#add_student'
         post 'teaching_assistant/students/:student_id/remove' => 'teaching_assistant#remove_student'
+
+        post 'project/:project_id/score/create' => 'score#create'
+        get 'project/:project_id/no/:no/score/all' => 'score#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

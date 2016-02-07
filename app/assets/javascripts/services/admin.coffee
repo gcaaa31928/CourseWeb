@@ -141,6 +141,30 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.createScore = (projectId, point, number, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/project/'+projectId+'/score/create', {
+                    point: point,
+                    no: number
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.allScores = (projectId, number, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/project/#{projectId}/no/#{number}/score/all", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.courseTeachingAssistants = (courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/course/#{courseId}/teaching_assistants/all", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory.isLogin = () ->
             factory.accessToken?

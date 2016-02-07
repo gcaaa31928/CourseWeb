@@ -11,6 +11,12 @@ class Api::CourseController < ApplicationController
         render HttpStatusCode.forbidden
     end
 
+    def list_teaching_assistants
+        permitted = params.permit(:course_id)
+        teaching_assistants = TeachingAssistant.where(course_id: permitted[:course_id])
+        render HttpStatusCode.ok(teaching_assistants.as_json(only: [:id, :name, :class_name]))
+    end
+
 
 
     private

@@ -287,6 +287,78 @@
                         </tr>
                         </tbody>
                     </table>
+                    <h5>第一次Demo成績</h5>
+                    <table class="striped">
+                        <thead>
+                        <tr>
+                            <th data-field="weekNo">助教學號</th>
+                            <th data-field="date">助教名字</th>
+                            <th data-field="costTime">助教分數</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="score in scores[0]">
+                            <td>{{score.teaching_assistant.id}}</td>
+                            <td>{{score.teaching_assistant.name}}</td>
+                            <td>{{score.point}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <form name="scoreForm1Name">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="scoreForm1-score" type="text" class="validate"
+                                       ng-model="scoreForm[0].point" required>
+                                <label for="scoreForm1-score">請輸入成績</label>
+                            </div>
+                            <div class="col s6 margin-top-1x">
+                                <button ng-click="scoreForm1Name.$invalid || submitScore(0)"
+                                        class="btn waves-effect waves-light"
+                                        type="submit"
+                                        name="action"
+                                        ng-disabled="scoreForm1Name.$invalid">
+                                    送出
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <h5>第二次Demo成績</h5>
+                    <table class="striped">
+                        <thead>
+                        <tr>
+                            <th data-field="weekNo">助教學號</th>
+                            <th data-field="date">助教名字</th>
+                            <th data-field="costTime">助教分數</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="score in scores[1]">
+                            <td>{{score.teaching_assistant.id}}</td>
+                            <td>{{score.teaching_assistant.name}}</td>
+                            <td>{{score.point}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <form name="scoreForm2Name">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="scoreForm2-score" type="text" class="validate"
+                                       ng-model="scoreForm[1].point" required>
+                                <label for="scoreForm2-score">請輸入成績</label>
+                            </div>
+                            <div class="col s6 margin-top-1x">
+                                <button ng-click="scoreForm2Name.$invalid || submitScore(1)"
+                                        class="btn waves-effect waves-light"
+                                        type="submit"
+                                        name="action"
+                                        ng-disabled="scoreForm2Name.$invalid">
+                                    送出
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -375,7 +447,7 @@
             <div class="container">
                 <table class="striped">
                     <thead>
-                    <tr data-target="timelog-modal">
+                    <tr>
                         <th>學號</th>
                         <th>姓名</th>
                         <th>班級</th>
@@ -385,8 +457,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="teachingAssistant in teachingAssistants"
-                        class="clickable" ng-click="openTimelogModal(group)">
+                    <tr ng-repeat="teachingAssistant in teachingAssistants">
                         <td>{{teachingAssistant.id}}</td>
                         <td>{{teachingAssistant.name}}</td>
                         <td>{{teachingAssistant.class_name}}</td>

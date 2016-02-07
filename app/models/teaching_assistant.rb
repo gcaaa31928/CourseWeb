@@ -2,7 +2,7 @@ require 'bcrypt'
 require 'securerandom'
 class TeachingAssistant < ActiveRecord::Base
     belongs_to :course
-
+    has_many :scores
     include BCrypt
     def password
         @password ||= Password.new(self.password_hash)
