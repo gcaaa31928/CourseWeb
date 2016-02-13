@@ -8,27 +8,42 @@ class Api::GroupController < ApplicationController
                 raise '你沒有權限執行這個操作'
             end
         end
-        # where(course_id: permitted[:course_id].to_i)
-        # Log.info(Group.joins(:students).where(course_id: permitted[:course_id].to_i).uniq.to_sql)
-        groups = Group.joins(:students).where(course_id: permitted[:course_id].to_i).uniq
+        groups = Group.includes(:students, :project).where(course_id: permitted[:course_id].to_i).uniq
         groups.order!(:id)
-        render HttpStatusCode.ok(groups.as_json(
+        average_data = {}
+        groups.each do |group|
+            if group.project
+                average_score = group.project.scores.group(:no).average(:point)
+                average_score.each do |key, score|
+                    average_score[key] = score.to_i
+                end
+                average_data[group.project.id] = average_score
+            end
+        end
+        groups_json = groups.as_json(
             include: {
                 students: {
                     only: [:id, :name]
                 },
                 project: {
                     include: {
-                        scores:{
+                        scores: {
                             only: [:no, :point]
                         }
                     },
                     only: [:name, :id]
                 }
             }, only: [:id]
-        ))
+        )
+        groups_json.each do |group|
+            if group['project']
+                group['project']['average_point'] = average_data[group['project']['id']]
+            end
+        end
+        render HttpStatusCode.ok(groups_json)
 
     rescue => e
+        Log.exception(e)
         render HttpStatusCode.forbidden(
             {
                 errorMsg: "#{$!}"
