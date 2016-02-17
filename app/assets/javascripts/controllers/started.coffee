@@ -13,6 +13,8 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
             id: ''
             password: ''
 
+        $scope.forgotStudentId = null
+
         processLogin = (data, form) ->
             $localStorage.me = data.info
             if data.type == 'admin' or data.type == 'ta'
@@ -34,5 +36,16 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
                 else
             ), (response) ->
                 Materialize.toast("學號或是密碼不正確", 2000)
+
+
+        $scope.submitForgot = () ->
+            $http.post('api/forgot', {
+                account: $scope.forgotStudentId
+            }).then ((responses) ->
+                response = response.data
+                Materialize.toast('已經寄信')
+            )
+
+        $timeout ->
 
 ]

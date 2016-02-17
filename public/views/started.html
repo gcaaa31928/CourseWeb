@@ -1,6 +1,6 @@
 <div class="parallax-container">
     <div class="section">
-        <div class="container center-align">
+        <span class="container center-align">
             <br>
             <br>
             <h1 class="grey-text text-darken-3 center">OOP 物件導向實習課程</h1>
@@ -17,17 +17,41 @@
                         <label for="password">密碼</label>
                     </div>
                 </div>
-                <button ng-click="form.$invalid || login()" class="btn waves-effect waves-light" type="submit" name="action" ng-disabled="form.$invalid">
+                <button ng-click="form.$invalid || login()" class="btn waves-effect waves-light" type="submit"
+                        name="action" ng-disabled="form.$invalid">
                     Login
                     <i class="material-icons right">send</i>
                 </button>
+                <span data-target="forgot-modal" class="teal-text text-darken-1 modal-trigger clickable">
+                    忘記密碼
+                </span>
+                <div id="forgot-modal" class="modal">
+                    <div class="modal-content">
+                        <h4>請輸入你的學號，將會寄信到你的學校信箱</h4>
+                        <form name="forgot-form">
+                            <div class="row">
+                                <div class="input-field col offset-s2 s8">
+                                    <input id="student-id" type="text" class="validate" ng-model="forgotStudentId"
+                                           required>
+                                    <label for="id">學號</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a ng-click="submitForgot()"
+                           class=" modal-action modal-close waves-effect waves-green btn">送出</a>
+                    </div>
+                </div>
             </form>
             <!--<a class="waves-effect waves-light btn-large center-align">Login</a>-->
             <br>
             <br>
-        </div>
+        </span>
     </div>
     <div class="parallax"><img src="/images/ntut.jpg"></div>
+</div>
+
 </div>
 <div class="section white">
     <div class="row container">

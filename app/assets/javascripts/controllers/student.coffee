@@ -73,7 +73,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             timelog.editting = true
             findOwnCostData = false
             angular.forEach(timelog.time_costs, (timeCost) ->
-                if timeCost.student.id.toString() == Student.account
+                if timeCost.student.id.toString() == Student.account.toString()
                     timeCost.editting = true
                     findOwnCostData = true
             )
@@ -91,7 +91,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             )
 
             Student.editTimelog(timelog.id, edittingTimeCost.cost, timelog.todo).then ((data) ->
-                Materialize.toast("建立團隊成功", 2000)
+                Materialize.toast("修改Timelog成功", 2000)
                 $scope.prepareProject()
                 $scope.requestLoading = false
             ), (msg) ->
@@ -204,7 +204,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.prepareEditProject = () ->
             $q (resolve, reject) ->
-                $scope.renderSelect()
+
                 Student.showProject().then ((data) ->
                     if data?
                         $scope.project = data
@@ -215,6 +215,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                         $timeout(() ->
                             $('#project-textarea').trigger('autoresize');
                         )
+                        $scope.renderSelect()
                     $scope.loading = false
                     resolve()
                 ), (msg) ->
@@ -224,6 +225,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     $scope.projectForm.type = 'Android'
                     $scope.projectForm.description = null
                     $scope.loading = false
+                    $scope.renderSelect()
                     resolve()
 
         $scope.prepareAllGroup = () ->
@@ -277,7 +279,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.renderSelect = () ->
             $timeout(() ->
                 $('select').material_select()
-            , 300)
+            )
 
         $scope.renderNavBar = () ->
             $timeout(() ->
