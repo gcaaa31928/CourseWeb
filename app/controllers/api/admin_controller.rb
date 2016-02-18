@@ -41,6 +41,7 @@ class Api::AdminController < ApplicationController
         end
         render HttpStatusCode.ok
     rescue => e
+        Log.exception(e)
         render HttpStatusCode.forbidden(
             {
                 errorMsg: "#{$!}"

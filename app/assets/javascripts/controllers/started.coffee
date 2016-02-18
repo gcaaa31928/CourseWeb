@@ -47,5 +47,6 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
             )
 
         $timeout ->
+            $('.modal-trigger').leanModal()
 
 ]

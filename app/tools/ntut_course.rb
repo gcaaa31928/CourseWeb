@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'mechanize'
 require 'open-uri'
 require 'chunky_png'
+require 'openssl'
 class NTUTCourseCaptcha
 
     def self.count_white_pixel_from_image(image)
@@ -63,7 +64,7 @@ end
 
 class NTUTCourse
     def self.login_to_nportal(username, password, course_code)
-        agent = Mechanize.new
+        agent = Mechanize.new {|a| a.ssl_version, a.verify_mode = 'TLSv1',OpenSSL::SSL::VERIFY_NONE}
         agent.user_agent_alias = 'Windows Mozilla'
         # agent.follow_meta_refresh = true
         page = agent.get('https://nportal.ntut.edu.tw/index.do')
