@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205174425) do
+ActiveRecord::Schema.define(version: 20160219091705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 20160205174425) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "academic_year"
+  end
+
+  create_table "forgot_password_tokens", force: :cascade do |t|
+    t.integer  "student_id"
+    t.string   "token"
+    t.datetime "expire_at"
   end
 
   create_table "groups", force: :cascade do |t|

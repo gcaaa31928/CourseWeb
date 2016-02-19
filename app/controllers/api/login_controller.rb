@@ -92,6 +92,18 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     end
 
+    def forgot_password
+        retrieve
+        if @admin
+            raise 'admin密碼應該不會忘記吧'
+        end
+        UserMailer.forgot_password.deliver_now!
+        render HttpStatusCode.ok
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden
+    end
+
     private
 
     def retrieve

@@ -27,4 +27,8 @@ courseWeb.config ($stateProvider, $urlRouterProvider) ->
         url: '/student'
         templateUrl: 'views/student.html'
         controller: 'StudentCtrl'
+    ).state('main.forgot_password',
+        url: '/forgot_password?token'
+        templateUrl: 'views/forgot_password.html'
+        controller: 'ForgotPasswordCtrl'
     )
