@@ -170,6 +170,15 @@ angular.module('courseWebApp').factory 'Student', [
                 ),(response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.forgotPassword = (password, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/forgot_password', {
+                    password: Base64.encode(password)
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ),(response) ->
+                    handleFailedPromise(resolve, reject, response)
+
 
         factory
 ]

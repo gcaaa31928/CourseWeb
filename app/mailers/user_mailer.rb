@@ -5,9 +5,9 @@ class UserMailer < ApplicationMailer
     #
     #   en.user_mailer.forgot_password.subject
     #
-    def forgot_password()
-        @greeting = "Hi"
-
-        mail(to: "gcaaa31928@gmail.com", subject: 'test')
+    def forgot_password(student_id, token)
+        @token = token
+        to_address = "t#{student_id}@ntut.edu.tw"
+        mail(to: to_address, subject: 'CourseWeb密碼重設通知信')
     end
 end

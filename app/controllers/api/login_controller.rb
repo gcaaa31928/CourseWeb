@@ -20,7 +20,7 @@ class Api::LoginController < ApplicationController
                 token = teaching_assistant.generate_token_and_update
                 return render HttpStatusCode.ok(
                     {
-                        info: teaching_assistant.as_json(only: [:id , :access_token, :course_id]),
+                        info: teaching_assistant.as_json(only: [:id, :access_token, :course_id]),
                         type: 'ta'
                     }
                 )
@@ -32,7 +32,7 @@ class Api::LoginController < ApplicationController
                 token = student.generate_token_and_update
                 return render HttpStatusCode.ok(
                     {
-                        info: student.as_json(only: [:id , :access_token, :course_id]),
+                        info: student.as_json(only: [:id, :access_token, :course_id]),
                         type: 'student'
                     }
                 )
@@ -78,7 +78,11 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     rescue => e
         Log.exception(e)
-        render HttpStatusCode.forbidden
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
 
     def verify_admin_access_token
@@ -89,19 +93,50 @@ class Api::LoginController < ApplicationController
         render HttpStatusCode.forbidden
     rescue => e
         Log.exception(e)
-        render HttpStatusCode.forbidden
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
 
     def forgot_password
-        retrieve
-        if @admin
-            raise 'admin密碼應該不會忘記吧'
-        end
-        UserMailer.forgot_password.deliver_now!
+        permitted = params.permit(:student_id)
+        forgot_password_token = ForgotPasswordToken.new(student_id: permitted[:student_id].to_i)
+        forgot_password_token.save_with_generate_token!
+        UserMailer.forgot_password(forgot_password_token.student_id, forgot_password_token.token).deliver_now!
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)
-        render HttpStatusCode.forbidden
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def reset_password_by_token
+        permitted = params.permit(:token, :password)
+        permitted[:password] = Base64.decode64(permitted[:password])
+        forgot_password_token = ForgotPasswordToken.find_by(token: permitted[:token])
+        if forgot_password_token.nil?
+            raise '已經被設定過了'
+        end
+        if Time.now - forgot_password_token.expire_at > 10.minutes
+            raise '已經過期了，請重新發送email'
+        end
+        forgot_password_token.destroy
+        student = forgot_password_token.student
+        student.password = permitted[:password]
+        student.save!
+        render HttpStatusCode.ok
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
 
     private

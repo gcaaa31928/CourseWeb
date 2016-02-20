@@ -39,11 +39,10 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
 
 
         $scope.submitForgot = () ->
-            $http.post('api/forgot', {
-                account: $scope.forgotStudentId
+            $http.post('api/forgot_password', {
+                student_id: $scope.forgotStudentId
             }).then ((responses) ->
-                response = response.data
-                Materialize.toast('已經寄信')
+                Materialize.toast('寄信成功!!', 2000)
             )
 
         $timeout ->

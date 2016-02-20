@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         post 'verify_student_access_token' => 'login#verify_student_access_token'
         post 'verify_admin_access_token' => 'login#verify_admin_access_token'
         post 'reset_password' => 'login#reset_password'
+        post 'reset_password_by_token' => 'login#reset_password_by_token'
         post 'forgot_password' => 'login#forgot_password'
 
         post 'create_group' => 'group#create'

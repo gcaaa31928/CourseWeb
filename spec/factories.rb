@@ -1,6 +1,9 @@
 require 'factory_girl'
 
-FactoryGirl.define do
+FactoryGirl.define do  factory :forgot_password_token do
+    
+  end
+
 
     factory :admin do
         access_token '0f2071f7d24348f29a4d8a0cf8cf6791'
