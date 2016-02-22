@@ -1,4 +1,4 @@
-require 'abstract_controller/rendering'
+
 class HttpStatusCode
 
     def self.forbidden(data = nil)

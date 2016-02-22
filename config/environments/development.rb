@@ -51,4 +51,8 @@ Rails.application.configure do
         password: "ntut0926",
         enable_starttls_auto: true
     }
+    config.active_job.queue_adapter = :sidekiq
+    Sidekiq.configure_server do |config|
+        config.redis = { :url => "redis://127.0.0.1:6379" }
+    end
 end

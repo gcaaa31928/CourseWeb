@@ -104,7 +104,7 @@ class Api::LoginController < ApplicationController
         permitted = params.permit(:student_id)
         forgot_password_token = ForgotPasswordToken.new(student_id: permitted[:student_id].to_i)
         forgot_password_token.save_with_generate_token!
-        UserMailer.forgot_password(forgot_password_token.student_id, forgot_password_token.token).deliver_now!
+        UserMailer.forgot_password(forgot_password_token.student_id, forgot_password_token.token).deliver_later
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)

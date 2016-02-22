@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
     root :to => 'view#index'
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
     namespace :api do
+
         post 'login' => 'login#login'
         post 'verify_student_access_token' => 'login#verify_student_access_token'
         post 'verify_admin_access_token' => 'login#verify_admin_access_token'
