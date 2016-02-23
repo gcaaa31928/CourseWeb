@@ -19,4 +19,8 @@ class Student < ActiveRecord::Base
         self.update(access_token: access_token)
         access_token
     end
+
+    def valid_password?(password)
+        self.password == password
+    end
 end

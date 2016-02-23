@@ -21,3 +21,4 @@
 *.png
 /node_modules/*
 /doc/**
+/repositories/**/*

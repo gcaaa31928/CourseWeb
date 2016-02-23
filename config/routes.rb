@@ -1,12 +1,12 @@
-require 'grack_auth'
 Rails.application.routes.draw do
 
     # mount Grack::AuthSpawner, at: '/git'
 
     require 'grack'
+    require 'grack_auth'
     mount Grack::Bundle.new({
-                                git_path: '/usr/local/bin/git',
-                                project_root: '/home/red/Work/CourseWeb/repositories',
+                                git_path: APP_CONFIG['git_app'],
+                                project_root: APP_CONFIG['git_project_root'],
                                 upload_pack: 'true',
                                 receive_pack: 'true'
                             }), at: '/git'

@@ -283,11 +283,15 @@
                             <option value="HTML5">HTML5</option>
                         </select>
                     </div>
-
                     <div class="input-field col s8">
                             <textarea id="project-textarea" class="materialize-textarea"
                                       ng-model="projectForm.description"></textarea>
                         <label class='active' for="project-textarea">專案簡介</label>
+                    </div>
+                    <div class="input-field col s8">
+                        <input id="git-url" type="text" class="validate" ng-model="project.gitUrl" readonly>
+                        <label class='active' for="git-url">Git連結</label>
+
                     </div>
                 </div>
                 <div ng-if="!project">

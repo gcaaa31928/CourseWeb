@@ -7,12 +7,15 @@ class Api::ProjectController < ApplicationController
         if group.nil?
             raise '你目前並沒有任何團隊'
         end
-        project = Project.new(name: permitted[:name],
-                              description: permitted[:description],
-                              project_type: permitted[:type],
-                              ref_url: permitted[:ref_url],
-                              group_id: group.id)
-        project.save!
+        Project.transaction do
+            project = Project.new(name: permitted[:name],
+                                  description: permitted[:description],
+                                  project_type: permitted[:type],
+                                  ref_url: permitted[:ref_url],
+                                  group_id: group.id)
+            project.save!
+            CreateGitJob.perform_later(project)
+        end
         render HttpStatusCode.ok
     rescue => e
         render HttpStatusCode.forbidden(

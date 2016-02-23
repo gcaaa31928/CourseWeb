@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-
 gem 'nokogiri'
 gem 'gemrat'
 group :development, :test do
@@ -54,5 +53,5 @@ gem 'composite_primary_keys'
 gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'redis'
-gem 'unicorn'
-gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :tag => 'v2.0.3'
+gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :tag => 'v1.0.1.1'
+gem 'thin'
