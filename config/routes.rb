@@ -1,7 +1,21 @@
+require 'grack_auth'
 Rails.application.routes.draw do
+
+    # mount Grack::AuthSpawner, at: '/git'
+
+    require 'grack'
+    mount Grack::Bundle.new({
+                                git_path: '/usr/local/bin/git',
+                                project_root: '/home/red/Work/CourseWeb/repositories',
+                                upload_pack: 'true',
+                                receive_pack: 'true'
+                            }), at: '/git'
+
+
     root :to => 'view#index'
     require 'sidekiq/web'
-    mount Sidekiq::Web => '/sidekiq'
+    mount Sidekiq::Web => '/sidekiq', via: [:get, :post, :put]
+
     namespace :api do
 
         post 'login' => 'login#login'

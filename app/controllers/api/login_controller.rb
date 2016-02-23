@@ -102,6 +102,12 @@ class Api::LoginController < ApplicationController
 
     def forgot_password
         permitted = params.permit(:student_id)
+        student_id = permitted[:student_id].to_i
+        student = Student.find_by(id: student_id)
+        teaching_assistant = TeachingAssistant.find_by(id: student_id)
+        if student.nil? and teaching_assistant.nil?
+            raise '沒有此帳號'
+        end
         forgot_password_token = ForgotPasswordToken.new(student_id: permitted[:student_id].to_i)
         forgot_password_token.save_with_generate_token!
         UserMailer.forgot_password(forgot_password_token.student_id, forgot_password_token.token).deliver_later
@@ -125,10 +131,18 @@ class Api::LoginController < ApplicationController
         if Time.now - forgot_password_token.expire_at > 10.minutes
             raise '已經過期了，請重新發送email'
         end
-        forgot_password_token.destroy
-        student = forgot_password_token.student
-        student.password = permitted[:password]
-        student.save!
+        ForgotPasswordToken.transaction do
+            forgot_password_token.destroy
+            student = forgot_password_token.student
+            teaching_assistant = TeachingAssistant.find_by(id: forgot_password_token.student_id)
+            if student
+                student.password = permitted[:password]
+                student.save!
+            elsif teaching_assistant
+                teaching_assistant.password = permitted[:password]
+                teaching_assistant.save!
+            end
+        end
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)

@@ -43,7 +43,9 @@ angular.module('courseWebApp').controller 'StartedCtrl', [
                 student_id: $scope.forgotStudentId
             }).then ((responses) ->
                 Materialize.toast('寄信成功!!', 2000)
-            )
+            ), (response) ->
+                Materialize.toast('找不到此帳號', 2000)
+
 
         $timeout ->
             $('.modal-trigger').leanModal()
