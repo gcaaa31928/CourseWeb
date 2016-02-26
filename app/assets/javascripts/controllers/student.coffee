@@ -208,7 +208,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 Student.showProject().then ((data) ->
                     if data?
                         $scope.project = data
-                        $scope.project.gitUrl = "http://127.0.0.1:3000/git/#{data.id}.git"
+                        $scope.project.gitUrl = "http://127.0.0.1:3000/git/oopcourse#{data.id}.git"
                         $scope.projectForm.name = $scope.project.name
                         $scope.projectForm.refUrl = $scope.project.ref_url
                         $scope.projectForm.type = $scope.project.project_type

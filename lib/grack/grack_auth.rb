@@ -89,7 +89,7 @@ module Grack
         end
 
         def project_by_path(path)
-            if m = /^\/git\/([\w\.\/-]+)\.git/.match(path).to_a
+            if m = /^\/git\/oopcourse([\w\.\/-]+)\.git/.match(path).to_a
                 path_with_namespace = m.last
                 Log.info(path_with_namespace)
                 Project.find_by(id: path_with_namespace.to_i)
