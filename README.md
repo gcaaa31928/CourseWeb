@@ -24,3 +24,7 @@ password: ntut0926
 
 之後git commit 請改用git-cz
 
+
+run create test git
+
+*  bundle exec rake create_test_git:process
