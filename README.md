@@ -27,4 +27,6 @@ password: ntut0926
 
 run create test git
 
+* 專案底下需要有repositories底下還要有test
+
 *  bundle exec rake create_test_git:process
