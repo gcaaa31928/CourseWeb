@@ -18,6 +18,7 @@ module Grack
         private
 
         def auth!
+            return @app.call(env) if is_test_git?(@request.path_info)
             return render_not_found unless project
 
             if @auth.provided?
@@ -98,6 +99,15 @@ module Grack
 
         def project
             @project ||= project_by_path(@request.path_info)
+        end
+
+        def is_test_git?(path)
+            if m = /^\/git\/test\/oopcourse([\w\.\/-]+)\.git/.match(path).to_a
+                path_with_namespace = m.last
+                Log.info(path_with_namespace)
+                return true
+            end
+            false
         end
 
         def ref
