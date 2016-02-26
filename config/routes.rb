@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     require 'grack_auth'
     mount Grack::Bundle.new({
                                 git_path: APP_CONFIG['git_app'],
-                                project_root: APP_CONFIG['git_project_root'],
+                                project_root: APP_CONFIG['git_repositories_root'],
                                 upload_pack: 'true',
                                 receive_pack: 'true'
                             }), at: '/git'

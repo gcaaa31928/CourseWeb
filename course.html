@@ -1,0 +1,659 @@
+<html>
+
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+
+
+    <meta NAME="GENERATOR" CONTENT="Microsoft FrontPage 6.0">
+
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+
+    <meta NAME="Author" CONTENT="Woei-Kae Chen">
+
+    <title>Game framework</title>
+
+    <script language="Javascript" src="http://www.ntut.edu.tw/~wkchen/ccount12/display.php">
+
+        <!--
+
+        //-->
+
+    </script>
+
+</head>
+
+
+<body TEXT="#FFFF80" BGCOLOR="#000000" LINK="#00FF00" VLINK="#00FFFF" ALINK="#FF0000"
+
+      BACKGROUND="../images/grey0101.gif" NOSAVE>
+
+
+<p align="right">Last update: 2016-2-25</p>
+
+
+<h2 align="center">Game: A Framework for Developing 2D Computer Games</h2>
+
+
+<ul>
+
+    <li>
+
+        <h4>Introduction</h4>
+
+        <ul>
+
+            <li>Game is an application framework for developing 2D games</li>
+
+            <li>Game framework was created in 1998 as an object library that provides
+
+                ready-to-use graphics and sound objects for
+
+                <a target="_blank" href="http://www.ntut.edu.tw/~wwwcsie">CSIE</a> OOP lab class.&nbsp; Over the
+
+                years, Game has undergone several revisions and evolved into an application
+
+                framework.
+            </li>
+
+            <li>The Windows version of Game framework is implemented with the Microsoft
+
+                <a href="http://www.microsoft.com/vstudio/">VC++</a> based on
+
+                <a href="http://msdn2.microsoft.com/en-us/library/d06h2x6e.aspx">MFC</a>
+
+                and <a href="http://www.microsoft.com/windows/directx/">DirectX</a>. Starting
+
+                from 2011, an Android version Game framework is also offered.
+            </li>
+
+            <li>Game framework&nbsp;is released under
+
+                <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a>.
+            </li>
+
+            <li>Game framework provides the following functionalities:
+                <ul>
+
+                    <li>A simple and easy-to-use bitmap graphic object and a sound object</li>
+
+                    <li>Built-in state control for game and main control loop with overridable
+
+                        game speed control
+                    </li>
+
+                    <li>The selection of the full screen mode and the window mode for presenting
+
+                        the game.
+                    </li>
+
+                </ul>
+
+
+            </li>
+
+        </ul>
+
+
+    </li>
+
+</ul>
+
+
+<ul>
+
+    <li>
+
+        <h4>Documentations (mostly in Traditional Chinese) for Game Framework</h4>
+
+        <ul>
+
+            <li>General<img border="0" src="http://www.cc.ntut.edu.tw/~wkchen/game/intro.jpg" align="right" alt="Screenshot of slides" width="200"
+                            height="150">
+                <ul>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/ReadMe.txt">ReadMe</a> (txt; 3 KB)</li>
+
+                    <li>
+
+                        <a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?isnumber=4287102&arnumber=4287104&count=25&index=6">Teaching
+                            Object-Oriented Programming Laboratory with Computer Game
+
+                            Programming</a>, IEEE Transactions on Education, vol. 50, no. 3, pp. 197-203,
+
+                        August 2007.
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/ooplab_tcse_paper.pdf">OOPLab paper published in
+                        the&nbsp;conference TCSE
+
+                        2005</a> (pdf; 773 KB)
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/IntroOOPLab.pdf">Slides of the introduction to
+                        the OOP Laboratory
+
+                        course</a> (pdf; 752 KB)
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/MapIntroduction.pdf">Introduction to game map
+                        and coordinate
+
+                        systems</a> (pdf; 168 KB)
+                    </li>
+
+                </ul>
+
+
+            </li>
+
+            <li>Class material
+                <ul>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/syllabus.pdf">Syllabus</a> (pdf; 189 KB)</li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Report_new.pdf">Final report format</a>&nbsp;
+                        (pdf; 170
+
+                        KB)
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/IntroGameFramework.pdf">Introduction to Game
+                        framework</a> (pdf;
+
+                        605 KB)
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/VS2010INCLIB.pdf">Setup the DirectX SDK
+                        include and library
+
+                        directories for Visual Studio 2010</a> (pdf; 503 KB)
+                    </li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/VS2005INCLIB.pdf">Setup the DirectX SDK
+                        include and library
+
+                        directories for Visual Studio 2005</a> (pdf; 338 KB)
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/FAQ.pdf">FAQ</a> (pdf; 128k)</li>
+
+                </ul>
+
+
+            </li>
+
+            <li>Windows Tutorial<img border="0" src="http://www.cc.ntut.edu.tw/~wkchen/game/control.jpg" alt="Game control" align="right" width="200"
+                                     height="150">s
+                <ul>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorialOverview.pdf">Overview</a>
+                    </li>
+
+                    <li>Tutorial #1 Prepare a Bitmap:
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial1A.pdf">Tutorial #1A</a>,<a
+                                href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial1B.pdf"> Tutorial #1B</a>,<a
+                                href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial1C.pdf"> Tutorial #1C</a></li>
+
+                    <li>Tutorial #2 Display a Bitmap:
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial2A.pdf">Tutorial #2A</a>,
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial2B.pdf">Tutorial #2B</a>,
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial2C.pdf">Tutorial #2C</a>
+                    </li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial3.pdf">Tutorial #3 Move a
+                        Bitmap</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial4.pdf">Tutorial #4 Create an
+                        object</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial5.pdf">Tutorial #5 Create a
+                        sample &quot;map&quot; class</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameTutorial6.pdf">Tutorial #6 Handle
+                        Memory Leaks</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/VS2012%20%20Degugger.pdf">Tutorial #7
+                        Using
+                        Debugger</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/GameDeployment_VS2012.pdf">Create Setup
+                        file</a></li>
+
+                </ul>
+
+
+            </li>
+
+            <li>Android Tutorials
+                <ul>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/TutorialOverview.pdf">Overview</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial1A1B.pdf">Tutorial #1 Prepare a
+                        Bitmap</a> (1A,
+                        1B)
+                    </li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial2A.pdf">Tutorial #2 Display a
+                        Bitmap</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial3.pdf">Tutorial #3 Move a
+                        Bitmap</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial4.pdf">Tutorial #4 Create an
+                        object</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial5.pdf">Tutorial #5 Create a
+                        &quot;map&quot; class</a></li>
+                    <li>
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Tutorial6%20-%20Android%20Studio%20Debugger.pdf">Tutorial
+                            #6
+                            Using Debugger</a></li>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Deployment.pdf">Deploy your game on
+                        Android phone</a></li>
+
+                    <li>
+                        API:
+                        <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Android%20Game%20Framework%20V2.1%20API%20documentation/index.html">GameState
+                            API</a>
+                        (HTML)
+                    </li>
+
+                </ul>
+
+
+            </li>
+
+            <li>HTML5 Tutorials
+                <ul>
+
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/HTML5_tutorial1.pdf">Tutorial #1: Prepare
+                        and display a
+                        bitmap</a></li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/HTML5_tutorial2.pdf">Tutorial #2: Move and
+                        rotate a
+                        bitmap</a></li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/HTML5_tutorial3.pdf">Tutorial #3: Create
+                        an object</a></li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/HTML5_tutorial4.pdf">Tutorial #4: A sample
+                        &quot;map&quot; object</a></li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/HTML5_tutorial5.pdf">Tutorial #5: Using
+                        keyboard to
+                        control a game object</a></li>
+                    <li>Debug HTML5:
+                        <a href="https://developers.google.com/chrome-developer-tools/docs/javascript-debugging">
+                            https://developers.google.com/chrome-developer-tools/docs/javascript-debugging</a></li>
+                    <li>Mobile emulation:
+                        <a href="https://developers.google.com/chrome-developer-tools/docs/mobile-emulation?hl=zh-TW">
+                            https://developers.google.com/chrome-developer-tools/docs/mobile-emulation?hl=zh-TW</a></li>
+                    <li>HTML5 development environment
+                        <ul>
+
+                            <li>Sublime: <a href="http://www.sublimetext.com/2">
+                                http://www.sublimetext.com/2</a></li>
+                            <li>Light Table: &nbsp;<a href="http://www.lighttable.com/">http://www.lighttable.com/</a>
+                            </li>
+
+                        </ul>
+
+
+                    </li>
+
+                    <li>HTML5 Box2D
+                        <ul>
+
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/Box2D_tutorial1.pdf">Box2D
+                                tutorial #1</a></li>
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/Box2D_tutorial2.pdf">Box2D
+                                tutorial #2</a></li>
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/Box2D_tutorial3.pdf">Box2D
+                                tutorial #3</a></li>
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/Box2D_tutorial4.pdf">Box2D
+                                tutorial #4</a></li>
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/Box2D_tutorial5.pdf">Box2D
+                                tutorial #5</a></li>
+
+                        </ul>
+
+
+                    </li>
+
+                </ul>
+
+
+            </li>
+            <li>SourceTree with Git
+                <ul>
+                    <li><a href="/attachments/GitTutorial.pdf">GitTutorial</a></li>
+                </ul>
+
+
+            </li>
+
+
+        </ul>
+
+
+    </li>
+
+    <li>
+
+        <h4>Download the latest version of the game framework</h4>
+
+        <ul>
+
+            <li><font color="#00FFFF">Windows source code version</font>:
+
+                <a href="http://www.ntut.edu.tw/~wkchen/ccount12/click.php?id=4">game4.8.zip (260
+
+                    KB)</a>
+
+                (2012-05-13)
+                <ul>
+
+                    <li>Please download the source code version if you are planning to develop a game
+
+                        under Windows XP or Windows 7.
+                    </li>
+
+                    <li>Please follow the following installation instructions to compile and
+
+                        execute the game framework and its sample program.
+                    </li>
+
+                </ul>
+
+            </li>
+
+        </ul>
+
+        <blockquote>
+
+            <blockquote>
+
+                <ol>
+
+                    <li>Install Microsoft <a href="http://www.microsoft.com/vstudio/">Visual Studio 2013 C++</a>
+
+                        (note: earlier versions of Visual Studio (e.g., VS 2008, VS 2005, VC++6.0) do not
+
+                        work)
+                    </li>
+
+                    <li>Install VS2013 plugin:
+                        <a href="http://www.microsoft.com/zh-tw/download/details.aspx?id=40770">
+                            Multibyte MFC Library for Visual Studio 2013</a></li>
+                    <li>Download and Install <a href="http://msdn.microsoft.com/directx/sdk/">DirectX SDK</a>&nbsp;
+
+                        from Microsoft&nbsp; (note game4.7 compiles correctly with
+
+                        <a href="http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=2c7da5fb-ffbb-4af6-8c66-651cbd28ca15">
+
+                            February 2010 version of DirectX SDK</a>; the latest version may not always work,
+
+                        because Microsoft updates DirectX SDK very frequently).
+                    </li>
+
+                    <li>Download and decompress game4.8.zip.</li>
+
+                    <li>Double click game.sln to open the source code.</li>
+                    <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/VS2010INCLIB.pdf">Setup the DirectX SDK include and library
+
+                        directories for your Visual Studio 2010</a>.
+                    </li>
+
+                    <li>Compile
+
+                        and execute the sample game. If compilation fails, make sure your Visual
+
+                        Studio and DirectX SDK versions are correct.
+                    </li>
+
+                    <li>Follow the tutorials above to add new functionalities or objects to the
+
+                        Game.
+                    </li>
+
+                    <li>When your game is fully developed, follow the game deployment instructions
+
+                        above to create setup files for your game.
+                    </li>
+
+                </ol>
+
+            </blockquote>
+
+        </blockquote>
+
+        <ul>
+
+            <li><font color="#00FFFF">Windows executable version</font>: <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Setup4.6.msi">Setup.msi</a>
+                (executable;
+
+                8.3 MB; for Windows XP/Windows 7) (2010-03-23)<img border="0" src="http://www.cc.ntut.edu.tw/~wkchen/game/sample.jpg" align="right"
+                                                                   alt="Sample program screenshot" width="200"
+                                                                   height="181">
+                <ul>
+
+                    <li>Please download the executable version if you are interested only in how the sample
+
+                        program runs and are NOT planning to use the framework to develop a
+
+                        new game.
+                    </li>
+
+                    <li>Installation/execution instruction
+                        <ol>
+
+                            <li>After download, please execute the Setup.msi file to install the
+
+                                sample program and then click on the icon of the sample program to execute
+
+                                it.
+                            </li>
+
+                            <li>Note: this Setup.msi file should work with all language versions of
+
+                                Windows XP. However, I was unable to test it for languages
+
+
+                                other than Traditional Chinese. Please let me know (by sending e-mail to
+
+                                <img border="0" src="../images/email.gif" align="center" width="130" height="18">)
+                                should you encounter any problems.
+                            </li>
+
+                        </ol>
+
+                        <p>&nbsp;</li>
+
+                </ul>
+
+            </li>
+
+            <li><font color="#00FFFF">Android source code version</font>:
+
+                <a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/android_game2.2.rar">android_game2.2.rar</a>
+                (350
+                KB; 2015-3-6; for Android 3.0 and up)
+                <ul>
+
+                    <li>Please download the source code version if you are planning to develop a
+                        game under Android
+                    </li>
+
+                    <li>Please follow the following installation instructions to compile and
+
+                        execute the game framework and its sample program.
+
+                        <ol>
+
+                            <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/Installation_AndroidStudio.pdf">Install Android
+                                Studio,&nbsp; import game framework, and compile/execute game framework</a></li>
+
+                            <li>Follow the Android tutorials above to add new functionalities or objects to
+
+                                the Game.
+                            </li>
+
+                            <li>When your game is fully developed, follow the game deployment
+                                instructions above to install the game on the phone
+                            </li>
+
+                        </ol>
+
+                    </li>
+
+                </ul>
+
+            </li>
+
+        </ul>
+        <p>&nbsp;
+            <ul>
+
+                <li><font color="#00FFFF">HTML5 source code version</font>:
+
+                    <a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/html5_game2.1.zip">html5_game2.1zip</a> (2015-3-13)
+                    <ul>
+                        <li>Please download the file and use a browser to execute the sample
+                            game
+                        </li>
+                        <li>Follow the HTML5 tutorials above to add new functionalities or objects to
+
+                            the Game.
+                        </li>
+                    </ul>
+        <p>&nbsp;</li>
+
+</ul>
+
+</li>
+
+<li>
+    <h4>Download <font color="#00FFFF">NTUT Striker</font> developed by former
+
+        students of OOP lab<img border="0" src="http://www.cc.ntut.edu.tw/~wkchen/game/ntutstriker.jpg" align="right" alt="NTUTStriker screenshot" width="200"
+                                height="149"></h4>
+    <ul>
+        <li>Setup file for Windows XP:
+
+            <a href="http://www.ntut.edu.tw/~wkchen/ccount12/click.php?id=2">NTUT
+
+                Striker v1.0 Setup.msi</a> (11 MB, &#19979;&#36617;&#27425;&#25976;
+            <script language="Javascript">ccount_display('2')</script>
+        </li>
+        )
+
+        <li>Installation/execution instruction:
+
+
+            <ul>
+                <li>After download, please execute the Setup file (.msi file) to install the
+
+                    game and then double click the game icon (on the desktop) to execute
+
+                    it.
+                </li>
+            </ul>
+        </li>
+        <li>Note: NTUT Striker is a flying shooting game and is served as an
+
+            example of what an OOP lab team can do in one semester. The source code of
+
+            this game was developed by two students in the 2003 OOP lab class
+
+            (I have replaced all bitmap graphics used in
+
+            this game with new ones to avoid intrusion of&nbsp; copyright).
+        </li>
+    </ul>
+    <p>&nbsp;</li>
+<li>
+    <h4>Download source code of the older Windows versions</h4>
+    <ul>
+        <li>See <a href="http://www.cc.ntut.edu.tw/~wkchen/game/ReadMe.txt">ReadMe</a> for version differences</li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.7.zip">game4.7.zip (289
+
+            KB)</a> (2012-03-21; for Visual Studio 2010 C++ with DirectX SDK February
+            2010 version)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.6.zip">game4.6.zip (285
+
+            KB)</a> (2010-03-23; for Visual Studio 2008 C++ with DirectX SDK February
+            2010 version)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.5.zip">game4.5.zip&nbsp; (416 KB)</a> (2010-02-23; for Visual Studio 2008
+
+            C++ with DirectX SDK 9.x-August 2006)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.4.zip">game4.4.zip&nbsp; (446 KB)</a> (2008-02-15; for VC++6.0 with DirectX SDK 8.x
+            or Visual Studio 2005
+
+            C++ with DirectX SDK 9.x-August 2006)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.3.zip">game4.3.zip&nbsp; (418
+
+            KB)</a> (2006-09-09; for VC++6.0 with DirectX SDK 8.x or Visual Studio 2005
+
+            C++ with DirectX SDK 9.x-August 2006)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.2.zip">game4.2.zip (453 KB)</a>
+
+            (2006-02-08; for VC++6.0 or Visual Studio .net 2003 C++ with DirectX SDK 8.x)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game4.1.zip">game4.1.zip
+
+            (651 KB)</a> (2004-03-08; for VC++6.0 with DirectX SDK 8.x)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Windows/game3.1.zip">game3.1.zip (463 KB)</a> (2002-03-04; for VC++6.0
+
+            with
+
+            DirectX SDK 8.x)
+        </li>
+    </ul>
+    <p>&nbsp;</li>
+<li>
+    <h4>Download source code of the older Android versions</h4>
+    <ul>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/android_game2.1.zip">android_game2.1.zip</a> (558 KB; 2012-3-29; for for android 2.3.3)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/android_game2.0.zip">android_game2.0.zip</a> (245
+            KB; 2012-3-15; for android 2.3.3)
+        </li>
+        <li><a href="http://www.ntut.edu.tw/~wkchen/ccount12/click.php?id=6">android_game1.2.zip</a> (366 KB; 2012-3-2;
+            for android 2.3.3)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/andorid_game1.1.zip">android_game1.1.zip</a> (366 KB; 2012-2-23;
+            for android 2.3.3)
+        </li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/Android/android_game1.0.zip">android_game1.0.zip</a> (1 MB;
+            2011-2-23; for android 2.2)
+        </li>
+    </ul>
+    <p>&nbsp;</li>
+<li>
+    <h4>Download source code of the older HTML5 versions</h4>
+
+
+    <ul>
+
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/html5_game%201.2.zip">html_game1.2.zip</a> (10 MB)</li>
+        <li><a href="http://www.cc.ntut.edu.tw/~wkchen/game/HTML5/html5_game%201.2.zip">html_game1.1.zip</a> (514KB)</li>
+
+    </ul>
+
+
+    <p>&nbsp;</li>
+<li>
+    <h4><a target="_blank" href="http://sdtlab.csie.ntut.edu.tw:8180/jspwiki/">Time log management system</a></h4>
+</li>
+
+</ul>
+
+
+</body>
+
+</html>
