@@ -20,13 +20,17 @@
     <script src="/bower_components/ngstorage/ngStorage.min.js"></script>
     <script src="/bower_components/async/dist/async.js"></script>
     <script src="/bower_components/pikaday/pikaday.js"></script>
+    <script src="/bower_components/js-yaml/dist/js-yaml.min.js"></script>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
     <%= csrf_meta_tags %>
 
 </head>
-<body  ng-app="courseWebApp">
+<body ng-app="courseWebApp">
 <%= yield %>
 </body>
+<script>
+    window._rails_env = "<%= Rails.env %>"
+</script>
 </html>

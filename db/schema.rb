@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160220025921) do
+ActiveRecord::Schema.define(version: 20160229044907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 20160220025921) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "access_token"
+  end
+
+  create_table "charts", force: :cascade do |t|
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "course_id"
+    t.text     "average_commits_count"
+    t.text     "high_standard_commits_count"
+    t.text     "low_standard_commits_count"
   end
 
   create_table "courses", force: :cascade do |t|

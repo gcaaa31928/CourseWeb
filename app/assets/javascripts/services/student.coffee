@@ -179,6 +179,12 @@ angular.module('courseWebApp').factory 'Student', [
                 ),(response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.showCommitsChart = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/charts/commits', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
 
         factory
 ]

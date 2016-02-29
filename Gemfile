@@ -55,4 +55,4 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'redis'
 gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :tag => 'v1.0.1.1'
 gem 'thin'
-gem 'rugged'
+gem 'git'

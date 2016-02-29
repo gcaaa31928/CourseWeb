@@ -56,7 +56,8 @@ Rails.application.routes.draw do
         post 'project/:project_id/score/create' => 'score#create'
         get 'project/:project_id/no/:no/score/all' => 'score#all'
 
-        get 'commits/test' => 'commits#test'
+        get 'charts/test' => 'charts#test'
+        get 'charts/commits' => 'charts#commits'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".
