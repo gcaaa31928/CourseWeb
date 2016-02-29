@@ -186,5 +186,12 @@ angular.module('courseWebApp').factory 'Student', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.showLocChart = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/charts/line_of_code', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory
 ]

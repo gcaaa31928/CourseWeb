@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229044907) do
+ActiveRecord::Schema.define(version: 20160229163756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(version: 20160229044907) do
     t.text     "average_commits_count"
     t.text     "high_standard_commits_count"
     t.text     "low_standard_commits_count"
+    t.text     "average_loc"
+    t.text     "high_standard_loc"
+    t.text     "low_standard_loc"
   end
 
   create_table "courses", force: :cascade do |t|

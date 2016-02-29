@@ -2,8 +2,11 @@ require 'http_status_code'
 class Api::ChartsController < ApplicationController
 
     def test
-        git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse2.git")
-        Log.info(git.log(999999).since('1 weeks ago').to_s)
+        git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse10.git")
+        commits = git.log(999999)
+        commits.each do |now|
+            # Log.info(now.diff_parent.stats.to_s)
+        end
         render HttpStatusCode.ok(count: 0)
     end
 
@@ -11,10 +14,8 @@ class Api::ChartsController < ApplicationController
         retrieve
 
         project = @student.group.project
-        since_date = project.created_at.to_date
-        until_date = since_date + 1.week
         course = @student.course
-        ChartsJob.perform_later(course)
+        CommitsChartJob.perform_later(course)
         your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
         your_commits_charts = {}
         commits = []
@@ -34,6 +35,41 @@ class Api::ChartsController < ApplicationController
         data['average'] = chart.average_commits_count.to_a.reverse.to_h if chart
         data['high_standard'] = chart.high_standard_commits_count.to_a.reverse.to_h if chart
         data['low_standard'] = chart.low_standard_commits_count.to_a.reverse.to_h if chart
+
+        render HttpStatusCode.ok(data)
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def line_of_code
+        retrieve
+
+        project = @student.group.project
+        course = @student.course
+        # LocChartJob.perform_later(course)
+        your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
+        your_loc_charts = {}
+        commits = []
+        begin
+            commits = your_git.log(999999)
+        rescue
+            commits = []
+        end
+        commits.each do |commit|
+            your_loc_charts[commit.date.strftime("%F")] = commit.diff_parent.insertions.to_i
+        end
+        chart = Chart.find_by(course_id: course.id)
+        data = {
+            you: your_loc_charts.to_a.reverse.to_h
+        }
+        data['average'] = chart.average_loc.to_a.reverse.to_h if chart
+        data['high_standard'] = chart.high_standard_loc.to_a.reverse.to_h if chart
+        data['low_standard'] = chart.low_standard_loc.to_a.reverse.to_h if chart
 
         render HttpStatusCode.ok(data)
     rescue => e

@@ -1,4 +1,4 @@
-class ChartsJob < ActiveJob::Base
+class CommitsChartJob < ActiveJob::Base
     queue_as :default
 
     APP_CONFIG = YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env]
@@ -43,7 +43,7 @@ class ChartsJob < ActiveJob::Base
             all_commits[key].sort!
             average_charts[key] = sum_commits[key] / value
             high_standard_charts[key] = all_commits[key][(value * 0.75).to_i]
-            low_standard_charts[key] = all_commits[key][(value * 0.75).to_i]
+            low_standard_charts[key] = all_commits[key][(value * 0.25).to_i]
         end
         chart = Chart.find_or_initialize_by(course_id: course.id)
         chart.average_commits_count = sort_by_date(average_charts)

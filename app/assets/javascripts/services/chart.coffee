@@ -9,6 +9,10 @@ angular.module('courseWebApp').factory 'Chart', [
         factory.highStandardCommitTimes = []
         factory.lowStandardCommitTimes = []
         factory.averageCommitTimes = []
+        factory.selfLOC = []
+        factory.highStandardLOC = []
+        factory.lowStandardLOC = []
+        factory.averageLOC = []
         factory.commitChartElement = '#commitChart'
         factory.locChartElement = '#locChart'
         factory.timelogChartElement = '#timelogChart'
@@ -27,11 +31,21 @@ angular.module('courseWebApp').factory 'Chart', [
                     factory.averageCommitTimes = remoteDataToChartsData(data.average)
                     factory.highStandardCommitTimes = remoteDataToChartsData(data.high_standard)
                     factory.lowStandardCommitTimes = remoteDataToChartsData(data.low_standard)
-                    resolve()
+                    Student.showLocChart().then ((data) ->
+                        factory.selfLOC = remoteDataToChartsData(data.you)
+                        factory.averageLOC = remoteDataToChartsData(data.average)
+                        factory.highStandardLOC = remoteDataToChartsData(data.high_standard)
+                        factory.lowStandardLOC = remoteDataToChartsData(data.low_standard)
+                        resolve()
+                    ), (msg) ->
                 ), (msg) ->
                     resolve()
 
         factory.chartInformation = (title, unit, selfValue, standardValues, highStandardValues, lowStandardValues) ->
+            chart: {
+                type: 'area',
+                spacingBottom: 30
+            }
             title:
                 text: title,
                 x: -20
@@ -67,7 +81,11 @@ angular.module('courseWebApp').factory 'Chart', [
             }, {
                 name: '你',
                 data: selfValue
+                lineWidth: 3
             }]
+            credits: {
+                enabled: false
+            }
         factory.renderCommitCharts = () ->
 
             $timeout(() ->
@@ -76,8 +94,8 @@ angular.module('courseWebApp').factory 'Chart', [
                         factory.highStandardCommitTimes, factory.lowStandardCommitTimes)
                 )
                 $(factory.locChartElement).highcharts(
-                    factory.chartInformation('程式行數', '行', factory.selfCommitTimes, factory.averageCommitTimes,
-                        factory.highStandardCommitTimes, factory.lowStandardCommitTimes)
+                    factory.chartInformation('程式行數', '行', factory.selfLOC, factory.averageLOC,
+                        factory.highStandardLOC, factory.lowStandardLOC)
                 )
                 $(factory.timelogChartElement).highcharts(
                     factory.chartInformation('時間', '小時', factory.selfCommitTimes, factory.averageCommitTimes,
