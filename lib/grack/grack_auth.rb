@@ -29,11 +29,9 @@ module Grack
 
                 @student = authenticate_user(login, password)
 
-
                 if @student and can_handle_project(@project, @student)
                     # Gitlab::ShellEnv.set_env(@user)
                     @env['REMOTE_USER'] = @auth.username
-
                 else
                     return unauthorized
                 end
@@ -84,8 +82,8 @@ module Grack
                                  :push_code
                              end
 
-                    true
                     Notification.student_action(@student, 'push code到server上')
+                    true
                 else
                     false
             end
@@ -94,7 +92,6 @@ module Grack
         def project_by_path(path)
             if m = /^\/git\/oopcourse([\w\.\/-]+)\.git/.match(path).to_a
                 path_with_namespace = m.last
-                Log.info(path_with_namespace.to_s)
                 Project.find_by(id: path_with_namespace.to_i)
             end
         end
@@ -105,9 +102,9 @@ module Grack
 
         def is_test_git?(path)
             if m = /^\/git\/test\/oopcourse([\w\.\/-]+)\.git/.match(path).to_a
-                path_with_namespace = m.last
-                Log.info(path_with_namespace.to_s)
-                return true
+                if m.last
+                    return true
+                end
             end
             false
         end

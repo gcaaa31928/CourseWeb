@@ -14,7 +14,6 @@
  *= require_self
  */
 
-@import "view.scss";
 html {
     font-family: GillSans, Calibri, Trebuchet, sans-serif;
 }

@@ -5,6 +5,9 @@ class Notification < ActiveRecord::Base
     end
 
     def self.student_action(student, action)
-        self.send_message("#{student.name} 正在#{action}")
+        notification = Notification.last
+        if Time.now - notification.created_at >= 1.second
+            self.send_message("#{student.name} 正在#{action}")
+        end
     end
 end

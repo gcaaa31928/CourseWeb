@@ -51,7 +51,7 @@ class Api::TeachingAssistantController < ApplicationController
     def retrieve
         require_headers
         retrieve_admin
-        if @admin.nil?
+        if @admin.nil? and @teaching_assistant.nil?
             raise '憑證失效'
         end
     end
