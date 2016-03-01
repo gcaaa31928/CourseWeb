@@ -13,25 +13,27 @@ class Api::ChartsController < ApplicationController
     def commits
         retrieve
 
-        project = @student.group.project
+        project = @student.group.project if @student.group
         course = @student.course
         CommitsChartJob.perform_later(course)
-        your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
         your_commits_charts = {}
         commits = []
-        begin
-            commits = your_git.log(999999)
-        rescue
-            commits = []
+        data = {}
+        if project.present?
+            your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
+            begin
+                commits = your_git.log(999999)
+            rescue
+                commits = []
+            end
+            commits.each do |commit|
+                your_commits_charts[commit.date.strftime("%F")] ||= 0
+                your_commits_charts[commit.date.strftime("%F")] += 1
+            end
         end
-        commits.each do |commit|
-            your_commits_charts[commit.date.strftime("%F")] ||= 0
-            your_commits_charts[commit.date.strftime("%F")] += 1
-        end
+
         chart = Chart.find_by(course_id: course.id)
-        data = {
-            you: your_commits_charts.to_a.reverse.to_h
-        }
+        data['you'] = your_commits_charts.to_a.reverse.to_h
         data['average'] = chart.average_commits_count.to_a.reverse.to_h if chart
         data['high_standard'] = chart.high_standard_commits_count.to_a.reverse.to_h if chart
         data['low_standard'] = chart.low_standard_commits_count.to_a.reverse.to_h if chart
@@ -49,24 +51,26 @@ class Api::ChartsController < ApplicationController
     def line_of_code
         retrieve
 
-        project = @student.group.project
+        project = @student.group.project if @student.group
         course = @student.course
         # LocChartJob.perform_later(course)
-        your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
         your_loc_charts = {}
         commits = []
-        begin
+        data = {}
+        if project.present?
+            your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
+            begin
             commits = your_git.log(999999)
-        rescue
-            commits = []
+            rescue
+                commits = []
+            end
+            commits.each do |commit|
+                your_loc_charts[commit.date.strftime("%F")] = commit.diff_parent.insertions.to_i
+            end
         end
-        commits.each do |commit|
-            your_loc_charts[commit.date.strftime("%F")] = commit.diff_parent.insertions.to_i
-        end
+
         chart = Chart.find_by(course_id: course.id)
-        data = {
-            you: your_loc_charts.to_a.reverse.to_h
-        }
+        data['you'] = your_loc_charts.to_a.reverse.to_h
         data['average'] = chart.average_loc.to_a.reverse.to_h if chart
         data['high_standard'] = chart.high_standard_loc.to_a.reverse.to_h if chart
         data['low_standard'] = chart.low_standard_loc.to_a.reverse.to_h if chart
