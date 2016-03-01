@@ -76,6 +76,7 @@ module Grack
             case service
                 when 'git-upload-pack'
                     true
+                    Notification.student_action(@student, '從server上pull code')
                 when'git-receive-pack'
                     action = if false
                                  :push_code_to_protected_branches
@@ -84,6 +85,7 @@ module Grack
                              end
 
                     true
+                    Notification.student_action(@student, 'push code到server上')
                 else
                     false
             end

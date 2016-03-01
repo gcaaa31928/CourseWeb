@@ -1,6 +1,9 @@
 require 'factory_girl'
 
-FactoryGirl.define do  factory :chart do
+FactoryGirl.define do  factory :notification do
+    
+  end
+  factory :chart do
     
   end
   factory :forgot_password_token do

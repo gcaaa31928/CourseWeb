@@ -33,7 +33,7 @@ class Api::ScoreController < ApplicationController
         permitted = params.permit(:project_id, :no)
         scores = Score.where(project_id: permitted[:project_id].to_i,
                              no: permitted[:no].to_i)
-        Log.info(scores[0].teaching_assistant.to_json)
+        # Log.info(scores[0].teaching_assistant.to_json)
         render HttpStatusCode.ok(scores.as_json(
             include: {
                 teaching_assistant: {

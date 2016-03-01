@@ -2,7 +2,7 @@ require 'http_status_code'
 class Api::ChartsController < ApplicationController
 
     def test
-        git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse10.git")
+        git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse14.git")
         commits = git.log(999999)
         commits.each do |now|
             # Log.info(now.diff_parent.stats.to_s)
@@ -53,14 +53,14 @@ class Api::ChartsController < ApplicationController
 
         project = @student.group.project if @student.group
         course = @student.course
-        # LocChartJob.perform_later(course)
+        LocChartJob.perform_later(course)
         your_loc_charts = {}
         commits = []
         data = {}
         if project.present?
             your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
             begin
-            commits = your_git.log(999999)
+                commits = your_git.log(999999)
             rescue
                 commits = []
             end
