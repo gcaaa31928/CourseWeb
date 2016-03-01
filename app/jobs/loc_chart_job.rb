@@ -20,10 +20,11 @@ class LocChartJob < ActiveJob::Base
             begin
                 commits = git.log(999999)
                 commits_by_date = {}
-                commits.each do |commit|
-                    commits_by_date[commit.date.strftime("%F")] ||= 0
-                    commits_by_date[commit.date.strftime("%F")] += commit.diff_parent.insertions.to_i
+                commits.each_cons(2) do |commit1, commit2|
+                    commits_by_date[commit1.date.strftime("%F")] ||= 0
+                    commits_by_date[commit1.date.strftime("%F")] += git.diff(commit2, commit1).insertions.to_i
                 end
+
                 commits_by_date.each do |key, value|
                     group_count[key] ||= 0
                     group_count[key] += 1
@@ -33,6 +34,7 @@ class LocChartJob < ActiveJob::Base
                     all_loc[key] << value
                 end
             rescue => e
+                nil
             end
         end
         average_charts = {}

@@ -38,6 +38,7 @@ angular.module('courseWebApp').factory 'Chart', [
                         factory.lowStandardLOC = remoteDataToChartsData(data.low_standard)
                         resolve()
                     ), (msg) ->
+                        resolve()
                 ), (msg) ->
                     resolve()
 
