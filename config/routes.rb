@@ -59,6 +59,8 @@ Rails.application.routes.draw do
         get 'charts/test' => 'charts#test'
         get 'charts/commits' => 'charts#commits'
         get 'charts/line_of_code' => 'charts#line_of_code'
+
+        get 'notification/get_logs' => 'notification#get_logs'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

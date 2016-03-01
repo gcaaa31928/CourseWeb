@@ -6,7 +6,9 @@ angular.module('courseWebApp').controller('StudentCtrl', [
     'Chart',
     '$q',
     '$state',
-    ($scope, Student, Group, $timeout, Chart, $q, $state) ->
+    '$interval',
+    '$http'
+    ($scope, Student, Group, $timeout, Chart, $q, $state, $interval, $http) ->
 # hack it
         q = async.queue(((task, callback) ->
             task().then () ->
@@ -44,6 +46,10 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.passwordForm =
             password: ''
             confirmPassword: ''
+
+        # for log
+        $scope.logs = []
+        $scope.logIndex = -1
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -176,6 +182,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 Chart.getCommitsChart().then ((data) ->
                     $scope.loading = false
                     Chart.renderCommitCharts()
+                    $scope.renderNews()
                     resolve()
                 ), (msg) ->
                     $scope.loading = false
@@ -290,6 +297,29 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             $timeout(() ->
                 $(".button-collapse").sideNav();
             )
+
+        $scope.renderNews = () ->
+            $timeout(() ->
+                $scope.newsticker = $('.newsticker').newsTicker({
+                    row_height: 80,
+                    max_rows: 5,
+                    speed: 600,
+                    direction: 'down',
+                    autostart: 1,
+                    duration: 4000,
+                });
+            )
+            $interval(() ->
+                $('#ticker li:last').slideUp(() ->
+                    $(this).prependTo($('#ticker')).slideDown()
+                )
+            , 2000)
+
+        $scope.getLogs = (after_id) ->
+            $q (resolve, reject) ->
+                $http.get("/api/notification/get_logs?after_id=#{after_id}").then ((response) ->
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
 
 
         # local processing
