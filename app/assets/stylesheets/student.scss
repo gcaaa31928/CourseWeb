@@ -25,11 +25,10 @@
     border: 1px solid #DDD;
     border-radius: 5px;
     box-shadow: 0px 0px 5px #DDD;
-    background-color:  #F5F3E5;
+    color: white;
     text-align: left;
-    h3 {
+    h5 {
         padding: 0 0 10px 10px;
-        border-bottom: 1px solid #A7A7A7;
     }
     ul {
         list-style: none;
@@ -39,10 +38,11 @@
     }
 
     ul li {
+        color: #212121;
+        background-color: #e3f2fd;
         list-style: none;
         height:50px;
         padding:7px;
-        border-bottom: 1px solid #D6CFB8;
     }
 }
 

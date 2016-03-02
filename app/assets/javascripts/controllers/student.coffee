@@ -215,7 +215,6 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.prepareEditProject = () ->
             $q (resolve, reject) ->
-
                 Student.showProject().then ((data) ->
                     if data?
                         $scope.project = data
@@ -263,10 +262,10 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.prepareSetting = () ->
             $scope.loading = false
             $timeout(() ->
-                    $('.collapsible').collapsible({
-                        accordion : false
-                    })
-                )
+                $('.collapsible').collapsible({
+                    accordion: false
+                })
+            )
 
         q.drain = () ->
             $scope.layout.loading = false
@@ -274,7 +273,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.prepareAll = () ->
             $scope.layout.loading = true
-            q.push($scope.prepareIndex)
+#            q.push($scope.prepareIndex)
             q.push($scope.prepareEditGroup)
             q.push($scope.prepareEditProject)
             q.push($scope.prepareProject)
@@ -299,37 +298,45 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             )
 
         $scope.renderNews = () ->
-            $timeout(() ->
-                $scope.newsticker = $('.newsticker').newsTicker({
-                    row_height: 80,
-                    max_rows: 5,
-                    speed: 600,
-                    direction: 'down',
-                    autostart: 1,
-                    duration: 4000,
-                });
-            )
-            $interval(() ->
-                $('#ticker li:last').slideUp(() ->
-                    $(this).prependTo($('#ticker')).slideDown()
-                )
-            , 2000)
+            newsTimeout = () ->
+                $interval(() ->
+                    if $scope.logs.length <= 3
+                        $scope.time = new Date($scope.logs[$scope.logs.length - 1].created_at) if $scope.logs.length >= 1
+                        $scope.time ?= new Date()
+                        $scope.getLogs($scope.time.getTime())
 
-        $scope.getLogs = (after_id) ->
+                    if $scope.logs.length <= 0
+                        return
+                    text = $scope.logs.pop().text
+                    $('#ticker').prepend("<li>#{text}</li>")
+                    $('#ticker li:first').slideUp(0).slideDown()
+                    if $('#ticker li').length >= 10
+                        $('#ticker li:last').slideUp()
+                , 2000)
+            newsTimeout()
+
+        $scope.getLogs = (after_time) ->
             $q (resolve, reject) ->
-                $http.get("/api/notification/get_logs?after_id=#{after_id}").then ((response) ->
+                $http.get("/api/notification/get_logs?after_time=#{after_time}").then ((response) ->
+                    if response.data.data?
+                        for log in response.data.data
+                            $scope.logs.unshift(log)
+                    resolve()
                 ), (response) ->
-                    handleFailedPromise(resolve, reject, response)
+                    resolve()
 
 
         # local processing
+
+        $scope.getLogs(new Date().getTime())
+
         handleAllGroup = (data) ->
             angular.forEach(data, (group) ->
                 if group.project?
                     group.projectName = group.project.name
 # TODO(Red): group demo score
             )
-            data.sort (a,b) ->
+            data.sort (a, b) ->
                 if a.projectName? and b.projectName?
                     return a.id - b.id
                 else if not a.projectName and not b.projectName?
