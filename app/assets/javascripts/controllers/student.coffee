@@ -50,6 +50,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         # for log
         $scope.logs = []
         $scope.logIndex = -1
+        $scope.alreadyGetLogs = false
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -300,13 +301,18 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.renderNews = () ->
             newsTimeout = () ->
                 $interval(() ->
-                    if $scope.logs.length <= 3
-                        $scope.time = new Date($scope.logs[$scope.logs.length - 1].created_at) if $scope.logs.length >= 1
-                        $scope.time ?= new Date()
-                        $scope.getLogs($scope.time.getTime())
-
                     if $scope.logs.length <= 0
+                        $scope.log_id = $scope.logs[$scope.logs.length - 1].id if $scope.logs.length >= 1
+                        $scope.log_time ?= new Date().getTime()
+                        $scope.alreadyGetLogs = true
+                        $scope.getLogs(null, $scope.log_time)
                         return
+                    if $scope.logs.length <= 3
+                        $scope.log_id = $scope.logs[$scope.logs.length - 1].id if $scope.logs.length >= 1
+                        $scope.alreadyGetLogs = true
+                        $scope.getLogs($scope.log_id)
+                        return
+
                     text = $scope.logs.pop().text
                     $('#ticker').prepend("<li>#{text}</li>")
                     $('#ticker li:first').slideUp(0).slideDown()
@@ -315,20 +321,22 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 , 2000)
             newsTimeout()
 
-        $scope.getLogs = (after_time) ->
+        $scope.getLogs = (after_id, after_time = null) ->
             $q (resolve, reject) ->
-                $http.get("/api/notification/get_logs?after_time=#{after_time}").then ((response) ->
+                url = "/api/notification/get_logs?after_id=#{after_id}" if after_id?
+                url = "/api/notification/get_logs?after_time=#{after_time}" if after_time?
+                $http.get(url).then ((response) ->
                     if response.data.data?
                         for log in response.data.data
                             $scope.logs.unshift(log)
+                    $scope.alreadyGetLogs = false
                     resolve()
                 ), (response) ->
+                    $scope.alreadyGetLogs = false
                     resolve()
 
 
         # local processing
-
-        $scope.getLogs(new Date().getTime())
 
         handleAllGroup = (data) ->
             angular.forEach(data, (group) ->
