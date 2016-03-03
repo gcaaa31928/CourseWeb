@@ -308,12 +308,15 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     if $scope.logs.length <= 0
                         return
                     $scope.log_time = null if $scope.logs.length >= 1
-                    console.log($scope.logs)
-                    text = $scope.logs.pop().text
-                    $('#ticker').prepend("<li>#{text}</li>")
+                    log = $scope.logs.pop()
+                    text = log.text
+                    log.moment = new Date(log.created_at).toLocaleTimeString()
+                    $('#ticker').prepend("<li>#{log.moment}: #{text}</li>")
                     $('#ticker li:first').slideUp(0).slideDown()
                     if $('#ticker li').length >= 10
-                        $('#ticker li:last').slideUp().remove()
+                        $('#ticker li:last').slideUp('swing', () ->
+                            $(this).remove()
+                        )
                 , 2000)
             newsTimeout()
 
