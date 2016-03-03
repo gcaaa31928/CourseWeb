@@ -313,7 +313,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     $('#ticker').prepend("<li>#{text}</li>")
                     $('#ticker li:first').slideUp(0).slideDown()
                     if $('#ticker li').length >= 10
-                        $('#ticker li:last').slideUp()
+                        $('#ticker li:last').slideUp().remove()
                 , 2000)
             newsTimeout()
 
