@@ -61,12 +61,12 @@ class Api::ChartsController < ApplicationController
             your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
             begin
                 commits = your_git.log(999999)
+                commits.each_cons(2) do |commit1, commit2|
+                    your_loc_charts[commit1.date.strftime("%F")] ||= 0
+                    your_loc_charts[commit1.date.strftime("%F")] += your_git.diff(commit2, commit1).insertions.to_i
+                end
             rescue
                 commits = []
-            end
-            commits.each_cons(2) do |commit1, commit2|
-                your_loc_charts[commit1.date.strftime("%F")] ||= 0
-                your_loc_charts[commit1.date.strftime("%F")] += your_git.diff(commit2, commit1).insertions.to_i
             end
         end
 
