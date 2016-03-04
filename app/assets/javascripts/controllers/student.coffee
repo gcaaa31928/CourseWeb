@@ -299,8 +299,14 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             )
 
         $scope.renderNews = () ->
-            newsTimeout = () ->
+            if $scope.newsTimeout?
+                return
+            $scope.newsTimeout = () ->
                 $interval(() ->
+                    if $scope.state != 'index'
+                        $scope.log_time = null
+                        $scope.log_id = null
+                        return
                     if $scope.logs.length <= 3 and $scope.gettingLogs == false
                         $scope.log_time ?= new Date().getTime()
                         $scope.gettingLogs = true
@@ -318,7 +324,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                             $(this).remove()
                         )
                 , 2000)
-            newsTimeout()
+            $scope.newsTimeout()
 
         $scope.getLogs = (after_id, after_time = null) ->
             $q (resolve, reject) ->
