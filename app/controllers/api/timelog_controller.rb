@@ -109,19 +109,19 @@ class Api::TimelogController < ApplicationController
         commits = []
         begin
             commits = git.log(9999999)
+            commits.each do |commit|
+                if commit.date.to_date < before_date
+                    break
+                end
+                if commit.date.to_date >= before_date and commit.date.to_date <= current_date and last_commit.nil?
+                    last_commit = commit
+                end
+                if commit.date.to_date >= before_date  and commit.date.to_date <= current_date
+                    first_commit = commit
+                end
+            end
         rescue
             nil
-        end
-        commits.each do |commit|
-            if commit.date.to_date < before_date
-                break
-            end
-            if commit.date.to_date >= before_date and commit.date.to_date <= current_date and last_commit.nil?
-                last_commit = commit
-            end
-            if commit.date.to_date >= before_date  and commit.date.to_date <= current_date
-                first_commit = commit
-            end
         end
         if last_commit.nil? and first_commit.nil?
             return 0
