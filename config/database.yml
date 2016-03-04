@@ -83,5 +83,7 @@ test:
 production:
   <<: *default
   database: CourseWeb_production
+  host: localhost
+  port: 5432
   username: CourseWeb
   password: <%= ENV['COURSEWEB_DATABASE_PASSWORD'] %>
