@@ -1,6 +1,9 @@
 require 'factory_girl'
 
-FactoryGirl.define do  factory :notification do
+FactoryGirl.define do  factory :homework do
+    
+  end
+  factory :notification do
     
   end
   factory :chart do
