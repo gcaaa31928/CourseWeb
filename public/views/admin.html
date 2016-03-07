@@ -236,33 +236,50 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s3 clickable"><a class="active">Demo成績</a></li>
-                        <li class="tab col s3 clickable"><a>作業</a></li>
+                        <li class="tab col s3 clickable"><a class="active" ng-click="changeTab('score')">Demo成績</a></li>
+                        <li class="tab col s3 clickable"><a ng-click="changeTab('homework')">作業</a></li>
                     </ul>
                 </div>
+                <table ng-if="tab == 'score'" class="striped">
+                    <thead>
+                    <tr data-target="timelog-modal">
+                        <th data-field="id">組別</th>
+                        <th data-field="name">學號</th>
+                        <th data-field="name">學生</th>
+                        <th data-field="name">專案名稱</th>
+                        <th data-field="middleGrade">Demo1成績</th>
+                        <th data-field="finalGrade">Demo2成績</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                        class="clickable" ng-click="openTimelogModal(group)">
+                        <td>{{group.id}}</td>
+                        <td>{{group.students | studentsId}}</td>
+                        <td>{{group.students | studentsName}}</td>
+                        <td>{{group.projectName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table ng-if="tab == 'homework'" class="striped">
+                    <thead>
+                    <tr>
+                        <th data-field="id">學號</th>
+                        <th data-field="name">姓名</th>
+                        <th ng-repeat="homework in homeworks">{{homework.name}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                        class="clickable" ng-click="openTimelogModal(group)">
+                        <td>{{group.id}}</td>
+                        <td>{{group.students | studentsId}}</td>
+                        <td>{{group.students | studentsName}}</td>
+                        <td>{{group.projectName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <table class="striped">
-                <thead>
-                <tr data-target="timelog-modal">
-                    <th data-field="id">組別</th>
-                    <th data-field="name">學號</th>
-                    <th data-field="name">學生</th>
-                    <th data-field="name">專案名稱</th>
-                    <th data-field="middleGrade">Demo1成績</th>
-                    <th data-field="finalGrade">Demo2成績</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
-                    class="clickable" ng-click="openTimelogModal(group)">
-                    <td>{{group.id}}</td>
-                    <td>{{group.students | studentsId}}</td>
-                    <td>{{group.students | studentsName}}</td>
-                    <td>{{group.projectName}}</td>
-                </tr>
-
-                </tbody>
-            </table>
             <div id="timelog-modal" class="modal">
                 <div class="modal-content">
                     <h5>組別: {{selectedGroup.project.name}}</h5>

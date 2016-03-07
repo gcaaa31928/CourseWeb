@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
         get 'course/:course_id/students/list_without_group' => 'student#list_without_group'
 
+        get 'course/:course_id/students/all' => 'student#all'
+
         post 'group/create' => 'group#create'
         post 'group/destroy' => 'group#destroy'
         get 'group/show' => 'group#show'
@@ -63,6 +65,9 @@ Rails.application.routes.draw do
         get 'notification/get_logs' => 'notification#get_logs'
 
         post 'homework/add' => 'homework#add'
+        post 'homework/hand_in_homework' => 'homework#hand_in_homework'
+        post 'homework/cancel_hand_in_homework' => 'homework#cancel_hand_in_homework'
+        get 'course/:course_id/homeworks/all' => 'homework#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

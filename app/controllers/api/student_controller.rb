@@ -43,6 +43,23 @@ class Api::StudentController < ApplicationController
         )
     end
 
+    def all
+        retrieve
+        permitted = params.permit(:course_id)
+        if @student and not same_course?(permitted[:course_id].to_i)
+            raise '你沒有權限執行這個操作'
+        end
+        students = Student.where(course_id: permitted[:course_id].to_i)
+        render HttpStatusCode.ok(students.as_json(
+            include: {
+                deliver_homeworks:{
+                    only: [:id, :homework_id]
+                }
+            }, only: [:id, :name]
+        ))
+    end
+
+
 
 
     private

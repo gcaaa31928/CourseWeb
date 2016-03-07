@@ -57,8 +57,14 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.scoreForm =
             point: ''
 
+        $scope.tab = 'score'
+
+
         $scope.changeState = (state) ->
             $scope.state = state
+
+        $scope.changeTab = (tab) ->
+            $scope.tab = tab
 
 
         $scope.$watch('state', (newValue, oldValue) ->
@@ -250,6 +256,23 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 ), (msg) ->
                     resolve()
 
+        $scope.prepareAllHomeworks= () ->
+            $q (resolve, reject) ->
+                Admin.allHomeworks($scope.selectedCourse.id).then ((data) ->
+                    $scope.homeworks = data
+                    console.log(data)
+                    resolve()
+                ), (msg) ->
+                    resolve()
+
+        $scope.prepareAllStudents = () ->
+            $q (resolve, reject) ->
+                Admin.allStudents($scope.selectedCourse.id).then ((data) ->
+                    $scope.students = data
+                    resolve()
+                ), (msg) ->
+                    resolve()
+
         $scope.prepareListStudentWithoutGroup = () ->
             $q (resolve, reject) ->
                 Admin.listStudentWithoutGroup($scope.selectedCourse.id).then ((data) ->
@@ -280,7 +303,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $scope.courseLoading = true
             courseQuery.push($scope.prepareAllGroup)
             courseQuery.push($scope.prepareListStudentWithoutGroup)
-
+            courseQuery.push($scope.prepareAllHomeworks)
+            courseQuery.push($scope.prepareAllStudents)
 
         $scope.prepareAll = () ->
             $scope.layout.loading = true

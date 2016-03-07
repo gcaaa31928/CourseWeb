@@ -14,6 +14,39 @@ class Api::HomeworkController < ApplicationController
         )
     end
 
+    def all
+        retrieve
+        permitted = params.permit(:name, :course_id)
+        homeworks = Homework.where(course_id: permitted[:course_id])
+        render HttpStatusCode.ok(homeworks.as_json(only: [:id, :name]))
+    end
+
+    def hand_in_homework
+        retrieve
+        permitted = params.permit(:homework_id, :student_id)
+        DeliverHomework.find_or_create_by(student_id: permitted[:student_id].to_i, homework_id: permitted[:homework_id].to_i)
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def cancel_hand_in_homework
+        retrieve
+        permitted = params.permit(:homework_id, :student_id)
+        deliver_homework = DeliverHomework.find_by(student_id: permitted[:student_id].to_i, homework_id: permitted[:homework_id].to_i)
+        deliver_homework.destroy!
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
 
     private
 

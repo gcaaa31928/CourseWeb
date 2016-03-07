@@ -50,6 +50,19 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.allStudents = (courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/course/#{courseId}/students/all", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.allHomeworks = (courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/course/#{courseId}/homeworks/all", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
 
         factory.allCourse = (canceler = null) ->
             $q (resolve, reject) ->

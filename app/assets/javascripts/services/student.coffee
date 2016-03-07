@@ -96,6 +96,13 @@ angular.module('courseWebApp').factory 'Student', [
                     handleFailedPromise(resolve, reject, response)
 
 
+        factory.AllStudents = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/course/' + factory.courseId + '/students/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.AllGroup = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + factory.courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
