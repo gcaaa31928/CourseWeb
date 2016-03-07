@@ -19,7 +19,7 @@ class Api::TimelogController < ApplicationController
                             only: [:name, :id]
                         }
                     },
-                    only: [:id, :cost]
+                    only: [:id, :cost, :category]
                 }
             }, only: [:id, :week_no, :date, :todo]
         )

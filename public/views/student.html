@@ -116,25 +116,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat-start="timelog in timelogs">
+                    <tr ng-repeat-start="timelog in timelogs" data-target="editting-time-cost">
                         <td rowspan="2">{{timelog.week_no}}</td>
                         <td rowspan="2">{{timelog.date}}</td>
-                        <td ng-if="timelog.editting">
-                            <div ng-if="timelog.time_costs[0].editting" class="input-field">
-                                <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
-                                       required>
-                                <label class='active' for="cost0">耗費小時</label>
-                            </div>
-                            <div ng-if="timelog.time_costs[1].editting" class="input-field">
-                                <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
-                                       required>
-                                <label class='active' for="cost1">耗費小時</label>
-                            </div>
-                        </td>
-                        <td ng-if="timelog.time_costs[0] && !timelog.editting">
+                        <td ng-if="timelog.time_costs[0]">
                             {{timelog.time_costs[0].student.name}}:{{timelog.time_costs[0].cost}}小時
                         </td>
-                        <td ng-if="!timelog.time_costs[0] && !timelog.editting" class="red-text text-darken-1">
+                        <td ng-if="!timelog.time_costs[0]" class="red-text text-darken-1">
                             未填寫
                         </td>
 
@@ -149,31 +137,35 @@
                         <td rowspan="2">
                             <img class="responsive-img" src="/images/test.jpg">
                         </td>
-                        <td rowspan="2">
-                            <div ng-if="!timelog.editting">
+                        <td rowspan="2" ng-if="!timelog.editting">
+                            <div>
                                 <a class="waves-effect waves-light btn" ng-click="editTimelog(timelog)">編輯</a>
-                            </div>
-                            <div ng-if="timelog.editting">
-                                <div>
-                                    <a class="waves-effect waves-light btn" ng-click="edittingTimelog(timelog)">修改</a>
-                                </div>
-                                <div class="margin-top-1x">
-                                    <a class="waves-effect waves-light btn" ng-click="cancelEditTimelog(timelog)">取消</a>
-                                </div>
                             </div>
                         </td>
 
                     </tr>
                     <tr ng-repeat-end>
-                        <td ng-if="timelog.time_costs[1] && !timelog.editting">
+                        <td ng-if="timelog.time_costs[1]">
                             {{timelog.time_costs[1].student.name}}:{{timelog.time_costs[1].cost}}小時
                         </td>
-                        <td ng-if="!timelog.time_costs[1] && !timelog.editting" class="red-text text-darken-1">
+                        <td ng-if="!timelog.time_costs[1]" class="red-text text-darken-1">
                             未填寫
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <div id="editting-time-cost" class="modal">
+                    <div class="modal-content">
+                        <table class="striped">
+                            <thead>
+                            <tr>
+                                <th data-field="cost">耗費小時</th>
+                                <th data-field="category">類別</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div ng-switch-when="group" class="container">

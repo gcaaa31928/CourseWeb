@@ -1,0 +1,2 @@
+module TimeCostHelper
+end

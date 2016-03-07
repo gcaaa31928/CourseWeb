@@ -68,6 +68,8 @@ Rails.application.routes.draw do
         post 'homework/hand_in_homework' => 'homework#hand_in_homework'
         post 'homework/cancel_hand_in_homework' => 'homework#cancel_hand_in_homework'
         get 'course/:course_id/homeworks/all' => 'homework#all'
+
+        post 'time_cost/add' => 'time_cost#add'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

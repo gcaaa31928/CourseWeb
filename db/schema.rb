@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307025144) do
+ActiveRecord::Schema.define(version: 20160307180209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,12 +126,13 @@ ActiveRecord::Schema.define(version: 20160307025144) do
     t.integer "privilege_id"
   end
 
-  create_table "time_costs", id: false, force: :cascade do |t|
+  create_table "time_costs", force: :cascade do |t|
     t.integer  "student_id", null: false
     t.integer  "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "timelog_id", null: false
+    t.integer  "category"
   end
 
   add_index "time_costs", ["student_id", "timelog_id"], name: "index_time_costs_on_student_id_and_timelog_id", unique: true, using: :btree
@@ -146,6 +147,7 @@ ActiveRecord::Schema.define(version: 20160307025144) do
     t.datetime "updated_at",         null: false
     t.integer  "project_id"
     t.integer  "main_force"
+    t.text     "image"
   end
 
 end
