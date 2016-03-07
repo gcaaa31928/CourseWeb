@@ -49,6 +49,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             id: ''
             name: ''
             className: ''
+        $scope.addHomeworkForm =
+            name: ''
         $scope.passwordForm =
             password: ''
             confirmPassword: ''
@@ -64,6 +66,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.prepareManage()
             else if newValue == 'setting'
                 $scope.prepareSetting()
+
         )
 
 
@@ -80,7 +83,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.submitCreateCourse = () ->
             $scope.requestLoading = true
             Admin.createCourseStudent($scope.form.courseId).then ((data) ->
-                Materialize.toast("建立專案成功", 2000)
+                Materialize.toast("建立課程成功", 2000)
                 $scope.prepareCourse()
                 $scope.requestLoading = false
             ), (msg) ->
@@ -98,6 +101,18 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             ).then ((data) ->
                 Materialize.toast("增加學生成功", 2000)
                 $scope.prepareListStudentWithoutGroup()
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
+        $scope.submitAddHomework = () ->
+            $scope.requestLoading = true
+            Admin.addHomework(
+                $scope.addHomeworkForm.name,
+                $scope.selectedCourse.id
+            ).then ((data) ->
+                Materialize.toast("增加作業成功", 2000)
                 $scope.requestLoading = false
             ), (msg) ->
                 Materialize.toast(msg, 2000)
@@ -252,6 +267,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         courseQuery.drain = () ->
             $scope.courseLoading = false
+            renderTabs()
             $timeout(() ->
                 $scope.picker = new Pikaday({field: $('#datepicker')[0]})
                 $('.modal-trigger').leanModal();
@@ -269,6 +285,11 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.prepareAll = () ->
             $scope.layout.loading = true
             q.push($scope.prepareCourse)
+
+        renderTabs = () ->
+            $timeout(() ->
+                $('ul.tabs').tabs();
+            )
 
         $scope.layout.loading = true
         Admin.verifyAccessToken().then ((data) ->

@@ -110,6 +110,7 @@
                         <th data-field="costTime">團隊花費時間</th>
                         <th data-field="todoList">進度規劃</th>
                         <th data-field="lineOfCode">行數</th>
+                        <th data-field="image">圖片</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -144,6 +145,9 @@
                             </div>
                         </td>
                         <td rowspan="2">{{timelog.loc}}</td>
+                        <td rowspan="2">
+                            <img class="responsive-img" src="/images/test.jpg">
+                        </td>
                         <td rowspan="2">
                             <div ng-if="!timelog.editting">
                                 <a class="waves-effect waves-light btn" ng-click="editTimelog(timelog)">編輯</a>

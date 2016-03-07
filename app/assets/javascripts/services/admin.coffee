@@ -125,6 +125,16 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.addHomework = (name, courseId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/homework/add', {
+                    name: name,
+                    course_id: courseId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.removeStudent = (id, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/teaching_assistant/students/' + id + '/remove', {}, factory.httpConfig(canceler)).then ((response) ->

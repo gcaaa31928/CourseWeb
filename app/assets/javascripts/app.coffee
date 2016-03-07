@@ -3,7 +3,7 @@ courseWeb = angular.module 'courseWebApp', [
     'ngAria',
     'ngRoute',
     'ui.router',
-    'ngStorage'
+    'ngStorage',
 ]
 
 courseWeb.config ($stateProvider, $urlRouterProvider) ->
