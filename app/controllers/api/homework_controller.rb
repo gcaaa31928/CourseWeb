@@ -17,6 +17,9 @@ class Api::HomeworkController < ApplicationController
     def all
         retrieve
         permitted = params.permit(:name, :course_id)
+        if @student and not same_course?(permitted[:course_id].to_i)
+            raise '你沒有權限執行這個操作'
+        end
         homeworks = Homework.where(course_id: permitted[:course_id])
         render HttpStatusCode.ok(homeworks.as_json(only: [:id, :name]))
     end
@@ -50,11 +53,22 @@ class Api::HomeworkController < ApplicationController
 
     private
 
+    def same_course?(course_id)
+        @student.course_id == course_id
+    end
+
     def retrieve
         require_headers
+        retrieve_student
         retrieve_admin
-        if @admin.nil? and @teaching_assistant.nil?
+        if @admin.nil? and @teaching_assistant.nil? and @student.nil?
             raise '憑證失效'
+        end
+    end
+
+    def retrieve_student
+        if @access_token.present?
+            @student = Student.find_by(access_token: @access_token)
         end
     end
 

@@ -15,6 +15,10 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 callback()
         ), 1)
 
+        homeworkQueue = async.queue(((task, callback) ->
+            task().then () ->
+                callback()
+        ), 1)
 
         $scope.loading = false
         $scope.requestLoading = false
@@ -52,6 +56,9 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.logIndex = -1
         $scope.gettingLogs = false
 
+        $scope.students = null
+        $scope.homeworks = null
+
         $scope.changeState = (state) ->
             $scope.state = state
 
@@ -70,6 +77,8 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 $scope.prepareListStudentWithoutGroup()
             else if newValue == 'setting'
                 $scope.prepareSetting()
+            else if newValue == 'homework'
+                $scope.prepareHomeworkPage()
             else
                 $scope.loading = false
         )
@@ -250,6 +259,42 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+        checkedDeliverHomework = (homeworks, students) ->
+            for homework in homeworks
+                for student in students
+                    student.deliver = {}
+                    student.deliver[homework.id] = false
+                    for deliver_homework in student.deliver_homeworks
+                        if deliver_homework.homework_id == homework.id
+                            student.deliver[homework.id] = true
+
+
+        $scope.prepareAllHomeworks = () ->
+            $q (resolve, reject) ->
+                Student.allHomeworks().then ((data) ->
+                    $scope.homeworks = data
+                    resolve()
+                ), (msg) ->
+                    resolve()
+
+        $scope.prepareAllStudents = () ->
+            $q (resolve, reject) ->
+                Student.allStudents().then ((data) ->
+                    $scope.students = data
+                    checkedDeliverHomework($scope.homeworks, $scope.students)
+                    resolve()
+                ), (msg) ->
+                    resolve()
+
+        homeworkQueue.drain = () ->
+            $scope.loading = false
+
+
+        $scope.prepareHomeworkPage = () ->
+            $scope.loading = true
+            homeworkQueue.push($scope.prepareAllHomeworks)
+            homeworkQueue.push($scope.prepareAllStudents)
+
         $scope.prepareListStudentWithoutGroup = () ->
             $q (resolve, reject) ->
                 Student.ListSudentWithoutGroup().then ((data) ->
@@ -274,7 +319,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.prepareAll = () ->
             $scope.layout.loading = true
-#            q.push($scope.prepareIndex)
+            #            q.push($scope.prepareIndex)
             q.push($scope.prepareEditGroup)
             q.push($scope.prepareEditProject)
             q.push($scope.prepareProject)

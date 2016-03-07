@@ -8,6 +8,7 @@
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
+                <li class="clickable" ng-click="changeState('homework')"><a>練習進度</a></li>
                 <li class="clickable" ng-click="changeState('setting')"><a>設定</a></li>
 
             </ul>
@@ -216,6 +217,33 @@
                 </table>
             </div>
         </div>
+        <div ng-switch-when="homework" class="container">
+            <table class="striped">
+                <thead>
+                <tr>
+                    <th data-field="id">學號</th>
+                    <th data-field="name">姓名</th>
+                    <th ng-repeat="homework in homeworks">{{homework.name}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="student in students">
+                    <td>{{student.id}}</td>
+                    <td>{{student.name}}</td>
+                    <td ng-repeat="homework in homeworks">
+                        <input type="checkbox"
+                               class="filled-in"
+                               ng-attr-id="{{'checkbox' + student.id + homework.id}}"
+                               ng-model="student.deliver[homework.id]"
+                               disabled="disabled"
+                               ng-change="submitHomeworkState(student.deliver[homework.id], homework.id, student.id)"/>
+                        <label ng-attr-for="{{'checkbox' + student.id + homework.id}}"></label>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div ng-switch-when="editGroup" class="container">
             <div ng-if="!hasGroup()">
                 <h3>你目前不屬於任何團隊</h3>
@@ -323,6 +351,7 @@
             </form>
 
         </div>
+
         <div ng-switch-when="setting" class="container">
             <div class="section container">
                 <ul class="collapsible popout" data-collapsible="accordion">
