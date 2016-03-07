@@ -59,13 +59,6 @@ class Api::AdminController < ApplicationController
         teaching_assistant.password = permitted[:id]
         teaching_assistant.save!
         render HttpStatusCode.ok
-    rescue => e
-        render HttpStatusCode.forbidden(
-            {
-                errorMsg: "#{$!}"
-            }
-        )
-
 
     rescue => e
         render HttpStatusCode.forbidden(

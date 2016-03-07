@@ -252,7 +252,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                    <tr ng-repeat="group in groups"
+                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
                         class="clickable" ng-click="openTimelogModal(group)">
                         <td>{{group.id}}</td>
                         <td>{{group.students | studentsId}}</td>
@@ -270,12 +271,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
-                        class="clickable" ng-click="openTimelogModal(group)">
-                        <td>{{group.id}}</td>
-                        <td>{{group.students | studentsId}}</td>
-                        <td>{{group.students | studentsName}}</td>
-                        <td>{{group.projectName}}</td>
+                    <tr ng-repeat="student in students">
+                        <td>{{student.id}}</td>
+                        <td>{{student.name}}</td>
+                        <td ng-repeat="homework in homeworks">
+                            <input type="checkbox"
+                                   class="filled-in"
+                                   ng-attr-id="{{'checkbox' + student.id + homework.id}}"
+                                   ng-model="student.deliver[homework.id]"
+                                   ng-change="submitHomeworkState(student.deliver[homework.id], homework.id, student.id)"/>
+                            <label ng-attr-for="{{'checkbox' + student.id + homework.id}}"></label>
+
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -435,7 +442,7 @@
                 <div id="delete-student-modal" class="modal">
                     <div class="modal-content">
                         <h4>確定要刪除此學生嗎?</h4>
-                        {{selectedStudent.id}}  {{selectedStudent.name}}
+                        {{selectedStudent.id}} {{selectedStudent.name}}
                     </div>
                     <div class="modal-footer">
                         <a ng-click="submitDeleteStudent()"

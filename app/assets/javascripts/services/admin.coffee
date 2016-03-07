@@ -148,6 +148,26 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.handInHomework = (homeworkId, studentId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/homework/hand_in_homework', {
+                    homework_id: homeworkId
+                    student_id: studentId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.cancelHandInHomework = (homeworkId, studentId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/homework/cancel_hand_in_homework', {
+                    homework_id: homeworkId
+                    student_id: studentId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.removeStudent = (id, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/teaching_assistant/students/' + id + '/remove', {}, factory.httpConfig(canceler)).then ((response) ->

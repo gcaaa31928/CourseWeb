@@ -57,6 +57,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.scoreForm =
             point: ''
 
+        $scope.students = null
+
         $scope.tab = 'score'
 
 
@@ -119,6 +121,47 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.selectedCourse.id
             ).then ((data) ->
                 Materialize.toast("增加作業成功", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
+        checkedDeliverHomework = (homeworks, students) ->
+            for homework in homeworks
+                for student in students
+                    student.deliver = {}
+                    student.deliver[homework.id] = false
+                    for deliver_homework in student.deliver_homeworks
+                        if deliver_homework.homework_id == homework.id
+                            student.deliver[homework.id] = true
+
+
+        $scope.submitHomeworkState = (handIn, homeworkId, studentId) ->
+            if handIn
+                $scope.submitHandInHomework(homeworkId, studentId)
+            else
+                $scope.submitCancelHandInHomework(homeworkId, studentId)
+
+
+        $scope.submitHandInHomework = (homeworkId, studentId) ->
+            $scope.requestLoading = true
+            Admin.handInHomework(
+                homeworkId
+                studentId
+            ).then ((data) ->
+                Materialize.toast("已登入繳交作業", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
+        $scope.submitCancelHandInHomework = (homeworkId, studentId) ->
+            $scope.requestLoading = true
+            Admin.cancelHandInHomework(
+                homeworkId
+                studentId
+            ).then ((data) ->
+                Materialize.toast("已取消登入繳交作業", 2000)
                 $scope.requestLoading = false
             ), (msg) ->
                 Materialize.toast(msg, 2000)
@@ -269,6 +312,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $q (resolve, reject) ->
                 Admin.allStudents($scope.selectedCourse.id).then ((data) ->
                     $scope.students = data
+                    checkedDeliverHomework($scope.homeworks, $scope.students)
+
                     resolve()
                 ), (msg) ->
                     resolve()
