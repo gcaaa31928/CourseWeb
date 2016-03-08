@@ -93,9 +93,13 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.openTimeCostModal = (timelog) ->
             $timeout(() ->
+                $scope.requestLoading = true;
                 $scope.selectedTimelog = timelog
-                $('#editting-time-cost').openModal()
-                $('select').material_select()
+                $scope.showTimeCosts($scope.selectedTimelog.id).then (() ->
+                    $('#editting-time-cost').openModal()
+                    $('select').material_select()
+                    $scope.requestLoading= false;
+                )
             )
 
         $scope.addTimeCost = () ->
@@ -108,18 +112,19 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             ), (msg) ->
                 Materialize.toast(msg, 2000)
 
+        $scope.deleteTimeCost = (timeCostId) ->
+            Student.destroyTimeCost(timeCostId).then ((data) ->
+                Materialize.toast("刪除Time Cost成功", 2000)
+                $scope.showTimeCosts($scope.selectedTimelog.id)
+                Student.showTimelog($scope.project.id).then ((data) ->
+                    $scope.timelogs = data
+                )
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+
         $scope.editTimelog = (timelog) ->
             $scope.timelog = angular.copy(timelog)
             timelog.editting = true
-            findOwnCostData = false
-            angular.forEach(timelog.time_costs, (timeCost) ->
-                if timeCost.student.id.toString() == Student.account.toString()
-                    timeCost.editting = true
-                    findOwnCostData = true
-            )
-            if not findOwnCostData
-                timelog.time_costs[timelog.time_costs.length] =
-                    editting: true
 
 
         $scope.edittingTimelog = (timelog) ->
@@ -130,7 +135,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     edittingTimeCost = timeCost
             )
 
-            Student.editTimelog(timelog.id, edittingTimeCost.cost, timelog.todo).then ((data) ->
+            Student.editTimelog(timelog.id, timelog.todo).then ((data) ->
                 Materialize.toast("修改Timelog成功", 2000)
                 $scope.prepareProject()
                 $scope.requestLoading = false
@@ -293,9 +298,12 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                             student.deliver[homework.id] = true
 
         $scope.showTimeCosts = (timelogId) ->
-            Student.showTimeCosts(timelogId).then ((data) ->
-                $scope.selectedTimelog.time_costs = data
-            )
+            $q (resolve, reject) ->
+                Student.showTimeCosts(timelogId).then ((data) ->
+                    $scope.selectedTimelog.time_costs = data
+                    resolve()
+                ), (msg) ->
+                    resolve()
 
         $scope.prepareAllHomeworks = () ->
             $q (resolve, reject) ->

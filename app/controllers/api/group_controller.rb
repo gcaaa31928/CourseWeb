@@ -10,7 +10,6 @@ class Api::GroupController < ApplicationController
         end
         groups = Group.joins(:students).where(course_id: permitted[:course_id].to_i).uniq
         groups.order!(:id)
-        Log.info(groups.to_json.to_s)
         average_data = {}
         groups.each do |group|
             if group.project

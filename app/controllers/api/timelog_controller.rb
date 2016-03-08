@@ -26,9 +26,9 @@ class Api::TimelogController < ApplicationController
         timelogs_json.each do |timelog|
             timelog['loc'] = loc[timelog['id']]
             timelog['sum_cost'] = {}
-            timelog.time_costs.each do |time_cost|
-                timelog['sum_cost'][time_cost.student.id] ||= 0
-                timelog['sum_cost'][time_cost.student.id] += time_cost.cost
+            timelog['time_costs'].each do |time_cost|
+                timelog['sum_cost'][time_cost['student']['id']] ||= 0
+                timelog['sum_cost'][time_cost['student']['id']] += time_cost['cost']
             end
         end
         render HttpStatusCode.ok(timelogs_json)
@@ -43,23 +43,13 @@ class Api::TimelogController < ApplicationController
 
     def edit
         retrieve_student
-        permitted = params.permit(:timelog_id, :cost, :todo)
+        permitted = params.permit(:timelog_id, :todo)
         verify_student_timelog_owner!(permitted[:timelog_id].to_i)
         timelog = Timelog.find_by(id: permitted[:timelog_id].to_i)
         if timelog.nil?
             raise '沒有這個Timelog'
         end
-        time_cost = TimeCost.find_by(student_id: @student.id, timelog_id: timelog.id)
-        ActiveRecord::Base.transaction do
-            timelog.update_attributes!(todo: permitted[:todo])
-            if time_cost.nil?
-                TimeCost.create!(student_id: @student.id,
-                                 timelog_id: timelog.id,
-                                 cost: permitted[:cost].to_i)
-            else
-                time_cost.update_attributes!(cost: permitted[:cost].to_i)
-            end
-        end
+        timelog.update_attributes!(todo: permitted[:todo])
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)

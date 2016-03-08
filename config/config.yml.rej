@@ -1,0 +1,9 @@
+diff a/config/config.yml b/config/config.yml	(rejected hunks)
+@@ -1,4 +1,7 @@
+ development:
++  git_app: 'C:\Git\bin\git.exe'
++  git_project_root: 'C:\Work\CourseWeb\repositories\git\'
++  git_repositories_root: 'C:\Work\CourseWeb\repositories\'
+   url: 'http://127.0.0.1:3000'
+ test:
+   git_app: /usr/bin/git

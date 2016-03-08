@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         get 'course/:course_id/homeworks/all' => 'homework#all'
 
         post 'time_cost/add' => 'time_cost#add'
+        post 'time_cost/:time_cost_id/destroy' => 'time_cost#destroy'
         get '/timelog/:timelog_id/time_cost/all' => 'time_cost#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.

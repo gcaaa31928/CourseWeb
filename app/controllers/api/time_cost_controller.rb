@@ -18,6 +18,24 @@ class Api::TimeCostController < ApplicationController
         )
     end
 
+    def destroy
+        retrieve_student
+        permitted = params.permit(:time_cost_id)
+        time_cost = TimeCost.find_by(id: permitted[:time_cost_id])
+        unless time_cost.can_destroy?(@student)
+            raise '你沒有權限可以刪除這個time cost'
+        end
+        time_cost.destroy!
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+
     def all
         retrieve_student
         permitted = params.permit(:timelog_id)
