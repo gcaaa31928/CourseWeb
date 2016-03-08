@@ -28,6 +28,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.project = null
         $scope.timelogs = null
         $scope.timelog = null
+        $scope.selectedTimelog = null
         $scope.projectForm =
             name: ''
             refUrl: ''
@@ -56,8 +57,14 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.logIndex = -1
         $scope.gettingLogs = false
 
+        # for homework
         $scope.students = null
         $scope.homeworks = null
+
+        # for timelog
+        $scope.addTimeCostForm =
+            cost: null
+            category: null
 
         $scope.changeState = (state) ->
             $scope.state = state
@@ -83,6 +90,23 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 $scope.loading = false
         )
 
+
+        $scope.openTimeCostModal = (timelog) ->
+            $timeout(() ->
+                $scope.selectedTimelog = timelog
+                $('#editting-time-cost').openModal()
+                $('select').material_select()
+            )
+
+        $scope.addTimeCost = () ->
+            Student.addTimeCost($scope.selectedTimelog.id, $scope.addTimeCostForm.cost, $scope.addTimeCostForm.category).then ((data) ->
+                Materialize.toast("增加Time Cost成功", 2000)
+                $scope.showTimeCosts($scope.selectedTimelog.id)
+                Student.showTimelog($scope.project.id).then ((data) ->
+                    $scope.timelogs = data
+                )
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
 
         $scope.editTimelog = (timelog) ->
             $scope.timelog = angular.copy(timelog)
@@ -268,6 +292,10 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                         if deliver_homework.homework_id == homework.id
                             student.deliver[homework.id] = true
 
+        $scope.showTimeCosts = (timelogId) ->
+            Student.showTimeCosts(timelogId).then ((data) ->
+                $scope.selectedTimelog.time_costs = data
+            )
 
         $scope.prepareAllHomeworks = () ->
             $q (resolve, reject) ->
@@ -433,4 +461,21 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         students.map((student) ->
             student.id
         ).join(',')
+)
+.filter('studentsId', () ->
+    (students) ->
+        if not students?
+            return ''
+        students.map((student) ->
+            student.id
+        ).join(',')
+)
+.filter('timeCostCategory', () ->
+    (category_id) ->
+        switch category_id
+            when 0 then return '程式撰寫'
+            when 1 then return '程式規劃'
+            when 2 then return '找尋素材'
+            when 3 then return '素材整理'
+            when 4 then return '團隊討論'
 )

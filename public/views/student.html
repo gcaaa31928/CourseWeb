@@ -116,16 +116,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat-start="timelog in timelogs" data-target="editting-time-cost">
+                    <tr ng-repeat-start="timelog in timelogs"
+                        data-target="editting-time-cost"
+                        class="clickable">
                         <td rowspan="2">{{timelog.week_no}}</td>
                         <td rowspan="2">{{timelog.date}}</td>
                         <td ng-if="timelog.time_costs[0]">
-                            {{timelog.time_costs[0].student.name}}:{{timelog.time_costs[0].cost}}小時
+                            {{timelog.sum_cost[0].student.name}}:{{timelog.time_costs[0].cost}}小時
                         </td>
                         <td ng-if="!timelog.time_costs[0]" class="red-text text-darken-1">
                             未填寫
                         </td>
-
                         <td ng-if="!timelog.editting" rowspan="2">{{timelog.todo}}</td>
                         <td ng-if="timelog.editting" rowspan="2">
                             <div class="input-field">
@@ -137,9 +138,9 @@
                         <td rowspan="2">
                             <img class="responsive-img" src="/images/test.jpg">
                         </td>
-                        <td rowspan="2" ng-if="!timelog.editting">
+                        <td rowspan="2">
                             <div>
-                                <a class="waves-effect waves-light btn" ng-click="editTimelog(timelog)">編輯</a>
+                                <a class="waves-effect waves-light btn" ng-click="openTimeCostModal(timelog)">編輯</a>
                             </div>
                         </td>
 
@@ -156,6 +157,7 @@
                 </table>
                 <div id="editting-time-cost" class="modal">
                     <div class="modal-content">
+                        <h4>Time Cost</h4>
                         <table class="striped">
                             <thead>
                             <tr>
@@ -163,7 +165,40 @@
                                 <th data-field="category">類別</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            <tr ng-repeat="timeCost in selectedTimelog.time_costs">
+                                <td>{{timeCost.cost}}</td>
+                                <td>{{timeCost.category | timeCostCategory}}</td>
+                            </tr>
+                            </tbody>
                         </table>
+                        <form name="timeCostForm">
+                            <div class="row">
+                                <div class="input-field col s3">
+                                    <input id="time-cost-id"
+                                           type="text"
+                                           class="validate"
+                                           ng-model="addTimeCostForm.cost"
+                                           ng-pattern="'\\d+'"
+                                           required>
+                                    <label for="time-cost-id">耗費小時</label>
+                                </div>
+                                <div class="input-field col s8">
+                                    <select ng-model="addTimeCostForm.category" required>
+                                        <option value="" disabled selected>請選擇類別</option>
+                                        <option value="0">程式撰寫</option>
+                                        <option value="1">程式規劃</option>
+                                        <option value="2">找尋素材</option>
+                                        <option value="3">素材整理</option>
+                                        <option value="4">團隊討論</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button ng-click="timeCostForm.$invalid || addTimeCost()"
+                                    ng-disabled="timeCostForm.$invalid"
+                                    class="waves-effect waves-light btn center-align">新增TimeCost
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

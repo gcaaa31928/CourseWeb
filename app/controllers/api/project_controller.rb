@@ -88,6 +88,11 @@ class Api::ProjectController < ApplicationController
         render HttpStatusCode.ok(projects.as_json(
             include: {
                 group: {
+                    include: {
+                        students: {
+                            only: [:id, :name]
+                        }
+                    },
                     only: :id
                 }
             }, only: [:id, :name])

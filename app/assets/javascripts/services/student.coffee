@@ -165,12 +165,29 @@ angular.module('courseWebApp').factory 'Student', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.showTimeCosts = (timelogId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/timelog/#{timelogId}/time_cost/all", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
 
         factory.editTimelog = (timelogId, cost, todo, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/timelog/' + timelogId + '/edit', {
                     cost: cost,
                     todo: todo
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.addTimeCost = (timelogId, cost, category, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/time_cost/add', {
+                    timelog_id: timelogId,
+                    cost: cost,
+                    category: category
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->

@@ -1,4 +1,5 @@
-class TimeCostController < ApplicationController
+require 'http_status_code'
+class Api::TimeCostController < ApplicationController
 
     def add
         retrieve_student
@@ -6,9 +7,32 @@ class TimeCostController < ApplicationController
         verify_student_timelog_owner!(permitted[:timelog_id].to_i)
         TimeCost.create(timelog_id: permitted[:timelog_id].to_i,
                         cost: permitted[:cost].to_i,
-                        category: permitted[:category].to_i)
-
+                        category: permitted[:category].to_i,
+                        student_id: @student.id)
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
+
+    def all
+        retrieve_student
+        permitted = params.permit(:timelog_id)
+        verify_student_timelog_owner!(permitted[:timelog_id].to_i)
+        time_costs = TimeCost.where(timelog_id: permitted[:timelog_id], student_id: @student.id)
+        render HttpStatusCode.ok(time_costs.as_json(
+            include: {
+                student: {
+                    only: [:name, :id]
+                }
+            },
+            only: [:id, :cost, :category]
+        ))
+    end
+
 
     private
 
