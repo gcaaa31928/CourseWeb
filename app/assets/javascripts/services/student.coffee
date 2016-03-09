@@ -172,10 +172,11 @@ angular.module('courseWebApp').factory 'Student', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
-        factory.editTimelog = (timelogId, todo, canceler = null) ->
+        factory.editTimelog = (timelogId, todo, image, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/timelog/' + timelogId + '/edit', {
                     todo: todo
+                    image: image
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->

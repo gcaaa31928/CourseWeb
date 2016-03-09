@@ -21,7 +21,7 @@ class Api::TimelogController < ApplicationController
                     },
                     only: [:id, :cost, :category]
                 }
-            }, only: [:id, :week_no, :date, :todo]
+            }, only: [:id, :week_no, :date, :todo, :image]
         )
         timelogs_json.each do |timelog|
             timelog['loc'] = loc[timelog['id']]
@@ -43,13 +43,13 @@ class Api::TimelogController < ApplicationController
 
     def edit
         retrieve_student
-        permitted = params.permit(:timelog_id, :todo)
+        permitted = params.permit(:timelog_id, :todo, :image)
         verify_student_timelog_owner!(permitted[:timelog_id].to_i)
         timelog = Timelog.find_by(id: permitted[:timelog_id].to_i)
         if timelog.nil?
             raise '沒有這個Timelog'
         end
-        timelog.update_attributes!(todo: permitted[:todo])
+        timelog.update_attributes!(todo: permitted[:todo], image: permitted[:image])
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)

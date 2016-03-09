@@ -34,3 +34,8 @@ table {
 .margin-left-1x {
     margin-left: 10px
 }
+
+.work-breakable {
+    word-wrap: break-word;
+    word-break: break-all;
+}

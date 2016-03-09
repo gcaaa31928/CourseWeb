@@ -103,7 +103,7 @@
         <div ng-switch-when="project" class="container">
             <div ng-if="project">
                 <h3>{{project.name}}</h3>
-                <table class="striped">
+                <table class="striped responsive-table">
                     <thead>
                     <tr>
                         <th data-field="weekNo">週次</th>
@@ -121,24 +121,28 @@
                         <td>{{timelog.week_no}}</td>
                         <td>{{timelog.date}}</td>
                         <td>
-                            <div class="row" ng-repeat="student in group.members">
+                            <div ng-repeat="student in group.members" class="margin-top-1x">
                                 <div ng-if="timelog.sum_cost[student.id]">{{student.name}}: {{timelog.sum_cost[student.id]}}小時</div>
-                                <div ng-if="!timelog.sum_cost[student.id]" class="red-text text-darken-1">未填寫</div>
+                                <div ng-if="!timelog.sum_cost[student.id]" class="red-text text-darken-1">{{student.name}}: 未填寫</div>
                             </div>
                         </td>
-                        <td ng-if="!timelog.editting">
-                            <div ng-if="timelog.todo">{{timelog.todo}}</div>
-                            <div ng-if="!timelog.todo" class="red-text text-darken-1">未填寫</div>
-                        </td>
-                        <td ng-if="timelog.editting">
-                            <div class="input-field">
+                        <td class="table-cell-w">
+                            <div class="work-breakable" ng-if="timelog.todo && !timelog.editting">{{timelog.todo}}</div>
+                            <div ng-if="!timelog.todo && !timelog.editting" class="red-text text-darken-1">未填寫</div>
+                            <div class="input-field" ng-if="timelog.editting">
                                 <input id="todo" type="text" class="validate" ng-model="timelog.todo" required>
                                 <label class='active' for="todo">工作規劃</label>
                             </div>
                         </td>
                         <td>{{timelog.loc}}</td>
                         <td>
-                            <img class="responsive-img" src="/images/test.jpg">
+                            <div class="image-wrapper" ng-if="timelog.editting">
+                                <img class="responsive-img" id="image_upload_preview" src="http://placehold.it/150x150"/>
+                                <input type="file" name="userprofile_picture"  id="filePhoto" />
+                            </div>
+                            <div class="image-wrapper" ng-if="timelog.image && !timelog.editting">
+                                <img class="materialboxed" ng-src="{{timelog.image}}">
+                            </div>
                         </td>
                         <td ng-if="!timelog.editting">
                             <div class="row">

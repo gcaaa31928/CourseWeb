@@ -125,6 +125,20 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         $scope.editTimelog = (timelog) ->
             $scope.timelog = angular.copy(timelog)
             timelog.editting = true
+            $timeout(() ->
+                $('#filePhoto').change(()->
+                    console.log('in')
+                    handleImage(this)
+                )
+                handleImage = (input) ->
+                    if (input.files && input.files[0])
+                        reader = new FileReader()
+                        reader.onload = (e) ->
+                            binaryString = e.target.result
+                            $('#image_upload_preview').attr('src', binaryString)
+                            timelog.image = binaryString
+                        reader.readAsDataURL(input.files[0])
+            )
 
 
         $scope.edittingTimelog = (timelog) ->
@@ -135,7 +149,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     edittingTimeCost = timeCost
             )
 
-            Student.editTimelog(timelog.id, timelog.todo).then ((data) ->
+            Student.editTimelog(timelog.id, timelog.todo, timelog.image).then ((data) ->
                 Materialize.toast("修改Timelog成功", 2000)
                 $scope.prepareProject()
                 $scope.requestLoading = false
@@ -235,6 +249,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 Student.showTimelog($scope.project.id).then ((data) ->
                     $scope.timelogs = data
                     $scope.loading = false
+                    $scope.renderImage()
                     resolve()
                 ), (msg) ->
                     $scope.loading = false
@@ -368,6 +383,10 @@ angular.module('courseWebApp').controller('StudentCtrl', [
         #                $scope.layout.loading = false
         #            )
 
+        $scope.renderImage = () ->
+            $timeout(() ->
+                $('.materialboxed').materialbox()
+            )
 
         $scope.renderSelect = () ->
             $timeout(() ->
@@ -443,6 +462,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     return 1
 
             $scope.groups = data
+
 
 
         $scope.layout.loading = true

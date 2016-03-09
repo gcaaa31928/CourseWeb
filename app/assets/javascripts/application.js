@@ -12,3 +12,4 @@
 //
 
 //= require_tree .
+Dropzone.options.myAwesomeDropzone = { maxFilesize: 1 };
