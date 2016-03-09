@@ -120,13 +120,16 @@
                         data-target="editting-time-cost">
                         <td>{{timelog.week_no}}</td>
                         <td>{{timelog.date}}</td>
-                        <td ng-if="timelog.time_costs[0]">
+                        <td>
                             <div class="row" ng-repeat="student in group.members">
                                 <div ng-if="timelog.sum_cost[student.id]">{{student.name}}: {{timelog.sum_cost[student.id]}}小時</div>
                                 <div ng-if="!timelog.sum_cost[student.id]" class="red-text text-darken-1">未填寫</div>
                             </div>
                         </td>
-                        <td ng-if="!timelog.editting">{{timelog.todo}}</td>
+                        <td ng-if="!timelog.editting">
+                            <div ng-if="timelog.todo">{{timelog.todo}}</div>
+                            <div ng-if="!timelog.todo" class="red-text text-darken-1">未填寫</div>
+                        </td>
                         <td ng-if="timelog.editting">
                             <div class="input-field">
                                 <input id="todo" type="text" class="validate" ng-model="timelog.todo" required>
