@@ -30,7 +30,9 @@ class Api::GroupController < ApplicationController
                         scores: {
                             only: [:no, :point]
                         }
+
                     },
+                    methods: [:latest_timelog],
                     only: [:name, :id]
                 }
             }, only: [:id]

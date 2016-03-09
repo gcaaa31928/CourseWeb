@@ -59,7 +59,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         $scope.students = null
 
-        $scope.tab = 'score'
+        $scope.tab = 'project'
 
 
         $scope.changeState = (state) ->
@@ -67,6 +67,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         $scope.changeTab = (tab) ->
             $scope.tab = tab
+            if tab == 'project'
+                renderImage()
 
 
         $scope.$watch('state', (newValue, oldValue) ->
@@ -336,6 +338,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         courseQuery.drain = () ->
             $scope.courseLoading = false
             renderTabs()
+            renderImage()
             $timeout(() ->
                 $scope.picker = new Pikaday({field: $('#datepicker')[0]})
                 $('.modal-trigger').leanModal();
@@ -354,6 +357,11 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.prepareAll = () ->
             $scope.layout.loading = true
             q.push($scope.prepareCourse)
+
+        renderImage = () ->
+            $timeout(() ->
+                $('.materialboxed').materialbox()
+            )
 
         renderTabs = () ->
             $timeout(() ->

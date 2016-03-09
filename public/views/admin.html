@@ -236,10 +236,40 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s3 clickable"><a class="active" ng-click="changeTab('score')">Demo成績</a></li>
+                        <li class="tab col s3 clickable"><a class="active" ng-click="changeTab('project')">專案進度</a></li>
+                        <li class="tab col s3 clickable"><a ng-click="changeTab('score')">Demo成績</a></li>
                         <li class="tab col s3 clickable"><a ng-click="changeTab('homework')">作業</a></li>
                     </ul>
                 </div>
+                <table ng-if="tab == 'project'" class="striped">
+                    <thead>
+                    <tr data-target="timelog-modal">
+                        <th data-field="id">組別</th>
+                        <th data-field="student-id">學號</th>
+                        <th data-field="name">學生</th>
+                        <th data-field="project-name">專案名稱</th>
+                        <th data-field="">專案進度</th>
+                        <th data-field="finalGrade">專案圖片</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="group in groups"
+                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                        class="clickable">
+                        <td>{{group.id}}</td>
+                        <td>{{group.students | studentsId}}</td>
+                        <td>{{group.students | studentsName}}</td>
+                        <td>{{group.projectName}}</td>
+                        <td class="work-breakable table-cell-w">{{group.project.latest_timelog.todo}}</td>
+                        <td>
+                            <div class="image-wrapper">
+                                <img class="materialboxed" ng-src="{{group.project.latest_timelog.image}}">
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
                 <table ng-if="tab == 'score'" class="striped">
                     <thead>
                     <tr data-target="timelog-modal">
