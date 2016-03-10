@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309172500) do
+ActiveRecord::Schema.define(version: 20160310151438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,11 +151,12 @@ ActiveRecord::Schema.define(version: 20160309172500) do
     t.integer  "personal_time_cost"
     t.string   "todo"
     t.integer  "category"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "project_id"
     t.integer  "main_force"
     t.text     "image"
+    t.boolean  "acceptance",         default: false
   end
 
 end

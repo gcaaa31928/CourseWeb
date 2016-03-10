@@ -298,6 +298,18 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.editTimelogAcceptance = (timelog) ->
+            $scope.requestLoading = true
+            Admin.editTimelogAcceptance(timelog.acceptance, timelog.id).then ((data) ->
+                $scope.requestLoading = false
+                if timelog.acceptance
+                    Materialize.toast("登記驗收成功", 2000)
+                else
+                    Materialize.toast("取消登記驗收成功", 2000)
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
         $scope.checkRollCalls = (students) ->
             for student in students
                 if student.roll_calls?

@@ -135,6 +135,15 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
+        factory.editTimelogAcceptance = (acceptance, timelogId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post("/api/timelog/#{timelogId}/edit_acceptance", {
+                    acceptance: acceptance
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.addTeachingAssistant = (id, name, className, courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.post('/api/add_teaching_assistant', {

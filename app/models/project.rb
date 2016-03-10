@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
     def latest_timelog
         if self.timelogs
             timelogs = self.timelogs.order(week_no: :desc)
-            return timelogs[0].as_json(only:[:todo, :image])
+            return timelogs[0].as_json(only:[:todo, :image, :acceptance, :id])
         end
         nil
     end

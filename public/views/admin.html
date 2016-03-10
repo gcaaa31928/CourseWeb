@@ -248,6 +248,7 @@
                         <th data-field="id">組別</th>
                         <th data-field="student-id">學號</th>
                         <th data-field="name">學生</th>
+                        <th data-field="project-acceptance">驗收</th>
                         <th data-field="project-name">專案名稱</th>
                         <th data-field="">專案進度</th>
                         <th data-field="finalGrade">專案圖片</th>
@@ -260,6 +261,14 @@
                         <td>{{group.id}}</td>
                         <td>{{group.students | studentsId}}</td>
                         <td>{{group.students | studentsName}}</td>
+                        <td>
+                            <input type="checkbox"
+                                   class="filled-in"
+                                   ng-attr-id="checked-acceptance-{{group.id}}"
+                                   ng-model="group.project.latest_timelog.acceptance"
+                                   ng-change="editTimelogAcceptance(group.project.latest_timelog)"/>
+                            <label ng-attr-for="checked-acceptance-{{group.id}}"></label>
+                        </td>
                         <td>{{group.projectName}}</td>
                         <td class="work-breakable table-cell-w">{{group.project.latest_timelog.todo}}</td>
                         <td>

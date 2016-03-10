@@ -21,7 +21,7 @@ class Api::TimelogController < ApplicationController
                     },
                     only: [:id, :cost, :category]
                 }
-            }, only: [:id, :week_no, :date, :todo, :image]
+            }, only: [:id, :week_no, :date, :todo, :image, :acceptance]
         )
         timelogs_json.each do |timelog|
             timelog['loc'] = loc[timelog['id']]
@@ -50,6 +50,24 @@ class Api::TimelogController < ApplicationController
             raise '沒有這個Timelog'
         end
         timelog.update_attributes!(todo: permitted[:todo], image: permitted[:image])
+        render HttpStatusCode.ok
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def edit_acceptance
+        retrieve_admin
+        permitted = params.permit(:timelog_id, :acceptance)
+        timelog = Timelog.find_by(id: permitted[:timelog_id].to_i)
+        if timelog.nil?
+            raise '沒有這個Timelog'
+        end
+        timelog.update_attributes!(acceptance: permitted[:acceptance])
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)
@@ -111,7 +129,7 @@ class Api::TimelogController < ApplicationController
                 if commit.date.to_date >= before_date and commit.date.to_date <= current_date and last_commit.nil?
                     last_commit = commit
                 end
-                if commit.date.to_date >= before_date  and commit.date.to_date <= current_date
+                if commit.date.to_date >= before_date and commit.date.to_date <= current_date
                     first_commit = commit
                 end
             end
@@ -124,6 +142,7 @@ class Api::TimelogController < ApplicationController
         # Log.info("Last commit is #{last_commit.message} and First commit is #{first_commit.message}")
         git.diff(first_commit, last_commit).insertions.to_i
     end
+
 
     def verify_student_timelog_owner!(timelog_id)
         timelog = Timelog.find_by(id: timelog_id)

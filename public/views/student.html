@@ -105,9 +105,10 @@
         <div ng-switch-when="project" class="container">
             <div ng-if="project">
                 <h3>{{project.name}}</h3>
-                <table class="striped responsive-table">
+                <table class="striped">
                     <thead>
                     <tr>
+                        <th data-field="weekNo">驗收</th>
                         <th data-field="weekNo">週次</th>
                         <th data-field="date">日期</th>
                         <th data-field="costTime">團隊花費時間</th>
@@ -120,6 +121,14 @@
                     <tbody>
                     <tr ng-repeat="timelog in timelogs"
                         data-target="editting-time-cost">
+                        <td>
+                            <input type="checkbox"
+                                   class="filled-in"
+                                   ng-attr-id="acceptance-checkbox{{timelog.id}}"
+                                   ng-model="timelog.acceptance"
+                                   disabled="disabled"/>
+                            <label ng-attr-for=="acceptance-checkbox{{timelog.id}}"></label>
+                        </td>
                         <td>{{timelog.week_no}}</td>
                         <td>{{timelog.date}}</td>
                         <td>
@@ -139,7 +148,7 @@
                         <td>{{timelog.loc}}</td>
                         <td>
                             <div class="image-wrapper" ng-if="timelog.editting">
-                                <img class="responsive-img" id="image_upload_preview" src="http://placehold.it/150x150"/>
+                                <img class="responsive-img" id="image_upload_preview" src="http://placehold.it/150x150" ng-src="{{timelog.image}}"/>
                                 <input type="file" name="userprofile_picture"  id="filePhoto" />
                             </div>
                             <div class="image-wrapper" ng-if="timelog.image && !timelog.editting">
