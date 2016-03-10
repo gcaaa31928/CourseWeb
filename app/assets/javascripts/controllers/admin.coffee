@@ -298,7 +298,6 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
-
         $scope.checkRollCalls = (students) ->
             for student in students
                 if student.roll_calls?

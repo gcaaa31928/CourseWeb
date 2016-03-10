@@ -67,6 +67,14 @@ angular.module('courseWebApp').factory 'Student', [
 #                    else
 #                        reject response
 
+        factory.getInfo = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/student/my_info", factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+
         factory.ListSudentWithoutGroup = (canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + factory.courseId + '/students/list_without_group', factory.httpConfig(canceler)).then ((response) ->

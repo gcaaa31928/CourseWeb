@@ -9,6 +9,7 @@
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
                 <li class="clickable" ng-click="changeState('homework')"><a>練習進度</a></li>
+                <li class="clickable" ng-click="changeState('rollCall')"><a>缺課紀錄</a></li>
                 <li class="clickable" ng-click="changeState('setting')"><a>設定</a></li>
 
             </ul>
@@ -18,6 +19,7 @@
                 <li class="clickable" ng-click="changeState('editGroup')"><a>編輯團隊</a></li>
                 <li class="clickable" ng-if="hasGroup()" ng-click="changeState('editProject')"><a>編輯專案</a></li>
                 <li class="clickable" ng-click="changeState('group')"><a>班級所有團隊</a></li>
+                <li class="clickable" ng-click="changeState('homework')"><a>練習進度</a></li>
                 <li class="clickable" ng-click="changeState('setting')"><a>設定</a></li>
             </ul>
         </div>
@@ -281,6 +283,22 @@
                         <label ng-attr-for="{{'checkbox' + student.id + homework.id}}"></label>
 
                     </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-switch-when="rollCall" class="container">
+            <table class="striped">
+                <thead>
+                <tr>
+                    <th data-field="id">日期</th>
+                    <th data-field="name">節數</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="rollCall in me.roll_calls">
+                    <td>{{rollCall.date}}</td>
+                    <td>{{rollCall.period}}</td>
                 </tr>
                 </tbody>
             </table>

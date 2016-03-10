@@ -25,6 +25,26 @@ class Api::StudentController < ApplicationController
             })
     end
 
+    def my_info
+        retrieve
+        student_json = @student.as_json(
+            include: {
+                deliver_homeworks: {
+                    only: [:id, :homework_id]
+                }
+            }, only: [:id, :name]
+        )
+        roll_calls = RollCall.includes(:student).where(students: {id: @student.id})
+        roll_calls.order!(date: :asc, period: :asc)
+        student_json['roll_calls'] = []
+        roll_calls.each do |roll_call|
+            if roll_call.student.id == student_json['id']
+                student_json['roll_calls'] << roll_call
+            end
+        end
+
+        render HttpStatusCode.ok(student_json)
+    end
 
     def list_without_group
         retrieve
@@ -53,7 +73,7 @@ class Api::StudentController < ApplicationController
         students = Student.where(course_id: permitted[:course_id].to_i)
         students_json = students.as_json(
             include: {
-                deliver_homeworks:{
+                deliver_homeworks: {
                     only: [:id, :homework_id]
                 }
             }, only: [:id, :name]
@@ -61,21 +81,22 @@ class Api::StudentController < ApplicationController
 
         if permitted[:date]
             date = DateTime.rfc2822(permitted[:date])
-            roll_calls = RollCall.includes(:student).where(date: date, students:{course_id: permitted[:course_id].to_i})
-            students_json.each do |student_json|
-                student_json['roll_calls'] = []
-                roll_calls.each do |roll_call|
-                    if roll_call.student.id == student_json['id']
-                        student_json['roll_calls'] << roll_call
-                    end
+            roll_calls = RollCall.includes(:student).where(date: date, students: {course_id: permitted[:course_id].to_i})
+        else
+            roll_calls = RollCall.includes(:student).where(students: {course_id: permitted[:course_id].to_i})
+
+        end
+        students_json.each do |student_json|
+            student_json['roll_calls'] = []
+            roll_calls.each do |roll_call|
+                if roll_call.student.id == student_json['id']
+                    student_json['roll_calls'] << roll_call
                 end
             end
         end
 
         render HttpStatusCode.ok(students_json)
     end
-
-
 
 
     private

@@ -66,6 +66,9 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             cost: null
             category: null
 
+        # for me
+        $scope.me = null
+
         $scope.changeState = (state) ->
             $scope.state = state
 
@@ -86,6 +89,8 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 $scope.prepareSetting()
             else if newValue == 'homework'
                 $scope.prepareHomeworkPage()
+            else if newValue == 'rollCall'
+                $scope.prepareRollCalls()
             else
                 $scope.loading = false
         )
@@ -255,6 +260,17 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     $scope.loading = false
                     resolve()
 
+        $scope.prepareRollCalls = () ->
+            $q (resolve, reject) ->
+                Student.getInfo().then ((data) ->
+                    $scope.me = data
+                    $scope.loading = false
+                    resolve()
+                ), (msg) ->
+                    $scope.loading = false
+                    resolve()
+
+
         $scope.prepareEditGroup = () ->
             $q (resolve, reject) ->
                 $timeout(() ->
@@ -312,6 +328,18 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                         if deliver_homework.homework_id == homework.id
                             student.deliver[homework.id] = true
 
+        checkRollCalls = (students) ->
+            for student in students
+                if student.roll_calls?
+                    for rollCall in student.roll_calls
+                        if rollCall.period == 0
+                            student.rollCall1 = true
+                        else if rollCall.period == 1
+                            student.rollCall2 = true
+                        else if rollCall.period == 2
+                            student.rollCall3 = true
+
+
         $scope.showTimeCosts = (timelogId) ->
             $q (resolve, reject) ->
                 Student.showTimeCosts(timelogId).then ((data) ->
@@ -333,9 +361,11 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 Student.allStudents().then ((data) ->
                     $scope.students = data
                     checkedDeliverHomework($scope.homeworks, $scope.students)
+                    checkRollCalls($scope.students)
                     resolve()
                 ), (msg) ->
                     resolve()
+
 
         homeworkQueue.drain = () ->
             $scope.loading = false

@@ -32,7 +32,7 @@ Rails.application.routes.draw do
         get 'course/:course_id/students/list_without_group' => 'student#list_without_group'
 
         get 'course/:course_id/students/all' => 'student#all'
-
+        get 'student/my_info' => 'student#my_info'
         post 'group/create' => 'group#create'
         post 'group/destroy' => 'group#destroy'
         get 'group/show' => 'group#show'
