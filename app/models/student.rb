@@ -4,6 +4,7 @@ class Student < ActiveRecord::Base
     belongs_to :group
     belongs_to :course
     has_many :deliver_homeworks
+    has_many :roll_calls
     include BCrypt
     def password
         @password ||= Password.new(self.password_hash)

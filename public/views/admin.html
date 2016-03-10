@@ -239,6 +239,7 @@
                         <li class="tab col s3 clickable"><a class="active" ng-click="changeTab('project')">專案進度</a></li>
                         <li class="tab col s3 clickable"><a ng-click="changeTab('score')">Demo成績</a></li>
                         <li class="tab col s3 clickable"><a ng-click="changeTab('homework')">作業</a></li>
+                        <li class="tab col s3 clickable"><a ng-click="changeTab('rollcall')">點名</a></li>
                     </ul>
                 </div>
                 <table ng-if="tab == 'project'" class="striped">
@@ -298,6 +299,32 @@
                         <th data-field="id">學號</th>
                         <th data-field="name">姓名</th>
                         <th ng-repeat="homework in homeworks">{{homework.name}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="student in students">
+                        <td>{{student.id}}</td>
+                        <td>{{student.name}}</td>
+                        <td ng-repeat="homework in homeworks">
+                            <input type="checkbox"
+                                   class="filled-in"
+                                   ng-attr-id="{{'checkbox' + student.id + homework.id}}"
+                                   ng-model="student.deliver[homework.id]"
+                                   ng-change="submitHomeworkState(student.deliver[homework.id], homework.id, student.id)"/>
+                            <label ng-attr-for="{{'checkbox' + student.id + homework.id}}"></label>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table ng-if="tab == 'rollcall'" class="striped">
+                    <thead>
+                    <tr>
+                        <th data-field="id">學號</th>
+                        <th data-field="name">姓名</th>
+                        <th>第一節</th>
+                        <th>第二節</th>
+                        <th>第三節</th>
                     </tr>
                     </thead>
                     <tbody>
