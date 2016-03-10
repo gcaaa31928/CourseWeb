@@ -72,6 +72,11 @@ Rails.application.routes.draw do
         post 'time_cost/add' => 'time_cost#add'
         post 'time_cost/:time_cost_id/destroy' => 'time_cost#destroy'
         get '/timelog/:timelog_id/time_cost/all' => 'time_cost#all'
+
+        post 'roll_call/add' => 'roll_call#add'
+        post 'roll_call/destroy' => 'roll_call#destroy'
+
+        get 'course/:course_id/roll_call/all' => 'roll_call#all'
     end
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

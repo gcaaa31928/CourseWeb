@@ -45,22 +45,34 @@ class Api::StudentController < ApplicationController
 
     def all
         retrieve
-        permitted = params.permit(:course_id)
+        permitted = params.permit(:course_id, :date)
         if @student and not same_course?(permitted[:course_id].to_i)
             raise '你沒有權限執行這個操作'
         end
-        students = Student.where(course_id: permitted[:course_id].to_i)
 
-        render HttpStatusCode.ok(students.as_json(
+        students = Student.where(course_id: permitted[:course_id].to_i)
+        students_json = students.as_json(
             include: {
                 deliver_homeworks:{
                     only: [:id, :homework_id]
-                },
-                roll_calls:{
-                    methods: [:latest_timelog],
                 }
             }, only: [:id, :name]
-        ))
+        )
+
+        if permitted[:date]
+            date = DateTime.rfc2822(permitted[:date])
+            roll_calls = RollCall.includes(:student).where(date: date, students:{course_id: permitted[:course_id].to_i})
+            students_json.each do |student_json|
+                student_json['roll_calls'] = []
+                roll_calls.each do |roll_call|
+                    if roll_call.student.id == student_json['id']
+                        student_json['roll_calls'] << roll_call
+                    end
+                end
+            end
+        end
+
+        render HttpStatusCode.ok(students_json)
     end
 
 

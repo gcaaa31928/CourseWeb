@@ -169,6 +169,38 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
+        $scope.submitRollCallState = (state, period, studentId) ->
+            if state
+                $scope.submitAddRollCall(period, studentId)
+            else
+                $scope.submitDestroyRollCall(period, studentId)
+
+        $scope.submitAddRollCall = (period, studentId) ->
+            $scope.requestLoading = true
+            Admin.addRollCall(
+                period,
+                new Date().toUTCString(),
+                studentId
+            ).then ((data) ->
+                Materialize.toast("以登記缺課", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
+        $scope.submitDestroyRollCall = (period, studentId) ->
+            $scope.requestLoading = true
+            Admin.destroyRollCall(
+                period,
+                new Date().toUTCString(),
+                studentId
+            ).then ((data) ->
+                Materialize.toast("以取消登記缺課", 2000)
+                $scope.requestLoading = false
+            ), (msg) ->
+                Materialize.toast(msg, 2000)
+                $scope.requestLoading = false
+
         $scope.submitDeleteStudent = () ->
             $scope.requestLoading = true
             Admin.removeStudent(
@@ -267,6 +299,17 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.requestLoading = false
 
 
+        $scope.checkRollCalls = (students) ->
+            for student in students
+                if student.roll_calls?
+                    for rollCall in student.roll_calls
+                        if rollCall.period == 0
+                            student.rollCall1 = true
+                        else if rollCall.period == 1
+                            student.rollCall2 = true
+                        else if rollCall.period == 2
+                            student.rollCall3 = true
+
         q.drain = () ->
             $scope.layout.loading = false
 
@@ -305,17 +348,17 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $q (resolve, reject) ->
                 Admin.allHomeworks($scope.selectedCourse.id).then ((data) ->
                     $scope.homeworks = data
-                    console.log(data)
                     resolve()
                 ), (msg) ->
                     resolve()
 
         $scope.prepareAllStudents = () ->
             $q (resolve, reject) ->
-                Admin.allStudents($scope.selectedCourse.id).then ((data) ->
+                date = new Date().toUTCString()
+                Admin.allStudents($scope.selectedCourse.id, date).then ((data) ->
                     $scope.students = data
                     checkedDeliverHomework($scope.homeworks, $scope.students)
-
+                    $scope.checkRollCalls($scope.students)
                     resolve()
                 ), (msg) ->
                     resolve()

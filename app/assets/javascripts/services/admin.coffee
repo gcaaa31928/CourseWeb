@@ -50,9 +50,9 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
-        factory.allStudents = (courseId, canceler = null) ->
+        factory.allStudents = (courseId, date = null, canceler = null) ->
             $q (resolve, reject) ->
-                $http.get("/api/course/#{courseId}/students/all", factory.httpConfig(canceler)).then ((response) ->
+                $http.get("/api/course/#{courseId}/students/all?date=#{date}", factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
@@ -75,6 +75,35 @@ angular.module('courseWebApp').factory 'Admin', [
         factory.allGroup = (courseId, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get('/api/course/' + courseId + '/group/all', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.addRollCall = (period, date, studentId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post('/api/roll_call/add', {
+                    period: period
+                    date: date
+                    student_id: studentId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.destroyRollCall = (period, date, studentId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post("/api/roll_call/destroy", {
+                    period: period
+                    date: date
+                    student_id: studentId
+                }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.allRollCalls = (courseId, date, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get("/api/course/#{courseId}/roll_call/all?date=#{date}", factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
@@ -186,7 +215,7 @@ angular.module('courseWebApp').factory 'Admin', [
 
         factory.createScore = (projectId, point, number, canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/project/'+projectId+'/score/create', {
+                $http.post('/api/project/' + projectId + '/score/create', {
                     point: point,
                     no: number
                 }, factory.httpConfig(canceler)).then ((response) ->

@@ -4,13 +4,54 @@ class Api::RollCallController < ApplicationController
         retrieve
         permitted = params.permit(:period, :date, :student_id)
         date = DateTime.rfc2822(permitted[:date])
+        if RollCall.find_by(period: permitted[:period],
+                            date: date,
+                            student_id: permitted[:student_id].to_i)
+            raise '你已經為這個學生登記缺課'
+        end
         RollCall.create(period: permitted[:period],
                         date: date,
                         student_id: permitted[:student_id].to_i)
         render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
     end
 
 
+    def destroy
+        retrieve
+        permitted = params.permit(:period, :date, :student_id)
+        date = DateTime.rfc2822(permitted[:date])
+        roll_call = RollCall.find_by(period: permitted[:period],
+                                     date: date,
+                                     student_id: permitted[:student_id].to_i)
+        roll_call.destroy!
+        render HttpStatusCode.ok
+    rescue => e
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def all
+        retrieve
+        permitted = params.permit(:course_id, :date)
+        date = DateTime.rfc2822(permitted[:date])
+        roll_calls = RollCall.joins(:student).where(date: date, students: {course_id: permitted[:course_id].to_i})
+        render HttpStatusCode.ok(roll_calls.as_json(
+            include: {
+                student: {
+                    only: [:id, :name]
+                }
+            }, only: [:id, :period]
+        ))
+    end
 
 
     private
