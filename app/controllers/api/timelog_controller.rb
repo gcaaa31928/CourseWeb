@@ -82,7 +82,7 @@ class Api::TimelogController < ApplicationController
         retrieve_admin
         permitted = params.permit(:date)
         date = DateTime.rfc2822(permitted[:date])
-        timelogs = Timelog.where(date: (date - 7)..date)
+        timelogs = Timelog.where(date: (date - 6)..date)
         if timelogs.count != 0
             return render HttpStatusCode.forbidden(
                 {
