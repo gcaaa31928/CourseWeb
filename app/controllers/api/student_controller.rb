@@ -71,6 +71,7 @@ class Api::StudentController < ApplicationController
         end
 
         students = Student.where(course_id: permitted[:course_id].to_i)
+        students.order!(:id)
         students_json = students.as_json(
             include: {
                 deliver_homeworks: {

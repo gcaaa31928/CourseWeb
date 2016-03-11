@@ -320,13 +320,12 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     resolve()
 
         checkedDeliverHomework = (homeworks, students) ->
-            for homework in homeworks
-                for student in students
+            for student in students
+                for homework in homeworks
                     student.deliver = {}
                     student.deliver[homework.id] = false
-                    for deliver_homework in student.deliver_homeworks
-                        if deliver_homework.homework_id == homework.id
-                            student.deliver[homework.id] = true
+                for deliver_homework in student.deliver_homeworks
+                    student.deliver[deliver_homework.homework_id] = true
 
         checkRollCalls = (students) ->
             for student in students
