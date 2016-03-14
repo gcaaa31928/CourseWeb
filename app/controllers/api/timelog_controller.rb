@@ -80,26 +80,20 @@ class Api::TimelogController < ApplicationController
 
     def create
         retrieve_admin
-        permitted = params.permit(:date)
-        date = DateTime.rfc2822(permitted[:date])
-        timelogs = Timelog.where(date: (date - 6)..date)
-        if timelogs.count != 0
-            return render HttpStatusCode.forbidden(
-                {
-                    errorMsg: '每一周只能一次有一個Timelog'
-                }
-            )
-        end
-        Timelog.transaction do
-            timelog = Timelog.order(:week_no).last
+        permitted = params.permit(:date, :course_id)
+        date = Time.at(permitted[:date].to_i / 1000).to_date
+        projects = Project.joins(:group).where(groups: {course_id: permitted[:course_id]})
+        projects.each do |project|
+            timelogs = project.timelogs.where(date: date)
+            if timelogs.count != 0
+                next
+            end
+            timelog = timelogs.order(:week_no).last
             week_no = 0
-            unless timelog.nil?
+            if timelog
                 week_no = timelog.week_no + 1
             end
-            projects = Project.all
-            projects.each do |project|
-                Timelog.create!(week_no: week_no, date: date, project_id: project.id)
-            end
+            Timelog.create!(week_no: week_no, date: date, project_id: project.id)
         end
         render HttpStatusCode.ok
     rescue => e

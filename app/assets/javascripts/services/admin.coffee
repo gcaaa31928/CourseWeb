@@ -125,9 +125,9 @@ angular.module('courseWebApp').factory 'Admin', [
                     handleFailedPromise(resolve, reject, response)
 
 
-        factory.createTimelog = (date, canceler = null) ->
+        factory.createTimelog = (date, courseId, canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/timelog/create', {
+                $http.post("/api/course/#{courseId}/timelog/create", {
                     date: date
                 }, factory.httpConfig(canceler)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)

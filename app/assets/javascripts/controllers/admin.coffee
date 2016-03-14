@@ -69,6 +69,9 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $scope.tab = tab
             if tab == 'project'
                 renderImage()
+            else if tab == 'rollcall'
+                renderRollCallDate()
+
 
 
         $scope.$watch('state', (newValue, oldValue) ->
@@ -76,6 +79,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.prepareManage()
             else if newValue == 'setting'
                 $scope.prepareSetting()
+
 
         )
 
@@ -88,7 +92,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             courseId: ""
 
         $scope.timelogDate = ''
-
+        $scope.rollCallDate = null
 
         $scope.submitCreateCourse = () ->
             $scope.requestLoading = true
@@ -178,7 +182,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $scope.requestLoading = true
             Admin.addRollCall(
                 period,
-                new Date().toUTCString(),
+                $scope.rollCallPicker.getDate().getTime(),
                 studentId
             ).then ((data) ->
                 Materialize.toast("以登記缺課", 2000)
@@ -191,7 +195,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             $scope.requestLoading = true
             Admin.destroyRollCall(
                 period,
-                new Date().toUTCString(),
+                $scope.rollCallPicker.getDate().getTime(),
                 studentId
             ).then ((data) ->
                 Materialize.toast("以取消登記缺課", 2000)
@@ -289,8 +293,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         $scope.createTimelog = () ->
             $scope.requestLoading = true
-            transferDate = $scope.picker.getDate().toUTCString()
-            Admin.createTimelog(transferDate).then ((date) ->
+            transferDate = $scope.picker.getDate().getTime()
+            Admin.createTimelog(transferDate, $scope.selectedCourse.id).then ((date) ->
                 $scope.requestLoading = false
                 Materialize.toast("新增Timelog成功", 2000)
             ), (msg) ->
@@ -364,8 +368,10 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         $scope.prepareAllStudents = () ->
             $q (resolve, reject) ->
-                date = new Date().toUTCString()
-                Admin.allStudents($scope.selectedCourse.id, date).then ((data) ->
+                transferDate = new Date().getTime()
+                if $scope.rollCallPicker?
+                    transferDate = $scope.rollCallPicker.getDate().getTime()
+                Admin.allStudents($scope.selectedCourse.id, transferDate).then ((data) ->
                     $scope.students = data
                     checkedDeliverHomework($scope.homeworks, $scope.students)
                     $scope.checkRollCalls($scope.students)
@@ -414,6 +420,19 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         renderImage = () ->
             $timeout(() ->
                 $('.materialboxed').materialbox()
+            )
+
+        renderRollCallDate = () ->
+            $timeout(() ->
+                $scope.rollCallDate ?= new Date()
+                $scope.rollCallPicker = new Pikaday(
+                    field: $('#rollCallDatepicker')[0]
+                    onSelect: () ->
+                        $scope.prepareAllStudents()
+                        $scope.rollCallDate = $scope.rollCallPicker.getDate()
+                )
+                $scope.rollCallPicker.setDate($scope.rollCallDate)
+
             )
 
         renderTabs = () ->

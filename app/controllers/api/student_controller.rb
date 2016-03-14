@@ -81,7 +81,8 @@ class Api::StudentController < ApplicationController
         )
 
         if permitted[:date]
-            date = DateTime.rfc2822(permitted[:date])
+            date = Time.at(permitted[:date].to_i / 1000.0).to_date
+            # Log.info(date.to_date.to_s)
             roll_calls = RollCall.includes(:student).where(date: date, students: {course_id: permitted[:course_id].to_i})
         else
             roll_calls = RollCall.includes(:student).where(students: {course_id: permitted[:course_id].to_i})

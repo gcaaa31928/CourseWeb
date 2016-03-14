@@ -3,7 +3,7 @@ class Api::RollCallController < ApplicationController
     def add
         retrieve
         permitted = params.permit(:period, :date, :student_id)
-        date = DateTime.rfc2822(permitted[:date])
+        date = Time.at(permitted[:date].to_i / 1000.0).to_date
         if RollCall.find_by(period: permitted[:period],
                             date: date,
                             student_id: permitted[:student_id].to_i)
@@ -14,6 +14,7 @@ class Api::RollCallController < ApplicationController
                         student_id: permitted[:student_id].to_i)
         render HttpStatusCode.ok
     rescue => e
+        Log.exception(e)
         render HttpStatusCode.forbidden(
             {
                 errorMsg: "#{$!}"
@@ -25,7 +26,7 @@ class Api::RollCallController < ApplicationController
     def destroy
         retrieve
         permitted = params.permit(:period, :date, :student_id)
-        date = DateTime.rfc2822(permitted[:date])
+        date = Time.at(permitted[:date].to_i / 1000.0).to_date
         roll_call = RollCall.find_by(period: permitted[:period],
                                      date: date,
                                      student_id: permitted[:student_id].to_i)
@@ -42,7 +43,7 @@ class Api::RollCallController < ApplicationController
     def all
         retrieve
         permitted = params.permit(:course_id, :date)
-        date = DateTime.rfc2822(permitted[:date])
+        date = Time.at(permitted[:date].to_i / 1000.0).to_date
         roll_calls = RollCall.joins(:student).where(date: date, students: {course_id: permitted[:course_id].to_i})
         render HttpStatusCode.ok(roll_calls.as_json(
             include: {
