@@ -242,7 +242,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-3': !group.projectName}">
-                    <td>{{group.id}}</td>
+                    <td>{{$index + 1}}</td>
                     <td>{{group.students | studentsId}}</td>
                     <td>{{group.students | studentsName}}</td>
                     <td>{{group.projectName}}</td>
