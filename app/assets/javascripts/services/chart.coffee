@@ -9,10 +9,17 @@ angular.module('courseWebApp').factory 'Chart', [
         factory.highStandardCommitTimes = []
         factory.lowStandardCommitTimes = []
         factory.averageCommitTimes = []
+
         factory.selfLOC = []
         factory.highStandardLOC = []
         factory.lowStandardLOC = []
         factory.averageLOC = []
+
+        factory.selfTimelog = []
+        factory.highStandardTimelog = []
+        factory.lowStandardTimelog = []
+        factory.averageTimelog = []
+
         factory.commitChartElement = '#commitChart'
         factory.locChartElement = '#locChart'
         factory.timelogChartElement = '#timelogChart'
@@ -36,7 +43,14 @@ angular.module('courseWebApp').factory 'Chart', [
                         factory.averageLOC = remoteDataToChartsData(data.average)
                         factory.highStandardLOC = remoteDataToChartsData(data.high_standard)
                         factory.lowStandardLOC = remoteDataToChartsData(data.low_standard)
-                        resolve()
+                        Student.showTimelogChart().then ((data) ->
+                            factory.selfTimelog = remoteDataToChartsData(data.you)
+                            factory.averageTimelog = remoteDataToChartsData(data.average)
+                            factory.highStandardTimelog = remoteDataToChartsData(data.high_standard)
+                            factory.lowStandardTimelog = remoteDataToChartsData(data.low_standard)
+                            resolve()
+                        ), (msg) ->
+                            resolve()
                     ), (msg) ->
                         resolve()
                 ), (msg) ->
@@ -98,9 +112,10 @@ angular.module('courseWebApp').factory 'Chart', [
                     factory.chartInformation('程式行數', '行', factory.selfLOC, factory.averageLOC,
                         factory.highStandardLOC, factory.lowStandardLOC)
                 )
+                console.log(factory.averageTimelog)
                 $(factory.timelogChartElement).highcharts(
-                    factory.chartInformation('時間', '小時', factory.selfCommitTimes, factory.averageCommitTimes,
-                        factory.highStandardCommitTimes, factory.lowStandardCommitTimes)
+                    factory.chartInformation('時間', '小時', factory.selfTimelog, factory.averageTimelog,
+                        factory.highStandardTimelog, factory.lowStandardTimelog)
                 )
             )
         factory

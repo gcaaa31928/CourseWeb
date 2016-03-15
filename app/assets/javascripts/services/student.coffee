@@ -240,5 +240,12 @@ angular.module('courseWebApp').factory 'Student', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.showTimelogChart = (canceler = null) ->
+            $q (resolve, reject) ->
+                $http.get('/api/charts/timelog', factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory
 ]

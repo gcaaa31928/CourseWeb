@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         get 'charts/test' => 'charts#test'
         get 'charts/commits' => 'charts#commits'
         get 'charts/line_of_code' => 'charts#line_of_code'
+        get 'charts/timelog' => 'charts#timelog'
 
         get 'notification/get_logs' => 'notification#get_logs'
 
