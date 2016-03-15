@@ -81,28 +81,27 @@
 
         <div ng-switch-when="index">
             <div class="row">
-                <div class="col s9">
-                    <div class="row">
-                        <div id="commitChart" class="wrap-margin" style="width:100%; height:400px;"></div>
-                    </div>
-                    <div class="row">
-                        <div id="locChart" class="wrap-margin" style="width:100%; height:400px;"></div>
-                    </div>
-                    <div class="row">
-                        <div id="timelogChart" class="wrap-margin" style="width:100%; height:400px;"></div>
-                    </div>
+                <div class="col s6">
+                    <div id="commitChart" class="wrap-margin" style="width:100%; height:400px;"></div>
                 </div>
-                <div class="col s3">
-                    <div class="ticker-wrapper blue lighten-2">
-                        <h5>Latest Activity</h5>
-                        <ul id="ticker">
-                        </ul>
-                    </div>
+                <div class="col s6">
+                    <div id="locChart" class="wrap-margin" style="width:100%; height:400px;"></div>
                 </div>
-            </div>
-                <!--<div class="col s6">-->
-                <!--<div id="timelogChart" class="wrap-margin" style="width:100%; height:400px;"></div>-->
+                <div class="row">
+                    <div id="timelogChart" class="wrap-margin" style="width:100%; height:400px;"></div>
+                </div>
+
+                <!--<div class="col s3">-->
+                <!--<div class="ticker-wrapper blue lighten-2">-->
+                <!--<h5>Latest Activity</h5>-->
+                <!--<ul id="ticker">-->
+                <!--</ul>-->
                 <!--</div>-->
+                <!--</div>-->
+            </div>
+            <!--<div class="col s6">-->
+            <!--<div id="timelogChart" class="wrap-margin" style="width:100%; height:400px;"></div>-->
+            <!--</div>-->
 
         </div>
         <div ng-switch-when="project" class="container">
@@ -136,8 +135,12 @@
                         <td>{{timelog.date}}</td>
                         <td>
                             <div ng-repeat="student in group.members" class="margin-top-1x">
-                                <div ng-if="timelog.sum_cost[student.id]">{{student.name}}: {{timelog.sum_cost[student.id]}}小時</div>
-                                <div ng-if="!timelog.sum_cost[student.id]" class="red-text text-darken-1">{{student.name}}: 未填寫</div>
+                                <div ng-if="timelog.sum_cost[student.id]">{{student.name}}:
+                                    {{timelog.sum_cost[student.id]}}小時
+                                </div>
+                                <div ng-if="!timelog.sum_cost[student.id]" class="red-text text-darken-1">
+                                    {{student.name}}: 未填寫
+                                </div>
                             </div>
                         </td>
                         <td class="table-cell-w">
@@ -151,8 +154,9 @@
                         <td>{{timelog.loc}}</td>
                         <td>
                             <div class="image-wrapper" ng-if="timelog.editting">
-                                <img class="responsive-img" id="image_upload_preview" src="http://placehold.it/150x150" ng-src="{{timelog.image}}"/>
-                                <input type="file" name="userprofile_picture"  id="filePhoto" />
+                                <img class="responsive-img" id="image_upload_preview" src="http://placehold.it/150x150"
+                                     ng-src="{{timelog.image}}"/>
+                                <input type="file" name="userprofile_picture" id="filePhoto"/>
                             </div>
                             <div class="image-wrapper" ng-if="timelog.image && !timelog.editting">
                                 <img class="materialboxed" ng-src="{{timelog.image}}">
