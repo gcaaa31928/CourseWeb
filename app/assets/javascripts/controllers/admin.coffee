@@ -57,6 +57,15 @@ angular.module('courseWebApp').controller('AdminCtrl', [
         $scope.scoreForm =
             point: ''
 
+        $scope.verifyForm =
+            password: ''
+
+        $scope.verifyCallback = null
+
+        $scope.rollCallReqSuccess =
+            period: null
+            studentId: null
+
         $scope.students = null
 
         $scope.tab = 'project'
@@ -93,6 +102,14 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
         $scope.timelogDate = ''
         $scope.rollCallDate = null
+
+        $scope.submitVerify = () ->
+            if $scope.verifyForm.password == "oop#{("0" + new Date().getDate()).slice(-2)}"
+                ($scope.verifyCallback || angular.noop)()
+            else
+                Materialize.toast("身份驗證失敗", 2000)
+            $scope.verifyForm.password = ''
+            $('#verify-modal').closeModal()
 
         $scope.submitCreateCourse = () ->
             $scope.requestLoading = true
@@ -142,10 +159,12 @@ angular.module('courseWebApp').controller('AdminCtrl', [
 
 
         $scope.submitHomeworkState = (handIn, homeworkId, studentId) ->
-            if handIn
-                $scope.submitHandInHomework(homeworkId, studentId)
-            else
-                $scope.submitCancelHandInHomework(homeworkId, studentId)
+            $('#verify-modal').openModal()
+            $scope.verifyCallback = () ->
+                if handIn
+                    $scope.submitHandInHomework(homeworkId, studentId)
+                else
+                    $scope.submitCancelHandInHomework(homeworkId, studentId)
 
 
         $scope.submitHandInHomework = (homeworkId, studentId) ->
@@ -156,6 +175,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             ).then ((data) ->
                 Materialize.toast("已登入繳交作業", 2000)
                 $scope.requestLoading = false
+                $scope.studentReqSuccessId = studentId
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
@@ -168,15 +188,18 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             ).then ((data) ->
                 Materialize.toast("已取消登入繳交作業", 2000)
                 $scope.requestLoading = false
+                $scope.studentReqSuccessId = studentId
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
         $scope.submitRollCallState = (state, period, studentId) ->
-            if state
-                $scope.submitAddRollCall(period, studentId)
-            else
-                $scope.submitDestroyRollCall(period, studentId)
+            $('#verify-modal').openModal()
+            $scope.verifyCallback = () ->
+                if state
+                    $scope.submitAddRollCall(period, studentId)
+                else
+                    $scope.submitDestroyRollCall(period, studentId)
 
         $scope.submitAddRollCall = (period, studentId) ->
             $scope.requestLoading = true
@@ -187,6 +210,9 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             ).then ((data) ->
                 Materialize.toast("以登記缺課", 2000)
                 $scope.requestLoading = false
+                $scope.rollCallReqSuccess.period = period
+                $scope.rollCallReqSuccess.studentId = studentId
+                console.log($scope.rollCallReqSuccess)
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
@@ -200,6 +226,8 @@ angular.module('courseWebApp').controller('AdminCtrl', [
             ).then ((data) ->
                 Materialize.toast("以取消登記缺課", 2000)
                 $scope.requestLoading = false
+                $scope.rollCallReqSuccess.period = period
+                $scope.rollCallReqSuccess.studentId = studentId
             ), (msg) ->
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
@@ -217,17 +245,19 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.requestLoading = false
 
         $scope.submitScore = (number) ->
-            Admin.createScore(
-                $scope.selectedGroup.project.id,
-                $scope.scoreForm[number].point
-                number,
-            ).then ((data) ->
-                Materialize.toast("分數送出成功", 2000)
-                Admin.allScores($scope.selectedGroup.project.id, number).then ((data) ->
-                    $scope.scores[number] = data
-                )
-            ), (msg) ->
-                Materialize.toast(msg, 2000)
+            $('#verify-modal').openModal()
+            $scope.verifyCallback = () ->
+                Admin.createScore(
+                    $scope.selectedGroup.project.id,
+                    $scope.scoreForm[number].point
+                    number,
+                ).then ((data) ->
+                    Materialize.toast("分數送出成功", 2000)
+                    Admin.allScores($scope.selectedGroup.project.id, number).then ((data) ->
+                        $scope.scores[number] = data
+                    )
+                ), (msg) ->
+                    Materialize.toast(msg, 2000)
 
         $scope.submitAddTeachingAssistant = () ->
             $scope.requestLoading = true
@@ -301,17 +331,36 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 Materialize.toast(msg, 2000)
                 $scope.requestLoading = false
 
-        $scope.editTimelogAcceptance = (timelog) ->
-            $scope.requestLoading = true
-            Admin.editTimelogAcceptance(timelog.acceptance, timelog.id).then ((data) ->
-                $scope.requestLoading = false
-                if timelog.acceptance
-                    Materialize.toast("登記驗收成功", 2000)
-                else
-                    Materialize.toast("取消登記驗收成功", 2000)
-            ), (msg) ->
-                Materialize.toast(msg, 2000)
-                $scope.requestLoading = false
+        $scope.editTimelogAcceptance = (group) ->
+            timelog = group.project.latest_timelog
+            $('#verify-modal').openModal()
+            $scope.verifyCallback = () ->
+                $scope.requestLoading = true
+                Admin.editTimelogAcceptance(timelog.acceptance, timelog.id).then ((data) ->
+                    $scope.requestLoading = false
+                    if timelog.acceptance
+                        Materialize.toast("登記驗收成功", 2000)
+                    else
+                        Materialize.toast("取消登記驗收成功", 2000)
+                    $scope.groupReqSuccessId = group.id
+                ), (msg) ->
+                    Materialize.toast(msg, 2000)
+                    $scope.requestLoading = false
+
+        $scope.isGroupReqSuccess = (group) ->
+            if group.id == $scope.groupReqSuccessId
+                return true
+            false
+
+        $scope.isHomeworkReqSuccess = (student) ->
+            if student.id == $scope.studentReqSuccessId
+                return true
+            false
+
+        $scope.isRollCallReqSuccess = (studentId, period) ->
+            if $scope.rollCallReqSuccess.period == period and $scope.rollCallReqSuccess.studentId == studentId
+                return true
+            false
 
         $scope.checkRollCalls = (students) ->
             for student in students

@@ -256,7 +256,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="group in groups"
-                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName, green: isGroupReqSuccess(group)}"
                         class="clickable">
                         <td>{{$index + 1}}</td>
                         <td>{{group.students | studentsId}}</td>
@@ -266,7 +266,7 @@
                                    class="filled-in"
                                    ng-attr-id="checked-acceptance-{{group.id}}"
                                    ng-model="group.project.latest_timelog.acceptance"
-                                   ng-change="editTimelogAcceptance(group.project.latest_timelog)"/>
+                                   ng-change="editTimelogAcceptance(group)"/>
                             <label ng-attr-for="checked-acceptance-{{group.id}}"></label>
                         </td>
                         <td>{{group.projectName}}</td>
@@ -311,7 +311,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="student in students">
+                    <tr ng-repeat="student in students"
+                        ng-class="{green: isHomeworkReqSuccess(student)}">
                         <td>{{student.id}}</td>
                         <td>{{student.name}}</td>
                         <td ng-repeat="homework in homeworks">
@@ -343,7 +344,7 @@
                         <tr ng-repeat="student in students">
                             <td>{{student.id}}</td>
                             <td>{{student.name}}</td>
-                            <td>
+                            <td ng-class="{green: isRollCallReqSuccess(student.id, 0)}">
                                 <input type="checkbox"
                                        class="filled-in"
                                        ng-attr-id="{{'rollcall1' + student.id}}"
@@ -351,7 +352,7 @@
                                        ng-change="submitRollCallState(student.rollCall1, 0, student.id)"/>
                                 <label ng-attr-for="{{'rollcall1' + student.id}}"></label>
                             </td>
-                            <td>
+                            <td ng-class="{green: isRollCallReqSuccess(student.id, 1)}">
                                 <input type="checkbox"
                                        class="filled-in"
                                        ng-attr-id="{{'rollcall2' + student.id}}"
@@ -359,7 +360,7 @@
                                        ng-change="submitRollCallState(student.rollCall2, 1, student.id)"/>
                                 <label ng-attr-for="{{'rollcall2' + student.id}}"></label>
                             </td>
-                            <td>
+                            <td ng-class="{green: isRollCallReqSuccess(student.id, 2)}">
                                 <input type="checkbox"
                                        class="filled-in"
                                        ng-attr-id="{{'rollcall3' + student.id}}"
@@ -651,5 +652,29 @@
     </div>
     <div class="progress" ng-if="requestLoading">
         <div class="indeterminate"></div>
+    </div>
+    <div id="verify-modal" class="modal">
+        <div class="modal-content">
+            <h5>身份驗證</h5>
+            <form name="verifyFormName">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="verifyForm-passwordId" type="password" class="validate"
+                               ng-model="verifyForm.password" required>
+                        <label for="verifyForm-passwordId">請輸入密碼</label>
+                    </div>
+                    <div class="col s6 margin-top-1x">
+                        <button ng-click="verifyFormName.$invalid || submitVerify()"
+                                class="btn waves-effect waves-light"
+                                type="submit"
+                                name="action"
+                                ng-disabled="verifyFormName.$invalid">
+                            送出
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
