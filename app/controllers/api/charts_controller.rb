@@ -86,6 +86,43 @@ class Api::ChartsController < ApplicationController
         )
     end
 
+    def timelog
+        retrieve
+
+        project = @student.group.project if @student.group
+        course = @student.course
+        your_loc_charts = {}
+        commits = []
+        data = {}
+        if project.present?
+            your_git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{project.id}.git")
+            begin
+                commits = your_git.log(999999)
+                commits.each_cons(2) do |commit1, commit2|
+                    your_loc_charts[commit1.date.strftime("%F")] ||= 0
+                    your_loc_charts[commit1.date.strftime("%F")] += your_git.diff(commit2, commit1).insertions.to_i
+                end
+            rescue
+                commits = []
+            end
+        end
+
+        chart = Chart.find_by(course_id: course.id)
+        data['you'] = your_loc_charts.to_a.reverse.to_h
+        data['average'] = chart.average_loc.to_a.reverse.to_h if chart
+        data['high_standard'] = chart.high_standard_loc.to_a.reverse.to_h if chart
+        data['low_standard'] = chart.low_standard_loc.to_a.reverse.to_h if chart
+
+        render HttpStatusCode.ok(data)
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
     private
 
     def retrieve
