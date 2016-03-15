@@ -88,7 +88,7 @@ class Api::TimelogController < ApplicationController
             if timelogs.count != 0
                 next
             end
-            timelog = timelogs.order(:week_no).last
+            timelog = project.timelogs.order(:week_no).last
             week_no = 0
             if timelog
                 week_no = timelog.week_no + 1
