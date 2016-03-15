@@ -111,7 +111,7 @@
                         <th data-field="weekNo">驗收</th>
                         <th data-field="weekNo">週次</th>
                         <th data-field="date">日期</th>
-                        <th data-field="costTime">團隊花費時間</th>
+                        <th data-field="costTime">花費時間(不含上課)</th>
                         <th data-field="todoList">工作規劃</th>
                         <th data-field="lineOfCode">行數</th>
                         <th data-field="image">圖片</th>
@@ -157,7 +157,7 @@
                         </td>
                         <td ng-if="!timelog.editting">
                             <div class="row">
-                                <a class="waves-effect waves-light btn" ng-click="openTimeCostModal(timelog)">編輯Time Cost</a>
+                                <a class="waves-effect waves-light btn" ng-click="openTimeCostModal(timelog)">編輯花費時間</a>
                             </div>
                             <div class="row">
                                 <a class="waves-effect waves-light btn" ng-click="editTimelog(timelog)">編輯工作規劃</a>
@@ -176,19 +176,19 @@
                 </table>
                 <div id="editting-time-cost" class="modal">
                     <div class="modal-content">
-                        <h4>Time Cost</h4>
+                        <h4>花費時間</h4>
                         <table class="striped">
                             <thead>
                             <tr>
-                                <th data-field="cost">耗費小時</th>
                                 <th data-field="category">類別</th>
+                                <th data-field="cost">耗費小時</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="timeCost in selectedTimelog.time_costs">
-                                <td>{{timeCost.cost}}</td>
                                 <td>{{timeCost.category | timeCostCategory}}</td>
+                                <td>{{timeCost.cost}}</td>
                                 <td>
                                     <div>
                                         <a class="waves-effect waves-light btn" ng-click="deleteTimeCost(timeCost.id)">刪除</a>
@@ -221,7 +221,7 @@
                             </div>
                             <button ng-click="timeCostForm.$invalid || addTimeCost()"
                                     ng-disabled="timeCostForm.$invalid"
-                                    class="waves-effect waves-light btn center-align">新增TimeCost
+                                    class="waves-effect waves-light btn center-align">新增花費時間
                             </button>
                         </form>
                     </div>

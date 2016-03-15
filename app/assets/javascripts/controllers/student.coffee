@@ -109,7 +109,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.addTimeCost = () ->
             Student.addTimeCost($scope.selectedTimelog.id, $scope.addTimeCostForm.cost, $scope.addTimeCostForm.category).then ((data) ->
-                Materialize.toast("增加Time Cost成功", 2000)
+                Materialize.toast("增加花費時間成功", 2000)
                 $scope.showTimeCosts($scope.selectedTimelog.id)
                 Student.showTimelog($scope.project.id).then ((data) ->
                     $scope.timelogs = data
@@ -119,7 +119,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
 
         $scope.deleteTimeCost = (timeCostId) ->
             Student.destroyTimeCost(timeCostId).then ((data) ->
-                Materialize.toast("刪除Time Cost成功", 2000)
+                Materialize.toast("刪除花費時間成功", 2000)
                 $scope.showTimeCosts($scope.selectedTimelog.id)
                 Student.showTimelog($scope.project.id).then ((data) ->
                     $scope.timelogs = data
