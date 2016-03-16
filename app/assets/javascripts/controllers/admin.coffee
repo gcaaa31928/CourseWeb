@@ -332,7 +332,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 $scope.requestLoading = false
 
         $scope.editTimelogAcceptance = (group) ->
-            timelog = group.project.latest_timelog
+            timelog = group.project.second_last_timelog
             $('#verify-modal').openModal()
             $scope.verifyCallback = () ->
                 $scope.requestLoading = true
