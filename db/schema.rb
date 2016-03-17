@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(version: 20160311151438) do
   end
 
   create_table "teaching_assistants_privileges", id: false, force: :cascade do |t|
-    t.integer "teaching_assistant_id"
+    t.integer "teaching_assistants_id"
     t.integer "privilege_id"
   end
 
