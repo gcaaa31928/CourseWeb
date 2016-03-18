@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
     def second_last_timelog
         timelogs = self.timelogs
         if timelogs and timelogs.count > 1
-            timelogs.order!(week_no: :desc)
+            timelogs = timelogs.order!(week_no: :desc)
             return timelogs[0].as_json(only:[:todo, :image, :acceptance, :id])
         end
         nil
