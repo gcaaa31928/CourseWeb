@@ -39,7 +39,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+  gem 'thin'
 end
+
+gem 'unicorn'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -54,6 +57,5 @@ gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'redis'
 gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :tag => 'v1.0.1.1'
-# gem 'thin'
+
 gem 'git'
-gem 'unicorn'
