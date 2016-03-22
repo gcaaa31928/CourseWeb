@@ -28,6 +28,7 @@
     "js-yaml": "^3.5.3",
     "moment": "^2.11.2",
     "animate.css": "^3.5.1",
-    "dropzone": "^4.3.0"
+    "dropzone": "^4.3.0",
+    "font-awesome": "fontawesome#^4.5.0"
   }
 }

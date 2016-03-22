@@ -9,7 +9,7 @@ class Api::TimelogController < ApplicationController
         timelogs = project.timelogs.order(:id)
         loc = {}
         timelogs.each do |timelog|
-            loc[timelog.id] = get_loc_between_week(timelog)
+            loc[timelog.id] = get_loc(timelog)
         end
         timelogs_json = timelogs.as_json(
             include: {
@@ -127,24 +127,18 @@ class Api::TimelogController < ApplicationController
 
     private
 
-    def get_loc_between_week(timelog)
+    def get_loc(timelog)
         git = Git.bare("#{APP_CONFIG['git_project_root']}oopcourse#{timelog.project.id}.git")
         current_date = timelog.date
-        before_date = timelog.date - 1.week
-        first_commit = nil
-        last_commit = nil
         commits = []
         begin
             commits = git.log(9999999)
+            last_commit = commits[-1]
+            first_commit = commits[-1]
             commits.each do |commit|
-                if commit.date.to_date < before_date
-                    break
-                end
-                if commit.date.to_date >= before_date and commit.date.to_date <= current_date and last_commit.nil?
+                if commit.date.to_date <= current_date
                     last_commit = commit
-                end
-                if commit.date.to_date >= before_date and commit.date.to_date <= current_date
-                    first_commit = commit
+                    break
                 end
             end
         rescue
@@ -153,7 +147,6 @@ class Api::TimelogController < ApplicationController
         if last_commit.nil? and first_commit.nil?
             return 0
         end
-        # Log.info("Last commit is #{last_commit.message} and First commit is #{first_commit.message}")
         git.diff(first_commit, last_commit).insertions.to_i
     end
 

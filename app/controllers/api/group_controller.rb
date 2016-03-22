@@ -30,11 +30,10 @@ class Api::GroupController < ApplicationController
                         scores: {
                             only: [:no, :point]
                         }
-
                     },
-                    methods: [:second_last_timelog],
+                    methods: [:latest_timelog_todo, :latest_timelog_image, :latest_timelog],
                     only: [:name, :id]
-                }
+                },
             }, only: [:id]
         )
         groups_json.each do |group|

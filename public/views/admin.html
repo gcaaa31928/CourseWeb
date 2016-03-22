@@ -265,15 +265,15 @@
                             <input type="checkbox"
                                    class="filled-in"
                                    ng-attr-id="checked-acceptance-{{group.id}}"
-                                   ng-model="group.project.second_last_timelog.acceptance"
+                                   ng-model="group.project.latest_timelog.acceptance"
                                    ng-change="editTimelogAcceptance(group)"/>
                             <label ng-attr-for="checked-acceptance-{{group.id}}"></label>
                         </td>
                         <td>{{group.projectName}}</td>
-                        <td class="work-breakable table-cell-w">{{group.project.second_last_timelog.todo}}</td>
+                        <td class="work-breakable table-cell-w">{{group.project.latest_timelog_todo}}</td>
                         <td>
                             <div class="image-wrapper">
-                                <img class="materialboxed" ng-src="{{group.project.second_last_timelog.image}}">
+                                <img class="materialboxed" ng-src="{{group.project.latest_timelog_image}}">
                             </div>
                         </td>
 
