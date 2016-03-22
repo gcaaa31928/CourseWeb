@@ -42,7 +42,6 @@ group :development, :test do
   gem 'thin'
 end
 
-gem 'unicorn'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -59,3 +58,4 @@ gem 'redis'
 gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :tag => 'v1.0.1.1'
 
 gem 'git'
+gem 'carrierwave'
