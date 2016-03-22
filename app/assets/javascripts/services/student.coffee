@@ -20,6 +20,13 @@ angular.module('courseWebApp').factory 'Student', [
                 }
             }
 
+        factory.multipartConfig = (canceler, data) ->
+            headData = factory.httpConfig(canceler)
+            headData.transformRequest = data
+            headData.headers['Content-Type'] = undefined
+            headData
+
+
         factory.setInfo = (info) ->
             factory.accessToken = info.access_token if info?
             factory.account = info.id if info?
@@ -180,12 +187,20 @@ angular.module('courseWebApp').factory 'Student', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
-        factory.editTimelog = (timelogId, todo, image, canceler = null) ->
+        factory.editTimelog = (timelogId, todo, canceler = null) ->
             $q (resolve, reject) ->
-                $http.post('/api/timelog/' + timelogId + '/edit', {
+                $http.post("/api/timelog/#{timelogId}/edit", {
                     todo: todo
-                    image: image
                 }, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
+        factory.uploadTimelogImage = (timelogId, image, canceler = null) ->
+            $q (resolve, reject) ->
+                formData = new FormData();
+                formData.append('file', image)
+                $http.post("/api/timelog/#{timelogId}/upload_image", formData, factory.multipartConfig(canceler, formData)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)

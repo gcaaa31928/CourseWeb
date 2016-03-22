@@ -7,7 +7,10 @@ test:
   git_app: /usr/bin/git
   git_project_root: /home/red/Work/CourseWeb/repositories/git/
   git_repositories_root: /home/red/Work/CourseWeb/repositories/
+  url: 'http://127.0.0.1:3000'
+
 production:
   git_app: /usr/bin/git
   git_project_root: /home/red/Work/CourseWeb/repositories/git/
   git_repositories_root: /home/red/Work/CourseWeb/repositories/
+  url: 'http://127.0.0.1:3000'

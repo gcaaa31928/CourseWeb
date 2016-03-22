@@ -20,8 +20,9 @@ class Api::TimelogController < ApplicationController
                         }
                     },
                     only: [:id, :cost, :category]
-                }
-            }, only: [:id, :week_no, :date, :todo, :image, :acceptance]
+                },
+            },
+            only: [:id, :week_no, :date, :todo, :image, :acceptance]
         )
         timelogs_json.each do |timelog|
             timelog['loc'] = loc[timelog['id']]
@@ -49,7 +50,26 @@ class Api::TimelogController < ApplicationController
         if timelog.nil?
             raise '沒有這個Timelog'
         end
-        timelog.update_attributes!(todo: permitted[:todo], image: permitted[:image])
+        timelog.todo = permitted[:todo]
+        timelog.save!
+        render HttpStatusCode.ok
+    rescue => e
+        Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def upload_image
+        retrieve_student
+        timelog = Timelog.find_by(id: params[:timelog_id].to_i)
+        if timelog.nil?
+            raise '沒有這個Timelog'
+        end
+        timelog.image = params[:file]
+        timelog.save!
         render HttpStatusCode.ok
     rescue => e
         Log.exception(e)

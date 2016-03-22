@@ -132,17 +132,19 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             timelog.editting = true
             $timeout(() ->
                 $('#filePhoto').change(()->
-                    console.log('in')
                     handleImage(this)
                 )
                 handleImage = (input) ->
                     if (input.files && input.files[0])
                         reader = new FileReader()
                         reader.onload = (e) ->
-                            binaryString = e.target.result
-                            $('#image_upload_preview').attr('src', binaryString)
-                            timelog.image = binaryString
-                        reader.readAsDataURL(input.files[0])
+                            $('#image_upload_preview').attr('src', e.target.result)
+                        reader.readAsDataURL(input.files[0]);
+                        timelog.image = input.files[0]
+                        Student.uploadTimelogImage(timelog.id, timelog.image).then ((data) ->
+                            Materialize.toast("上傳圖片成功", 2000)
+                        ), (msg) ->
+                            Materialize.toast(msg, 200)
             )
 
 
@@ -154,7 +156,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     edittingTimeCost = timeCost
             )
 
-            Student.editTimelog(timelog.id, timelog.todo, timelog.image).then ((data) ->
+            Student.editTimelog(timelog.id, timelog.todo).then ((data) ->
                 Materialize.toast("修改Timelog成功", 2000)
                 $scope.prepareProject()
                 $scope.requestLoading = false
