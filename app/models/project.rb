@@ -9,6 +9,8 @@ class Project < ActiveRecord::Base
         end
     end
 
+    
+
     def second_last_timelog
         timelogs = self.timelogs
         if timelogs and timelogs.count > 1
