@@ -32,7 +32,7 @@ class Api::GroupController < ApplicationController
                         }
                     },
                     methods: [:latest_timelog_todo, :latest_timelog_image, :latest_timelog],
-                    only: [:name, :id]
+                    only: [:name, :id, :project_type]
                 },
             }, only: [:id]
         )

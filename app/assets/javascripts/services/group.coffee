@@ -7,10 +7,6 @@ angular.module('courseWebApp').factory 'Group' ,[
             factory.members = dataClusters
 
         factory.handleAllGroup = (data) ->
-            angular.forEach(data, (group) ->
-                if group.project?
-                    group.projectName = group.project.name
-            )
             data.sort (a,b) ->
                 if a.projectName? and b.projectName?
                     return a.id - b.id

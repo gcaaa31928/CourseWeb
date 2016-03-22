@@ -147,7 +147,7 @@
                 </div>
             </div>
         </div>
-        <div ng-if="inCourse && !courseLoading" class="container">
+        <div ng-if="inCourse && !courseLoading" class="wide container">
             <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
                     <div class="collapsible-header"><i class="material-icons">toc</i>新增Timelog</div>
@@ -250,13 +250,14 @@
                         <th data-field="name">學生</th>
                         <th data-field="project-acceptance">驗收</th>
                         <th data-field="project-name">專案名稱</th>
+                        <th>專案類型</th>
                         <th data-field="">專案進度</th>
                         <th data-field="finalGrade">專案圖片</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="group in groups"
-                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName, green: isGroupReqSuccess(group)}"
+                        ng-class="{red: !group.project.name, 'lighten-4': !group.project.name, green: isGroupReqSuccess(group)}"
                         class="clickable">
                         <td>{{$index + 1}}</td>
                         <td>{{group.students | studentsId}}</td>
@@ -269,7 +270,8 @@
                                    ng-change="editTimelogAcceptance(group)"/>
                             <label ng-attr-for="checked-acceptance-{{group.id}}"></label>
                         </td>
-                        <td>{{group.projectName}}</td>
+                        <td>{{group.project.name}}</td>
+                        <td>{{group.project.project_type}}</td>
                         <td class="work-breakable table-cell-w">{{group.project.latest_timelog_todo}}</td>
                         <td>
                             <div class="image-wrapper">
@@ -293,12 +295,12 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="group in groups"
-                        ng-class="{red: !group.projectName, 'lighten-4': !group.projectName}"
+                        ng-class="{red: !group.project.name, 'lighten-4': !group.project.name}"
                         class="clickable" ng-click="openTimelogModal(group)">
                         <td>{{$index + 1}}</td>
                         <td>{{group.students | studentsId}}</td>
                         <td>{{group.students | studentsName}}</td>
-                        <td>{{group.projectName}}</td>
+                        <td>{{group.project.name}}</td>
                     </tr>
                     </tbody>
                 </table>
