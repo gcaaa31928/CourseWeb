@@ -69,7 +69,7 @@ class Api::TimelogController < ApplicationController
         end
         timelog = Timelog.find_by(id: params[:timelog_id].to_i)
         if @student
-            verify_student_timelog_owner!(permitted[:timelog_id].to_i)
+            verify_student_timelog_owner!(params[:timelog_id].to_i)
         end
 
         if timelog.nil?
