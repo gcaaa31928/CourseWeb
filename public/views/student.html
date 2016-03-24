@@ -154,10 +154,10 @@
                         <td>{{timelog.loc}}</td>
                         <td>
                             <div class="image-wrapper" ng-if="timelog.editting">
-                                <img class="responsive-img" id="image_upload_preview" ng-src="{{timelog.image.url}}"/>
+                                <img class="responsive-img" id="image_upload_preview" ng-src="{{timelog.image_url}}"/>
                                 <input type="file" name="userprofile_picture" id="filePhoto"/>
                             </div>
-                            <div class="image-wrapper" ng-if="timelog.image.url && !timelog.editting">
+                            <div class="image-wrapper" ng-if="timelog.image_url && !timelog.editting">
                                 <img class="materialboxed" ng-src="{{timelog.image_url}}">
                             </div>
                         </td>
