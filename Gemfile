@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 gem 'nokogiri'
 gem 'gemrat'
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-  gem 'rspec-rails'
+    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+    gem 'byebug'
+    gem 'rspec-rails'
 end
 gem 'rails', '4.2.3'
 # Use postgresql as the database for Active Record
@@ -37,9 +37,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-  gem 'thin'
+    # Access an IRB console on exception pages or by using <%= console %> in views
+    gem 'web-console', '~> 2.0'
+    gem 'thin'
 end
 
 
@@ -59,4 +59,7 @@ gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :
 
 gem 'git'
 gem 'carrierwave'
-gem 'unicorn'
+group :production do
+    gem 'unicorn'
+end
+
