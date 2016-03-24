@@ -60,6 +60,14 @@ gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :
 gem 'git'
 gem 'carrierwave'
 group :production do
-    gem 'unicorn'
+    platforms :ruby do #linux
+        gem 'unicorn'
+    end
+    platforms :mswin do # gems specific to windows
+        gem 'thin'
+    end
 end
 
+group :development, :test do
+    gem 'thin'
+end

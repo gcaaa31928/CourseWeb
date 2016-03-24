@@ -455,7 +455,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                             $(this).remove()
                         )
                 , 2000)
-            $scope.newsTimeout()
+#            $scope.newsTimeout()
 
         $scope.getLogs = (after_id, after_time = null) ->
             $q (resolve, reject) ->

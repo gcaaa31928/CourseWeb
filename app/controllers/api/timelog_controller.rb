@@ -6,7 +6,7 @@ class Api::TimelogController < ApplicationController
         if project.nil?
             raise '你沒有任何專案'
         end
-        timelogs = project.timelogs.order(:id)
+        timelogs = project.timelogs.order(:week_no)
         loc = {}
         timelogs.each do |timelog|
             loc[timelog.id] = get_loc(timelog)
@@ -22,7 +22,8 @@ class Api::TimelogController < ApplicationController
                     only: [:id, :cost, :category]
                 },
             },
-            only: [:id, :week_no, :date, :todo, :image, :acceptance]
+            methods: [:image_url],
+            only: [:id, :week_no, :date, :todo, :acceptance]
         )
         timelogs_json.each do |timelog|
             timelog['loc'] = loc[timelog['id']]

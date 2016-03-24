@@ -6,7 +6,9 @@ class Timelog < ActiveRecord::Base
 
 
     def image_url
-        self.image.url
+        if self.image and self.image.path
+            self.image.url
+        end
     end
 
 end
