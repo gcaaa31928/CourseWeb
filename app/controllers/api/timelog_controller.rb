@@ -63,8 +63,15 @@ class Api::TimelogController < ApplicationController
     end
 
     def upload_image
-        retrieve_student
+        retrieve_admin
+        if @admin.nil? and @teaching_assistant.nil?
+            retrieve_student
+        end
         timelog = Timelog.find_by(id: params[:timelog_id].to_i)
+        if @student
+            verify_student_timelog_owner!(permitted[:timelog_id].to_i)
+        end
+
         if timelog.nil?
             raise '沒有這個Timelog'
         end
@@ -82,6 +89,7 @@ class Api::TimelogController < ApplicationController
 
     def edit_acceptance
         retrieve_admin
+        verify_admin_present?
         permitted = params.permit(:timelog_id, :acceptance)
         timelog = Timelog.find_by(id: permitted[:timelog_id].to_i)
         if timelog.nil?
@@ -100,6 +108,7 @@ class Api::TimelogController < ApplicationController
 
     def create
         retrieve_admin
+        verify_admin_present?
         permitted = params.permit(:date, :course_id)
         date = Time.at(permitted[:date].to_i / 1000).to_date
         projects = Project.joins(:group).where(groups: {course_id: permitted[:course_id]})
@@ -176,6 +185,10 @@ class Api::TimelogController < ApplicationController
             @teaching_assistant = TeachingAssistant.find_by(access_token: @access_token)
             @admin = Admin.find_by(access_token: @access_token)
         end
+
+    end
+
+    def verify_admin_present?
         if @teaching_assistant.nil? and @admin.nil?
             raise '憑證失效'
         end
