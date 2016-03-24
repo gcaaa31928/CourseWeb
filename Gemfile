@@ -59,3 +59,4 @@ gem 'gitlab-grack', :git => "https://github.com/a60814billy/gitlab-grack.git", :
 
 gem 'git'
 gem 'carrierwave'
+gem 'unicorn'
