@@ -132,7 +132,7 @@
                             <label ng-attr-for=="acceptance-checkbox{{timelog.id}}"></label>
                         </td>
                         <td>{{timelog.week_no}}</td>
-                        <td>{{timelog.date}}</td>
+                        <td>{{timelogs | dateRange:$index}}</td>
                         <td>
                             <div ng-repeat="student in group.members" class="margin-top-1x">
                                 <div ng-if="timelog.sum_cost[student.id]">{{student.name}}:
