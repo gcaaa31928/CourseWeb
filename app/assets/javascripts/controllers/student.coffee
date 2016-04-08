@@ -551,6 +551,8 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             return 'B'
         else if score >= 65
             return 'B-'
+        else if score >= 60
+            return 'C+'
 )
 .filter('dateRange', () ->
     (timelogs, index) ->

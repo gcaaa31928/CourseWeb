@@ -305,8 +305,9 @@
                             <td>{{group.students | studentsId}}</td>
                             <td>{{group.students | studentsName}}</td>
                             <td>{{group.project.name}}</td>
-                            <td>{{group.project.average_point[0] | grade}}</td>
-                            <td>{{group.project.average_point[1] | grade}}</td>
+                            <td ng-class="{red: group.project.average_point[0]<=60, 'lighten-4': group.project.average_point[0]<=60}">{{group.project.average_point[0] | grade}}</td>
+                            <td ng-class="{red: group.project.average_point[1]<=60, 'lighten-4': group.project.average_point[1]<=60}">{{group.project.average_point[1] | grade}}</td>
+
                         </tr>
                         </tbody>
                     </table>
