@@ -247,13 +247,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="group in groups" ng-class="{red: !group.projectName, 'lighten-3': !group.projectName}">
+                <tr ng-repeat="group in groups">
                     <td>{{$index + 1}}</td>
                     <td>{{group.students | studentsId}}</td>
                     <td>{{group.students | studentsName}}</td>
-                    <td>{{group.projectName}}</td>
-                    <td>{{group.project.average_point[0]}}</td>
-                    <td>{{group.project.average_point[1]}}</td>
+                    <td>{{group.project.name}}</td>
+                    <td>{{group.project.average_point[0] | grade}}</td>
+                    <td>{{group.project.average_point[1] | grade}}</td>
                 </tr>
                 </tbody>
             </table>

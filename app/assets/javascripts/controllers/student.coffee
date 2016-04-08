@@ -103,7 +103,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                 $scope.showTimeCosts($scope.selectedTimelog.id).then (() ->
                     $('#editting-time-cost').openModal()
                     $('select').material_select()
-                    $scope.requestLoading= false;
+                    $scope.requestLoading = false;
                 )
             )
 
@@ -455,7 +455,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                             $(this).remove()
                         )
                 , 2000)
-#            $scope.newsTimeout()
+        #            $scope.newsTimeout()
 
         $scope.getLogs = (after_id, after_time = null) ->
             $q (resolve, reject) ->
@@ -493,7 +493,6 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                     return 1
 
             $scope.groups = data
-
 
 
         $scope.layout.loading = true
@@ -537,4 +536,20 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             when 2 then return '找尋素材'
             when 3 then return '素材整理'
             when 4 then return '團隊討論'
+)
+.filter('grade', () ->
+    (score) ->
+        if score >= 90
+            return 'A+'
+        else if score >= 85
+            return 'A'
+        else if score >= 80
+            return 'A-'
+        else if score >= 75
+            return 'B+'
+        else if score >= 70
+            return 'B'
+        else if score >= 65
+            return 'B-'
+
 )

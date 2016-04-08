@@ -238,7 +238,9 @@
                 <div class="row">
                     <div class="col s12">
                         <ul class="tabs">
-                            <li class="tab col s3 clickable"><a class="active" ng-click="changeTab('project')">專案進度</a></li>
+                            <li class="tab col s3 clickable">
+                                <a class="active" ng-click="changeTab('project')">專案進度</a>
+                            </li>
                             <li class="tab col s3 clickable"><a ng-click="changeTab('score')">Demo成績</a></li>
                             <li class="tab col s3 clickable"><a ng-click="changeTab('homework')">作業</a></li>
                             <li class="tab col s3 clickable"><a ng-click="changeTab('rollcall')">點名</a></li>
@@ -303,6 +305,8 @@
                             <td>{{group.students | studentsId}}</td>
                             <td>{{group.students | studentsName}}</td>
                             <td>{{group.project.name}}</td>
+                            <td>{{group.project.average_point[0] | grade}}</td>
+                            <td>{{group.project.average_point[1] | grade}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -398,12 +402,14 @@
                                 <td rowspan="2">{{timelog.date}}</td>
                                 <td ng-if="timelog.editting">
                                     <div ng-if="timelog.time_costs[0].editting" class="input-field">
-                                        <input id="cost0" type="text" class="validate" ng-model="timelog.time_costs[0].cost"
+                                        <input id="cost0" type="text" class="validate"
+                                               ng-model="timelog.time_costs[0].cost"
                                                required>
                                         <label class='active' for="cost0">耗費小時</label>
                                     </div>
                                     <div ng-if="timelog.time_costs[1].editting" class="input-field">
-                                        <input id="cost1" type="text" class="validate" ng-model="timelog.time_costs[1].cost"
+                                        <input id="cost1" type="text" class="validate"
+                                               ng-model="timelog.time_costs[1].cost"
                                                required>
                                         <label class='active' for="cost1">耗費小時</label>
                                     </div>
@@ -441,6 +447,7 @@
                                 <th data-field="weekNo">助教學號</th>
                                 <th data-field="date">助教名字</th>
                                 <th data-field="costTime">助教分數</th>
+                                <th data-field="costTime">刪除</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -448,6 +455,11 @@
                                 <td>{{score.teaching_assistant.id}}</td>
                                 <td>{{score.teaching_assistant.name}}</td>
                                 <td>{{score.point}}</td>
+                                <td>
+                                    <div>
+                                        <a class="waves-effect waves-light btn" ng-click="submitDestroyScore(score.id, 0)">刪除</a>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -484,6 +496,11 @@
                                 <td>{{score.teaching_assistant.id}}</td>
                                 <td>{{score.teaching_assistant.name}}</td>
                                 <td>{{score.point}}</td>
+                                <td>
+                                    <div>
+                                        <a class="waves-effect waves-light btn" ng-click="submitDestroyScore(score.id, 1)">刪除</a>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

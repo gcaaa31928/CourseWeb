@@ -201,6 +201,7 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                 else
                     $scope.submitDestroyRollCall(period, studentId)
 
+
         $scope.submitAddRollCall = (period, studentId) ->
             $scope.requestLoading = true
             Admin.addRollCall(
@@ -253,6 +254,19 @@ angular.module('courseWebApp').controller('AdminCtrl', [
                     number,
                 ).then ((data) ->
                     Materialize.toast("分數送出成功", 2000)
+                    Admin.allScores($scope.selectedGroup.project.id, number).then ((data) ->
+                        $scope.scores[number] = data
+                    )
+                ), (msg) ->
+                    Materialize.toast(msg, 2000)
+
+        $scope.submitDestroyScore = (scoreId, number) ->
+            $('#verify-modal').openModal()
+            $scope.verifyCallback = () ->
+                Admin.destroyScore(
+                    scoreId
+                ).then ((data) ->
+                    Materialize.toast("分數刪除成功", 2000)
                     Admin.allScores($scope.selectedGroup.project.id, number).then ((data) ->
                         $scope.scores[number] = data
                     )

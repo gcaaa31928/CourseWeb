@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
         post 'project/:project_id/score/create' => 'score#create'
         get 'project/:project_id/no/:no/score/all' => 'score#all'
+        post 'score/:score_id/destroy' => 'score#destroy'
 
         get 'charts/test' => 'charts#test'
         get 'charts/commits' => 'charts#commits'

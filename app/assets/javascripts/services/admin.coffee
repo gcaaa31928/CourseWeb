@@ -232,6 +232,13 @@ angular.module('courseWebApp').factory 'Admin', [
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
 
+        factory.destroyScore = (scoreId, canceler = null) ->
+            $q (resolve, reject) ->
+                $http.post("/api/score/#{scoreId}/destroy", {}, factory.httpConfig(canceler)).then ((response) ->
+                    handleSuccessPromise(resolve, reject, response)
+                ), (response) ->
+                    handleFailedPromise(resolve, reject, response)
+
         factory.allScores = (projectId, number, canceler = null) ->
             $q (resolve, reject) ->
                 $http.get("/api/project/#{projectId}/no/#{number}/score/all", factory.httpConfig(canceler)).then ((response) ->

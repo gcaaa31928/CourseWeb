@@ -39,10 +39,24 @@ class Api::ScoreController < ApplicationController
                 teaching_assistant: {
                     only: [:id, :name]
                 }
-            }, only: [:point, :no]
+            }, only: [:point, :no, :id]
         ))
     rescue => e
         Log.exception(e)
+        render HttpStatusCode.forbidden(
+            {
+                errorMsg: "#{$!}"
+            }
+        )
+    end
+
+    def destroy
+        retrieve_admin
+        permitted = params.permit(:score_id)
+        score = Score.find_by(id: permitted[:score_id])
+        score.destroy!
+        render HttpStatusCode.ok
+    rescue => e
         render HttpStatusCode.forbidden(
             {
                 errorMsg: "#{$!}"
