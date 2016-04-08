@@ -132,7 +132,7 @@
                             <label ng-attr-for=="acceptance-checkbox{{timelog.id}}"></label>
                         </td>
                         <td>{{timelog.week_no}}</td>
-                        <td>{{timelog.date}}</td>
+                        <td>{{timelogs | dateRange:$index}}</td>
                         <td>
                             <div ng-repeat="student in group.members" class="margin-top-1x">
                                 <div ng-if="timelog.sum_cost[student.id]">{{student.name}}:
@@ -205,16 +205,7 @@
                         </table>
                         <form name="timeCostForm">
                             <div class="row">
-                                <div class="input-field col s3">
-                                    <input id="time-cost-id"
-                                           type="text"
-                                           class="validate"
-                                           ng-model="addTimeCostForm.cost"
-                                           ng-pattern="'\\d+'"
-                                           required>
-                                    <label for="time-cost-id">耗費小時</label>
-                                </div>
-                                <div class="input-field col s8">
+                                <div class="input-field col s5">
                                     <select ng-model="addTimeCostForm.category" required>
                                         <option value="" disabled selected>請選擇類別</option>
                                         <option value="0">程式撰寫</option>
@@ -224,6 +215,16 @@
                                         <option value="4">團隊討論</option>
                                     </select>
                                 </div>
+                                <div class="input-field col s3">
+                                    <input id="time-cost-id"
+                                           type="text"
+                                           class="validate"
+                                           ng-model="addTimeCostForm.cost"
+                                           ng-pattern="'\\d+'"
+                                           required>
+                                    <label for="time-cost-id">耗費小時</label>
+                                </div>
+
                             </div>
                             <button ng-click="timeCostForm.$invalid || addTimeCost()"
                                     ng-disabled="timeCostForm.$invalid"

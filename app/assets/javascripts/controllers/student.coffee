@@ -551,5 +551,12 @@ angular.module('courseWebApp').controller('StudentCtrl', [
             return 'B'
         else if score >= 65
             return 'B-'
-
+)
+.filter('dateRange', () ->
+    (timelogs, index) ->
+        if not timelogs?
+            return
+        if (index == timelogs.length - 1)
+            return timelogs[index].date
+        return "#{timelogs[index].date} ~ #{timelogs[index + 1].date}"
 )
