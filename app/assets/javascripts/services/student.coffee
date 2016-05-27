@@ -23,6 +23,7 @@ angular.module('courseWebApp').factory 'Student', [
         factory.multipartConfig = (canceler, data) ->
             headData = {}
             headData.transformRequest = data
+            headData.headers = {}
             headData.headers['Content-Type'] = undefined
             headData.headers['AUTHORIZATION'] = factory.accessToken
             headData
