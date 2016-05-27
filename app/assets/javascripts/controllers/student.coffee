@@ -141,6 +141,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                             $('#image_upload_preview').attr('src', e.target.result)
                         reader.readAsDataURL(input.files[0]);
                         timelog.image = input.files[0]
+                        console.log(timelog);
                         Student.uploadTimelogImage(timelog.id, timelog.image).then ((data) ->
                             Materialize.toast("上傳圖片成功", 2000)
                         ), (msg) ->
