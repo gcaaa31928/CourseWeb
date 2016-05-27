@@ -145,6 +145,7 @@ angular.module('courseWebApp').controller('StudentCtrl', [
                         Student.uploadTimelogImage(timelog.id, timelog.image).then ((data) ->
                             Materialize.toast("上傳圖片成功", 2000)
                         ), (msg) ->
+                            console.log(msg)
                             Materialize.toast(msg, 200)
             )
 
