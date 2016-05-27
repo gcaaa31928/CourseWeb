@@ -204,7 +204,13 @@ angular.module('courseWebApp').factory 'Student', [
                 formData = new FormData();
                 formData.append('file', image)
                 console.log(timelogId)
-                $http.post("/api/timelog/#{timelogId}/upload_image", formData, factory.multipartConfig(canceler, formData)).then ((response) ->
+                $http.post("/api/timelog/#{timelogId}/upload_image", formData, {
+                    transformRequest: image,
+                    headers: {
+                      'Content-Type': undefined,
+                      'AUTHORIZATION': factory.accessToken
+                    }
+                }).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
                     handleFailedPromise(resolve, reject, response)
