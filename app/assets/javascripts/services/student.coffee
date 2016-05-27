@@ -40,6 +40,7 @@ angular.module('courseWebApp').factory 'Student', [
                 resolve null
 
         handleFailedPromise = (resolve, reject, response) ->
+            console.log(response)
             response = response.data
             if response.data? and response.data.errorMsg?
                 reject response.data.errorMsg
