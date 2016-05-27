@@ -200,6 +200,7 @@ angular.module('courseWebApp').factory 'Student', [
             $q (resolve, reject) ->
                 formData = new FormData();
                 formData.append('file', image)
+                console.log(timelogId)
                 $http.post("/api/timelog/#{timelogId}/upload_image", formData, factory.multipartConfig(canceler, formData)).then ((response) ->
                     handleSuccessPromise(resolve, reject, response)
                 ), (response) ->
